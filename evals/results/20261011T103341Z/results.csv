@@ -1,0 +1,2 @@
+case_id,bank,period,metric,categories,expected_status,status,status_correct,expected_reason,abstain_reason,reason_correct,drivers,reconciles,residual,tolerance,cited_numbers,cited_found,citation_faithfulness,confidence_level,confidence,latency_ms,llm_calls,cost_aud,headline_exact,gold_verified,passed,notes
+cba_fy25_cet1,CBA,FY25,cet1_ratio,standard|real_filing|full_year|flat_movement|fy25|chained_walk,OK|PARTIAL,OK,True,,,,5,True,5.0,14.50,2,2,1.000,Medium,0.790,25720,2,0.2557,True,True,True,

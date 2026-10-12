@@ -1,0 +1,66 @@
+# Which bank a name means when it isn't one in config/banks.yaml: brands, listed groups that
+# own a bank, listed banks that aren't Australian, and Australian banks that aren't listed.
+# The ASX's own list of listed companies (asx_listed_companies.csv) settles everything else.
+schema_version: "1.0"
+
+# A brand and the listed group that reports it. A question about a brand is answered with
+# its owner's results, and the answer says so.
+brands:
+  CBA: ["Bankwest", "CommBank", "Unloan"]
+  WBC: ["St.George", "St George", "St George Bank", "BankSA", "Bank SA", "Bank of Melbourne", "RAMS"]
+  NAB: ["ubank", "86 400", "Citi Australia"]
+  ANZ: ["Suncorp Bank", "ANZ Plus"]
+  BOQ: ["ME Bank", "ME", "Virgin Money Australia", "Virgin Money", "BOQ Specialist"]
+  BEN: ["Up", "Up Bank", "Bendigo Bank", "Adelaide Bank", "Rural Bank"]
+  MYS: ["MyState Bank", "TPT", "Auswide Bank", "Auswide"]
+  JDO: ["Judo Bank"]
+  MQG: ["Macquarie Bank"]
+  AMP: ["AMP Bank"]
+
+# Listed groups that own an authorised deposit-taking institution but that the ASX files
+# under another industry group.
+bank_owners:
+  MQG: Macquarie Bank Limited
+  AMP: AMP Bank Limited
+  TYR: Tyro Payments Limited, itself a licensed bank
+
+# Banks listed on the ASX that report outside Australia, in another currency.
+overseas:
+  BFL: a Papua New Guinean bank that reports in kina
+  KSL: a Papua New Guinean bank that reports in kina
+  HGH: a New Zealand banking group that reports in New Zealand dollars
+
+# Australian banks that aren't listed, so publish no ASX results to read.
+unlisted:
+  customer-owned mutual bank:
+    - Great Southern Bank
+    - Newcastle Permanent
+    - Greater Bank
+    - Heritage Bank
+    - People's Choice
+    - Beyond Bank
+    - Teachers Mutual Bank
+    - Bank Australia
+    - Defence Bank
+    - Police Bank
+    - Australian Military Bank
+    - Bank First
+    - BankVic
+    - IMB Bank
+    - Hume Bank
+    - Qudos Bank
+    - Regional Australia Bank
+    - Unity Bank
+    - Bank of us
+    - P&N Bank
+    - Australian Unity Bank
+  subsidiary of an overseas bank:
+    - ING
+    - ING Bank
+    - HSBC
+    - HSBC Bank Australia
+    - Rabobank
+    - Rabobank Australia
+    - Bank of China Australia
+    - Arab Bank Australia
+    - Bank of Sydney

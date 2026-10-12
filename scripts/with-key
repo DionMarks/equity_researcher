@@ -1,0 +1,48 @@
+#!/bin/sh
+# Runs one command with the API key in its environment and nowhere else, for example
+# `scripts/with-key bankresearch run --bank ANZ --period 1H26 --metric nim`. The key comes
+# from ANTHROPIC_API_KEY if it's set, and otherwise from the macOS keychain (make key-set).
+set -eu
+
+SERVICE=bankresearch-anthropic
+# Containers routinely run without $USER, and `set -u` turns that into a crash.
+ACCOUNT=${USER:-$(id -un 2>/dev/null || echo user)}
+
+if [ "$#" -eq 0 ]; then
+    echo "Usage: scripts/with-key <command> [args...]" >&2
+    echo "   eg: scripts/with-key bankresearch run --bank ANZ --period 1H26 --metric nim" >&2
+    exit 64
+fi
+
+# The project's venv goes on PATH so bankresearch is found whether or not the venv is
+# activated. Inside the container the package is installed system-wide with no venv, and the
+# command is found on the ordinary PATH. ${0%/*} is used instead of dirname so no external
+# binary is needed.
+ROOT=$(cd "${0%/*}/.." && pwd)
+if [ -d "$ROOT/.venv/bin" ]; then
+    PATH="$ROOT/.venv/bin:$PATH"
+    export PATH
+fi
+
+if [ -z "${ANTHROPIC_API_KEY:-}" ]; then
+    if command -v security >/dev/null 2>&1; then
+        ANTHROPIC_API_KEY=$(security find-generic-password -a "$ACCOUNT" -s "$SERVICE" -w 2>/dev/null) || {
+            echo "No key in the macOS keychain under '$SERVICE'." >&2
+            echo "Store one with:  make key-set" >&2
+            echo "Or export it:    export ANTHROPIC_API_KEY=..." >&2
+            exit 1
+        }
+    else
+        echo "No ANTHROPIC_API_KEY set, and no macOS keychain on this machine." >&2
+        echo "Export it for this shell:  export ANTHROPIC_API_KEY=..." >&2
+        echo "Or pass it to the container:  docker run -e ANTHROPIC_API_KEY ..." >&2
+        exit 1
+    fi
+fi
+
+# Exported for this process only, which exec then replaces. The value is never passed as an
+# argument, so it doesn't show up in ps.
+export ANTHROPIC_API_KEY
+export BANKRESEARCH_LLM_CONSENT="${BANKRESEARCH_LLM_CONSENT:-ask}"
+
+exec "$@"

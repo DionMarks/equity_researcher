@@ -1,0 +1,615 @@
+# The components fact extraction looks for, and the row labels banks use for them, so no
+# bank's wording lives in code. Matching is exact after normalisation, so a near miss leaves
+# a component unread rather than bound to the wrong row.
+schema_version: "1.0"
+
+# The headline figure is the one the issuer leads with, and non-headline
+# variants are excluded from extraction rather than ranked below it. A label matching any of
+# these isn't a headline figure, however close it otherwise looks, because these bridge
+# differently from the group figure and mixing them in is a real misstatement.
+exclusions:
+  - "rote"
+  - "return on average tangible equity"
+  - "return on tangible equity"
+  - "per ordinary share"
+  - "per share"
+  - "payout ratio"
+  - "net tangible assets"
+  - "book value"
+  - "ex markets"
+  - "ex market"
+  - "excl markets"
+  - "excl market"
+  - "excluding markets"
+  - "excluding market"
+  - "ex treasury"
+  - "excluding treasury"
+  - "ex notable"
+  - "excluding notable"
+  - "ex notable items"
+  - "excluding notable items"
+  - "ex significant"
+  - "excluding significant items"
+  - "core net interest"
+  - "core nim"
+  - "before income tax"
+  - "before credit impairment"
+  - "before tax"
+  - "before regulatory adjustments"
+  - "regulatory adjustments"
+  - "internationally comparable"
+  - "pro forma"
+  # The discontinued result is not a reading of the headline at any scale: CBA's
+  # FY26 statutory discontinued line is a $45m loss and its FY25 cash line is $1m.
+  - "discontinued operations"
+  - "level 1"
+  - "nz"
+  - "new zealand"
+  - "asb"
+  - "bnz"
+  - "divisional"
+  - "per share"
+  - "to credit rwa"
+  - "allowance for ecl"
+  - "change in"
+  - "changes in"
+  - "due to changes"
+  - "used in the ratio"
+  - "excludes non core items"
+
+# Headline metric values, read from the key-metrics summary.
+headline:
+  nim:
+    unit: pct
+    # Bendigo's headline margin is the one after revenue share arrangements with its
+    # Community Bank partners; the "before" figure is a gross variant and doesn't map
+    # (ben 1H26 Appendix 4D p.10).
+    synonyms: ["net interest margin", "net interest margin %", "group net interest margin",
+               "nim", "group nim", "net interest margin nim",
+               "net interest margin after revenue share arrangements"]
+  cet1_ratio:
+    unit: pct
+    synonyms: ["cet1 ratio", "cet1 capital ratio", "common equity tier 1 ratio",
+               "common equity tier 1 capital ratio", "cet1 ratio level 2",
+               "common equity tier 1 apra", "common equity tier 1 capital ratio apra",
+               "cet1 capital ratio level 2", "common equity tier 1", "cet1",
+               "common equity tier 1 capital ratio %"]
+  roe:
+    unit: pct
+    synonyms: ["return on equity", "return on average equity", "cash return on equity",
+               "roe", "return on average ordinary shareholders equity",
+               "return on average ordinary shareholders' equity",
+               "return on average shareholders equity", "cash return on equity roe",
+               "return on equity roe", "return on average ordinary equity",
+               "return on ordinary equity", "cash roe"]
+    overrides:
+      JDO: ["roe annualised"]
+  cost_to_income:
+    unit: pct
+    synonyms: ["cost to income", "cost to income ratio", "expense to income ratio",
+               "cost to income %", "operating expenses to operating income",
+               "expense to income", "cost to income ratio %", "cti",
+               "expenses to income ratio", "expense to income ratio cti",
+               "operating expenses to total operating income",
+               "total operating expenses to total operating income"]
+    overrides:
+      JDO: ["underlying cost to income ratio"]
+  headline_earnings:
+    unit: aud_m
+    synonyms: ["cash earnings", "cash profit", "cash npat", "net profit",
+               "cash net profit after tax",
+               "net profit attributable to owners of wbc",
+               "net profit attributable to owners",
+               "net profit after tax", "statutory net profit after tax",
+               "net profit attributable to shareholders",
+               "profit attributable to shareholders of the company",
+               "cash earnings before significant items"]
+    overrides:
+      CBA: ["cash npat", "cash net profit after tax"]
+      ANZ: ["cash profit"]
+      NAB: ["cash earnings"]
+      WBC: ["net profit", "cash earnings"]
+      # Bendigo's group results table (ben-1h26-results-document p.10), where the
+      # line before it is "Cash earnings before tax", and Bank of Queensland's income
+      # statement, in the same words (boq-fy25-results-document p.74).
+      BEN: ["cash earnings after tax"]
+      BOQ: ["cash earnings after tax"]
+      # Judo's and MyState's results releases (19 August 2025) name their headline rows
+      # this way. Kept to the two banks: NAB's "Underlying profit" is a pre-provision line.
+      # Judo dropped "Statutory" from its analyst pack in 2026 (annual report p.33).
+      JDO: ["statutory npat", "statutory net profit after tax", "statutory profit after tax",
+            "profit after tax"]
+      MYS: ["underlying npat", "underlying net profit after tax", "underlying profit after tax"]
+  # The headline of a bank that leads with profit before tax, which Judo has since its 2026
+  # half year (DESIGN.md ADR-062). "Before tax" is an exclusion everywhere else, where it
+  # marks a line that isn't the figure; here it names the figure, so these labels are exempt.
+  # Kept to the banks that lead with it, and only the statutory figure: Judo's "Underlying
+  # profit before tax" is another measure (2025 annual report p.44).
+  profit_before_tax:
+    unit: aud_m
+    exempt_from_exclusions: true
+    synonyms: []
+    overrides:
+      JDO: ["profit before tax", "statutory profit before tax"]
+  credit_impairment_charge:
+    unit: aud_m
+    synonyms: ["credit impairment charge", "credit impairment charges",
+               "loan impairment expense", "impairment charges",
+               "credit impairment expense", "credit impairment charge release",
+               "credit impairment charge/(release)", "credit impairment",
+               "loan impairment expense lie", "total credit impairment charge",
+               # CBA's wording on the divisional pages where a benefit is possible
+               # (Institutional Banking and Markets, p.71; Corporate Centre and Other, p.81),
+               # and its half-year pack's wording the other way round (p.70).
+               "loan impairment (expense)/benefit", "loan impairment benefit/(expense)",
+               # Westpac's, in its results document (wbc-1h26-results-document p.9, p.21).
+               # Without them its headline charge came only from the investor pack's
+               # appendix, signed as printed there. Its 1H25 pack adds "credit" (p.26).
+               "impairment (charges)/benefits", "total impairment (charges)/benefits",
+               "credit impairment (charges)/benefits",
+               "total credit impairment (charges)/benefits",
+               # Bendigo's, whose charge was a net reversal in both halves
+               # (ben-1h26-results-document p.10: 2.4 and 10.5).
+               "credit reversals/(expenses)"]
+    overrides:
+      JDO: ["impairment expense"]
+
+# Line items the decomposition needs.
+components:
+  nii:
+    unit: aud_m
+    synonyms: ["net interest income"]
+  other_income:
+    unit: aud_m
+    synonyms: ["other operating income", "other income", "non interest income",
+               "other banking income"]
+  operating_income:
+    unit: aud_m
+    synonyms: ["operating income", "total operating income", "net operating income"]
+    overrides:
+      # Bendigo's "Total income" is net interest income plus other operating income
+      # (ben-1h26-results-document p.10: 871.1 + 138.8 = 1,009.9), and so is Bank of
+      # Queensland's (boq-fy25-results-document p.74: 1,515 + 142 = 1,657).
+      BEN: ["total income"]
+      BOQ: ["total income"]
+      # Judo's analyst pack, in its 2025 annual report (p.44).
+      JDO: ["net banking income"]
+  operating_expenses:
+    unit: aud_m
+    synonyms: ["operating expenses", "total operating expenses", "operating expense"]
+    overrides:
+      # Judo's income statement carries the underlying figure, with its non-recurring costs
+      # on a line of their own below it (p.44), and leads with the underlying cost-to-income
+      # ratio built on it.
+      JDO: ["total underlying operating expenses"]
+  credit_impairment:
+    unit: aud_m
+    synonyms: ["credit impairment charge", "credit impairment charges",
+               "loan impairment expense", "impairment charges",
+               "credit impairment charge release", "credit impairment",
+               "impairment charges benefits", "impairment charges and benefits",
+               "impairment benefits charges", "loan impairment (expense)/benefit",
+               "loan impairment benefit/(expense)", "credit reversals/(expenses)",
+               "credit impairment (charges)/benefits",
+               "total credit impairment (charges)/benefits"]
+    overrides:
+      JDO: ["impairment expense"]
+  # A provision *balance* is a stock and is not the charge. Only charge labels map
+  # here: "Collectively assessed provisions" is the balance sheet, and treating it as
+  # the period's charge would be out by an order of magnitude while still reconciling
+  # against nothing.
+  impairment_individual:
+    unit: aud_m
+    # Westpac abbreviates to IAP and nets the charge against write-backs
+    # (wbc-1h26-results-document p.21, "Net IAP charges").
+    # NAB totals its individually assessed lines under a heading of the same name
+    # (nab-1h26-results-document p.35, "Total individually assessed credit impairment charge").
+    synonyms: ["individually assessed charge", "individual provision charge",
+               "individually assessed credit impairment charge release",
+               "individually assessed credit impairment charge",
+               "individually assessed credit impairment",
+               "net iap charges", "iap charges", "net individually assessed charges",
+               "total individually assessed credit impairment charge",
+               # CBA's loan impairment expense note (cba-fy26-results-document p.118),
+               # with its write-backs on the line below.
+               "net new and increased individual provisioning",
+               # Westpac's 2025 full-year layout nets recoveries in (wbc-fy25 p.21).
+               "total iaps write backs and recoveries"]
+  impairment_collective:
+    unit: aud_m
+    # Westpac's label wraps across two lines as "Net collectively assessed provision" /
+    # "(CAP) charges", so the joined reading is what has to match. NAB writes "Collective
+    # credit impairment charge / (write-back)" (nab-1h26-results-document p.35).
+    synonyms: ["collectively assessed charge", "collective provision charge",
+               "collectively assessed credit impairment charge release",
+               "collectively assessed credit impairment charge",
+               "collectively assessed credit impairment",
+               "net collectively assessed provision cap charges",
+               "net collectively assessed provision charges",
+               "net cap charges", "cap charges",
+               "collective credit impairment charge write back",
+               "collective credit impairment write back charge",
+               "collective credit impairment charge",
+               "net collective provision funding", "total caps"]
+  # Recoveries on loans already written off, and write-backs of individual provisions, where
+  # the issuer prints them on a line of their own rather than inside the individually
+  # assessed charge. Westpac's total is net IAP plus net CAP less recoveries
+  # (wbc-1h26-results-document p.21: 173 + 388 - 118 = 443), and CBA's is new individual
+  # provisioning plus collective funding less write-backs (cba-fy26-results-document p.118:
+  # 422 + 606 - 240 = 788). The taxonomy's individually assessed driver is defined net of
+  # both, so they're counted there.
+  impairment_recoveries:
+    unit: aud_m
+    synonyms: ["recoveries", "write back of individually assessed provisions"]
+  tax:
+    unit: aud_m
+    # CBA calls it corporate tax; everyone else calls it income tax.
+    synonyms: ["income tax expense", "income tax", "tax expense",
+               "corporate tax expense", "corporate tax"]
+  minority_interests:
+    unit: aud_m
+    synonyms: ["non controlling interests", "minority interests",
+               "profit attributable to non controlling interests",
+               "profit attributable to non controlling interests nci",
+               "net profit attributable to non controlling interests"]
+  notable_items:
+    unit: aud_m
+    synonyms: ["notable items", "significant items"]
+    overrides:
+      # Judo's FY24 CEO transition and restructuring costs, below its underlying profit
+      # (2025 annual report p.44).
+      JDO: ["non recurring costs"]
+  average_equity:
+    unit: aud_m
+    synonyms: ["total average equity attributable to owners of the company",
+               "total average equity attributable to owners",
+               "average ordinary equity", "average shareholders equity",
+               "average equity", "average ordinary shareholders equity",
+               # CBA reports the ROE denominator net of non-controlling interests
+               # (cba-fy26-results-document p.146, "Net average equity").
+               "net average equity"]
+    # Listed most specific first; `prefer` below settles which wins when a table
+    # prints several of them, as NAB's return-on-equity note does.
+    prefer: ["total average equity attributable to owners of the company",
+             "total average equity attributable to owners"]
+  aiea:
+    unit: aud_m
+    synonyms: ["average interest earning assets", "average interest bearing assets",
+               "interest earning assets average"]
+  gross_loans:
+    unit: aud_m
+    synonyms: ["gross loans and advances", "gross loans", "loans and advances"]
+  cet1_capital:
+    unit: aud_m
+    synonyms: ["common equity tier 1 capital", "cet1 capital",
+               "cet1 capital after deductions", "common equity tier 1 capital level 2",
+               "common equity tier 1 cet1 capital after deductions"]
+  rwa:
+    unit: aud_m
+    synonyms: ["total risk weighted assets", "risk weighted assets",
+               "total rwa", "risk weighted assets rwa", "total risk weighted assets rwa"]
+  rwa_credit:
+    unit: aud_m
+    synonyms: ["credit risk weighted assets", "credit risk rwa", "credit rwa",
+               "credit risk weighted assets rwa", "credit risk"]
+  rwa_irrbb:
+    unit: aud_m
+    synonyms: ["interest rate risk in the banking book", "irrbb rwa", "irrbb"]
+  rwa_market:
+    unit: aud_m
+    synonyms: ["market risk weighted assets", "market risk rwa", "traded market risk"]
+  rwa_operational:
+    unit: aud_m
+    synonyms: ["operational risk weighted assets", "operational risk rwa"]
+
+# Components that reduce earnings. Some issuers print them in brackets (negative), others as
+# positive magnitudes. The identity subtracts magnitudes, so when a table signs its
+# deductions negatively (worked out from operating expenses, which are never a credit),
+# every component listed here is flipped for that table. Flipping rather than taking the
+# absolute value keeps a genuine credit: a provision release printed as a positive number in
+# a brackets-style table becomes a negative charge, which is what it is.
+deductions:
+  - operating_expenses
+  - credit_impairment
+  - credit_impairment_charge
+  - impairment_individual
+  - impairment_collective
+  - impairment_recoveries
+  - tax
+  - minority_interests
+
+# Components that are stocks, not flows. A balance has no cash-versus-statutory reading to
+# disagree about, so it must never inherit an earnings basis from the heading above it.
+#
+# NAB prints "Total average equity (attributable to owners of the Company)" (the same
+# $62,227m) under both its statutory and its cash return-on-equity sections. Tagged
+# `statutory` from the first of those, it stopped being comparable with the cash earnings
+# it's the denominator of, and the return-on-equity identity was declined for a basis
+# difference that doesn't exist.
+basis_neutral:
+  - aiea
+  - average_equity
+  - cet1_capital
+  - rwa
+  - rwa_credit
+  - rwa_irrbb
+  - rwa_market
+  - rwa_operational
+  - gross_loans
+  - cet1_ratio
+
+# Balances at the period end. A half and a full year ending on the same date report the
+# same figure for these, so a full-year pack's half-year table still gives the year's
+# balance. An average is not a balance: ANZ's average interest earning assets were
+# $1,177bn for its September 2025 half and $1,160bn for the year.
+balances:
+  - cet1_capital
+  - cet1_ratio
+  - gross_loans
+  - rwa
+  - rwa_credit
+  - rwa_irrbb
+  - rwa_market
+  - rwa_operational
+
+# The components whose published sign shows the table's convention, best first. A cost is
+# never legitimately a credit, so either one settles it. The second is needed because an
+# appendix income statement may label its costs in a way no synonym matches, and a table
+# with no anchor leaves its impairment charge signed as printed, which made a $193m increase
+# in the charge read as a $193m benefit.
+sign_anchors:
+  - operating_expenses
+  - tax
+
+# Row labels that settle a table's convention when no anchor above does: costs that are
+# never a credit, but that no component stores. Westpac's investor pack appendix heads its
+# lines "Expenses" and "Tax and non-controlling interests (NCI)", and with neither read its
+# impairment charge kept the bracket it was printed with, so a charge of $443m went into
+# the store as a $443m write-back. A label can also state the convention outright, as in
+# "Impairment (charges)/benefits": what's in brackets is what's negative.
+sign_anchor_labels:
+  - "expenses"
+  - "tax and non-controlling interests (nci)"
+
+# Pages whose section title marks them as divisional rather than group. A pack repeats
+# every key row for each division, so without this the first occurrence by page order can
+# be a division's. Checked against the page's leading lines, where the section title is,
+# and overridden when a group marker appears there too.
+division_markers:
+  - "divisional results"
+  - "divisional performance"
+  - "division performance"
+  - "divisional summary"
+  - "segment reporting"
+  - "segment result"
+  - "business unit result"
+group_markers:
+  - "group performance"
+  - "group results"
+  - "group summary"
+  - "key performance indicators"
+  - "group reconciliation"
+  - "highlights"
+
+# Rows that state a section rather than a figure (src/bankresearch/ingestion/sections.py).
+# A results table stacks several readings of the same row label under bare heading rows,
+# and the heading is the only thing that distinguishes them.
+sections:
+  # A division's figures sit under the group's row labels and differ by hundreds of basis
+  # points. Matched against the start of a heading row's label, so a continuation heading
+  # like "Retail Banking Services (continued)" is still recognised.
+  divisions:
+    - "retail banking services"
+    - "business banking"
+    - "business and private banking"
+    - "institutional banking and markets"
+    - "corporate and institutional banking"
+    - "personal banking"
+    - "consumer banking"
+    - "australia retail"
+    - "australia commercial"
+    - "new zealand"
+    - "new zealand banking"
+    - "bank of new zealand"
+    - "asb"
+    - "institutional"
+    - "wealth management"
+    - "corporate centre"
+    - "other divisions"
+    - "group centre"
+    - "technology and enterprise operations"
+    # Westpac names its segments without the word "banking", so they are easily
+    # mistaken for ordinary prose and must be listed explicitly.
+    - "consumer"
+    - "business and wealth"
+    - "business & wealth"
+    - "institutional bank"
+    - "westpac institutional bank"
+    - "westpac new zealand"
+    - "specialist businesses"
+    - "group businesses"
+    - "consumer banking services"
+  # A heading that returns the reading to the group as a whole.
+  group:
+    - "group performance"
+    - "group results"
+    - "group summary"
+    - "group - continuing operations"
+    - "group including discontinued operations"
+    - "total group"
+  # Dimensions a heading states. Several may apply to one heading: NAB writes
+  # "Group performance - cash earnings basis excluding large notable items".
+  basis:
+    "cash earnings basis": {earnings_basis: cash}
+    "cash basis": {earnings_basis: cash}
+    "cash earnings": {earnings_basis: cash}
+    "statutory basis": {earnings_basis: statutory}
+    "statutory return on equity": {earnings_basis: statutory}
+    "cash return on equity": {earnings_basis: cash}
+    "underlying basis": {earnings_basis: underlying}
+    "excluding large notable items": {ex_notable_items: true}
+    "excluding notable items": {ex_notable_items: true}
+    "ex notable items": {ex_notable_items: true}
+    "before notable items": {ex_notable_items: true}
+    # A heading that names the notable items themselves ends an "excluding" section: the
+    # rows after it are the items, then the reported total they reconcile to. Westpac's
+    # summary runs "Net profit excluding Notable Items", then "Notable Items (post tax)",
+    # then "Net profit attributable to owners of WBC", which is the headline. The longer
+    # phrases above are tested first, so "excluding notable items" still means excluding.
+    "notable items": {ex_notable_items: false}
+    "from continuing operations": {continuing_ops: true}
+    "continuing operations": {continuing_ops: true}
+    "including discontinued operations": {continuing_ops: false}
+    "level 1": {scope: level1}
+    "level 2": {scope: level2}
+
+# Components for which the group figure is, structurally, the largest in the document:
+# the group is the sum of its divisions. For these the largest plausible candidate is
+# taken rather than the first by page order, which is what makes a divisional repeat
+# harmless even where the section title gives no clue.
+#
+# Ratios are excluded, because a division can have a higher margin than the group, and
+# so are the impairment lines, because a provision release is legitimately negative and
+# the largest value would then be the smallest charge.
+group_is_max:
+  - aiea
+  - nii
+  - other_income
+  - operating_income
+  - operating_expenses
+  - tax
+  - average_equity
+  - cet1_capital
+  - rwa
+  - rwa_credit
+  - rwa_irrbb
+  - rwa_market
+  - rwa_operational
+  - gross_loans
+  - headline_earnings
+
+# Plausibility ranges for an ASX-listed major, used to reject a figure that can't be the
+# group-level component it was matched to. A 150-page pack repeats the same row label on
+# divisional pages, in different units and at different sizes, so a label match alone isn't
+# enough: net interest income of 8.5 is a growth rate or a $bn divisional figure, never the
+# group's half-year NII in $M.
+#
+# These are wide on purpose. The point is to reject the absurd, not to second-guess the
+# issuer, and a figure outside the range is rejected with its reason rather than quietly
+# corrected.
+# The lower bounds are set for a regional bank, not a major. Sized for the four majors,
+# they rejected Bendigo's whole income statement (net interest income of A$871m for the
+# half, against a floor of A$1,000m) the first time an issuer outside the seed corpus was
+# read. They still sit above any percentage or per-share figure a misread column could
+# produce.
+plausible:
+  # Floors low enough for the smaller banks configured: MyState's half-year income and
+  # costs are a few per cent of a major's, and Judo's other income was $15.6m in FY25.
+  # Each balance floor still sits above the majors' figures in billions, so a balance
+  # printed in $bn and read as $m is refused: the majors' average assets and loans in
+  # billions run to about 1,250, against Judo's 13,917 and 12,465 in millions.
+  nim: {min: "0.5", max: "6", unit: pct}
+  cet1_ratio: {min: "7", max: "20", unit: pct}
+  roe: {min: "1", max: "30", unit: pct}
+  cost_to_income: {min: "25", max: "85", unit: pct}
+  headline_earnings: {min: "5", max: "25000", unit: aud_m}
+  profit_before_tax: {min: "5", max: "35000", unit: aud_m}
+  credit_impairment_charge: {min: "-3000", max: "8000", unit: aud_m}
+  nii: {min: "20", max: "60000", unit: aud_m}
+  other_income: {min: "-500", max: "20000", unit: aud_m}
+  operating_income: {min: "20", max: "80000", unit: aud_m}
+  operating_expenses: {min: "10", max: "40000", unit: aud_m}
+  tax: {min: "1", max: "12000", unit: aud_m}
+  minority_interests: {min: "-500", max: "500", unit: aud_m}
+  aiea: {min: "2000", max: "3000000", unit: aud_m}
+  average_equity: {min: "100", max: "200000", unit: aud_m}
+  cet1_capital: {min: "100", max: "200000", unit: aud_m}
+  rwa: {min: "1000", max: "1000000", unit: aud_m}
+  rwa_credit: {min: "800", max: "900000", unit: aud_m}
+  rwa_irrbb: {min: "0", max: "120000", unit: aud_m}
+  rwa_market: {min: "0", max: "120000", unit: aud_m}
+  rwa_operational: {min: "0", max: "200000", unit: aud_m}
+  gross_loans: {min: "2000", max: "2000000", unit: aud_m}
+  impairment_individual: {min: "-2000", max: "5000", unit: aud_m}
+  impairment_recoveries: {min: "-2000", max: "2000", unit: aud_m}
+  notable_items: {min: "-6000", max: "6000", unit: aud_m}
+  impairment_collective: {min: "-2000", max: "5000", unit: aud_m}
+
+# For a bank no one configured (DESIGN.md ADR-063), which can be far smaller than the
+# smallest bank above and can report a loss: BNK Banking Corporation is a fraction of
+# Judo's size, and its balances sit below the floors above. Its figures in dollars are held
+# to these ranges instead. They still refuse a percentage read as a balance or a balance
+# read in billions, and the identities check everything else.
+plausible_discovered:
+  headline_earnings: {min: "-2000", max: "25000", unit: aud_m}
+  profit_before_tax: {min: "-3000", max: "35000", unit: aud_m}
+  nii: {min: "2", max: "60000", unit: aud_m}
+  operating_income: {min: "2", max: "80000", unit: aud_m}
+  operating_expenses: {min: "1", max: "40000", unit: aud_m}
+  tax: {min: "-1000", max: "12000", unit: aud_m}
+  aiea: {min: "100", max: "3000000", unit: aud_m}
+  average_equity: {min: "10", max: "200000", unit: aud_m}
+  cet1_capital: {min: "10", max: "200000", unit: aud_m}
+  rwa: {min: "100", max: "1000000", unit: aud_m}
+  rwa_credit: {min: "80", max: "900000", unit: aud_m}
+  gross_loans: {min: "100", max: "2000000", unit: aud_m}
+
+# What each figure is, in plain words, for a model asked which of a bank's rows holds it
+# when the bank names the row its own way (agent/steps/map_rows.py). Only used for a bank
+# no one configured: a configured bank's rows are matched by the labels above.
+meanings:
+  nim: "net interest margin of the whole group, per cent"
+  roe: "return on equity of the whole group, per cent"
+  cost_to_income: "cost-to-income ratio: operating expenses over operating income, per cent"
+  cet1_ratio: "common equity tier 1 capital ratio (Level 2), per cent"
+  headline_earnings: "the net profit after tax the bank leads with, attributable to its shareholders, A$ millions"
+  profit_before_tax: "profit before income tax, A$ millions"
+  credit_impairment_charge: "the credit impairment (loan loss) charge for the period, A$ millions"
+  nii: "net interest income: interest income less interest expense, A$ millions"
+  other_income: "income other than net interest income (fees, commissions, other), A$ millions"
+  operating_income: "total operating income: net interest income plus other income, A$ millions"
+  operating_expenses: "total operating expenses, A$ millions"
+  credit_impairment: "the credit impairment (loan loss) expense in the income statement, A$ millions"
+  impairment_individual: "the individually assessed (specific) part of the impairment charge, A$ millions"
+  impairment_collective: "the collectively assessed part of the impairment charge, A$ millions"
+  tax: "income tax expense (or benefit), A$ millions"
+  notable_items: "a one-off item reported apart from the ongoing result, such as a goodwill impairment or a restructuring charge, A$ millions"
+  minority_interests: "profit or loss attributable to non-controlling interests, A$ millions"
+  average_equity: "average shareholders' equity, the base return on equity is struck on, A$ millions"
+  aiea: "average interest-earning assets, the balance the margin is struck on, A$ millions"
+  cet1_capital: "common equity tier 1 capital after regulatory deductions, A$ millions"
+  rwa: "total risk-weighted assets, A$ millions"
+
+# A row label ending in one of these overrides the table's own unit, because a
+# key-metrics table in $M still prints its ratios in per cent.
+unit_suffixes:
+  "(%)": pct
+  "%": pct
+  "(bps)": bps
+  "bps": bps
+  "($m)": aud_m
+  "($bn)": aud_bn
+
+# Components that must be read from one table or not at all. The lines of the earnings
+# bridge are one statement, and a pack prints that statement several times: statutory and
+# cash, before and after notable items. Each line is correct in each version and nothing
+# about a single figure says which version it came from, so a bridge put together one line
+# at a time won't reconcile to any of them.
+#
+# The headline total is deliberately not a member. It's both the sum of these lines and an
+# answer in its own right, and tying it to the table with the lines threw away the figure
+# the issuer actually leads with. Westpac's reported net profit of $3,414m is on a different
+# page from the income statement, so the group kept the appendix's $3,483m (the figure
+# excluding Notable Items) and reported that as the headline. The basis checks in
+# ingestion/validate.py and agent/steps/decompose.py refuse a bridge whose lines and total
+# disagree, and that's the protection that matters here.
+coherent_groups:
+  # Notable items are a line of the bridge only where the bridge's own table prints them
+  # above its total, as Judo's non-recurring costs are; a figure from any other table is
+  # already inside the lines (Westpac's notable items, 1H25 p.16).
+  - [nii, other_income, operating_income, operating_expenses, credit_impairment, tax,
+     minority_interests, notable_items]
+  # The impairment split is one statement too. CBA prints its provision movement and its
+  # loan impairment expense on the same page under the same row names, and the movement's
+  # prior year (576 collective, 410 individual) is not the expense's (559, 397).
+  - [impairment_individual, impairment_collective, impairment_recoveries]

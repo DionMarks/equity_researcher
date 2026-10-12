@@ -1,0 +1,16 @@
+# NIM: margin walk, average balance sheet, NII table, divisional margins.
+metric: nim
+required:
+  - {component: nim.headline.current,   doc_types: [RESULTS_RELEASE, RESULTS_DOCUMENT]}
+  - {component: nim.headline.pcp,       doc_types: [RESULTS_DOCUMENT]}
+  - {component: nim.walk,               doc_types: [INVESTOR_PRESENTATION, RESULTS_DOCUMENT]}
+  - {component: nim.nii_and_avg_assets, doc_types: [RESULTS_DOCUMENT]}
+optional:
+  - {component: nim.divisional_margins, doc_types: [RESULTS_DOCUMENT, INVESTOR_PRESENTATION]}
+  - {component: nim.avg_balance_sheet,  doc_types: [RESULTS_DOCUMENT]}
+  - {component: nim.commentary,         doc_types: [RESULTS_RELEASE, INVESTOR_PRESENTATION]}
+search_terms: ["net interest margin", "NIM", "margin movement", "net interest income",
+               "average interest earning assets", "replicating portfolio",
+               "deposit pricing", "lending margin", "Markets and Treasury"]
+table_captions: ["Net interest margin", "Net interest income", "Average balance sheet",
+                 "Group net interest margin", "NIM movement"]

@@ -1,0 +1,211 @@
+# The filings the corpus is built from, each fetched cache-first and stored by SHA-256.
+# `verified_by: human` means a person confirmed the URL is the document the entry claims.
+
+schema_version: '1.0'
+documents:
+- doc_id: anz-1h26-results-document
+  bank_id: ANZ
+  period: 1H26
+  doc_type: RESULTS_DOCUMENT
+  url: https://www.anz.com/content/dam/anzcom/shareholder/1H26-results-announcement/1H26-ANZGHL-Results-Announcement.pdf
+  publish_date: 2026-05-01
+  sha256: 29d777ef95361e3b5e1be03a9ccc149afdc21c9d61ee10f124417e9a4b6b9905
+  source: ir_site
+  verified_by: auto
+- doc_id: anz-1h26-investor-presentation
+  bank_id: ANZ
+  period: 1H26
+  doc_type: INVESTOR_PRESENTATION
+  url: https://www.anz.com/content/dam/anzcom/shareholder/1H26-results-announcement/1H26-ANZ-Results-presentation-and-IDP.pdf
+  publish_date: 2026-05-01
+  sha256: 90ae6d66d15880b42b4543b477380275df18050a8e37a64b6aa6706619931a3e
+  source: ir_site
+  verified_by: auto
+- doc_id: anz-1h26-results-release
+  bank_id: ANZ
+  period: 1H26
+  doc_type: RESULTS_RELEASE
+  url: https://www.anz.com/content/dam/anzcom/shareholder/1H26-results-announcement/1H26-Media-Release.pdf
+  publish_date: 2026-05-01
+  sha256: fc44180a3b191b852b3a182b20a711a9afadb7e86c2138e23fcec9959ab98bb6
+  source: ir_site
+  verified_by: auto
+- doc_id: nab-1h26-results-document
+  bank_id: NAB
+  period: 1H26
+  doc_type: RESULTS_DOCUMENT
+  url: https://www.nab.com.au/content/dam/nab/documents/reports/corporate/2026-half-year-results-announcement.pdf
+  publish_date: 2026-05-04
+  sha256: 4b4984ec002dbef1035fdadb94dd64674c43d141099d68e18602d8aaf0cb3302
+  source: ir_site
+  verified_by: auto
+  note: released on the ASX on 2026-05-04, as the release's first page says; 7 and
+    8 May are its dividend dates
+- doc_id: nab-1h26-results-release
+  bank_id: NAB
+  period: 1H26
+  doc_type: RESULTS_RELEASE
+  url: https://www.nab.com.au/content/dam/nab/documents/reports/corporate/2026-half-year-asx-announcement.pdf
+  publish_date: 2026-05-04
+  sha256: c29f8ddb9b5d2f60ed19b371adca45978fd7710a478d14dd8bca95ac0f477d25
+  source: ir_site
+  verified_by: auto
+  note: released on the ASX on 2026-05-04, as the release's first page says; 7 and
+    8 May are its dividend dates
+- doc_id: wbc-1h26-results-document
+  bank_id: WBC
+  period: 1H26
+  doc_type: RESULTS_DOCUMENT
+  url: https://www.westpac.com.au/content/dam/public/wbc/documents/pdf/aw/ic/wbc-1H26-financial-results-announcement-2026.pdf
+  publish_date: 2026-05-05
+  sha256: 5d0e7d301d0efcac92723b67b82bfb15025927dbb48c6731e94d838e84317118
+  source: ir_site
+  verified_by: auto
+- doc_id: wbc-1h26-investor-presentation
+  bank_id: WBC
+  period: 1H26
+  doc_type: INVESTOR_PRESENTATION
+  url: https://www.westpac.com.au/content/dam/public/wbc/documents/pdf/aw/ic/wbc-1H26-presentation-IDP-2026.pdf
+  publish_date: 2026-05-05
+  sha256: 7af34e986c7f978fcc3216fdb4dcea29d525d78e9f76c3401785cc36ff7a6ae7
+  source: ir_site
+  verified_by: auto
+- doc_id: wbc-1h26-results-release
+  bank_id: WBC
+  period: 1H26
+  doc_type: RESULTS_RELEASE
+  url: https://www.westpac.com.au/content/dam/public/wbc/images/about/media-centre/annual-results-hub/WBC-1H26-ASX-Release-050526.pdf
+  publish_date: 2026-05-05
+  sha256: 8daeb1fed0851aeaf1cf1d9c5d0c7d9f2e02bd0f9ea6ef1da872bb8fc2efe1ea
+  source: ir_site
+  verified_by: auto
+- doc_id: cba-fy26-results-document
+  bank_id: CBA
+  period: FY26
+  doc_type: RESULTS_DOCUMENT
+  url: https://www.commbank.com.au/content/dam/commbank-assets/investors/2026/CBA-2026-Full-Year-Results-Profit-Announcement.pdf
+  publish_date: 2026-08-12
+  sha256: 438d5975baadf9577bfb2c397f07de13e995da774f382be6d9a217b3f53a9e99
+  source: ir_site
+  verified_by: auto
+- doc_id: cba-fy26-results-release
+  bank_id: CBA
+  period: FY26
+  doc_type: RESULTS_RELEASE
+  url: https://www.commbank.com.au/content/dam/commbank-assets/investors/2026/CBA-2026-Full-Year-Results-ASX-Announcement.pdf
+  publish_date: 2026-08-12
+  sha256: 83622c32017166259a9fe758c65e99c2727010ba96125b6171a0b6f3861b745e
+  source: ir_site
+  verified_by: auto
+- doc_id: cba-fy26-investor-presentation
+  bank_id: CBA
+  period: FY26
+  doc_type: INVESTOR_PRESENTATION
+  url: https://www.commbank.com.au/content/dam/commbank-assets/investors/2026/CBA-2026-Full-Year-Results-Presentation.pdf
+  publish_date: 2026-08-12
+  sha256: 289f034575840e28530f89089c8551b82fe417bd93d96c9a4e43c6a9d242566a
+  source: ir_site
+  verified_by: auto
+- doc_id: cba-fy26-annual-report
+  bank_id: CBA
+  period: FY26
+  doc_type: ANNUAL_REPORT
+  url: https://www.commbank.com.au/content/dam/commbank-assets/investors/2026/CBA-2026-Annual-Report.pdf
+  publish_date: 2026-08-12
+  sha256: 390a9d4e3251403e896afdf47cb8727295d3a6f03b49fd13f85e099af55046d4
+  source: ir_site
+  verified_by: auto
+- doc_id: cba-1h26-results-document
+  bank_id: CBA
+  period: 1H26
+  doc_type: RESULTS_DOCUMENT
+  url: https://www.commbank.com.au/content/dam/commbank-assets/investors/2026/CBA%202026%20Half%20Year%20Results%20Profit%20Announcement.pdf
+  publish_date: 2026-02-11
+  sha256: 2bb45d7c2fa689ee122938a5a408c971713ef65ce3ffa03bb6666a343fbaff12
+  source: ir_site
+  verified_by: auto
+  note: publish_date unverified against the document
+- doc_id: anz-fy25-results-document
+  bank_id: ANZ
+  period: FY25
+  doc_type: RESULTS_DOCUMENT
+  url: https://www.anz.com/content/dam/anzcom/shareholder/full-year-results-announcement/2025-full-year-results-dividend-announcement-and-appendix-4E.pdf
+  publish_date: 2025-11-10
+  sha256: 6997826f7f21195b8948975c9b522cf84eef0e1947cd6869fd725d31778feae0
+  source: ir_site
+  verified_by: auto
+  note: added for chained capital walks and the FY25 eval cases
+- doc_id: nab-fy25-results-document
+  bank_id: NAB
+  period: FY25
+  doc_type: RESULTS_DOCUMENT
+  url: https://www.nab.com.au/content/dam/nab/documents/reports/corporate/2025-full-year-results-management-discussion-and-analysis.pdf
+  publish_date: 2025-11-06
+  sha256: df0445a6cd5413b6e778cd347537d3008bf74a99fc1fa19c85b263e71b32cf7c
+  source: ir_site
+  verified_by: auto
+  note: added for chained capital walks and the FY25 eval cases
+- doc_id: wbc-fy25-results-document
+  bank_id: WBC
+  period: FY25
+  doc_type: RESULTS_DOCUMENT
+  url: https://www.westpac.com.au/content/dam/public/wbc/documents/pdf/aw/ic/wbc-full-year-financial-results-2025.pdf
+  publish_date: 2025-11-03
+  sha256: a4cd05cf44f4fb45bb28998ef5c856a1cf7b0d13859acf49132cd41272110d64
+  source: ir_site
+  verified_by: auto
+  note: added for chained capital walks and the FY25 eval cases
+- doc_id: cba-fy25-results-document
+  bank_id: CBA
+  period: FY25
+  doc_type: RESULTS_DOCUMENT
+  url: https://www.commbank.com.au/content/dam/commbank-assets/investors/docs/results/fy25/full-year-profit-announcement.pdf
+  publish_date: 2025-08-13
+  sha256: e2e911ab4feda08dfa6dde6c20f0915bf3522ea141383b21f3a6a682ca464a3f
+  source: ir_site
+  verified_by: auto
+  note: added for chained capital walks and the FY25 eval cases
+- doc_id: cba-1h25-results-document
+  bank_id: CBA
+  period: 1H25
+  doc_type: RESULTS_DOCUMENT
+  url: https://www.commbank.com.au/content/dam/commbank-assets/investors/docs/results/1h25/CBA-2025-Half-Year-Results-Profit-Announcement.pdf
+  publish_date: 2025-02-12
+  sha256: 66010f852e1f8e46b37c2b924ce1e31c170f4526afb22ac25238ed1980f34cdd
+  source: ir_site
+  verified_by: auto
+  note: added so a FY25 capital question can chain its two half-year walks; dated
+    by the auditor's report, 12 February 2025 (p.88)
+- doc_id: nab-1h25-results-document
+  bank_id: NAB
+  period: 1H25
+  doc_type: RESULTS_DOCUMENT
+  url: https://www.nab.com.au/content/dam/nab/documents/reports/corporate/2025-half-year-results-announcement.pdf
+  publish_date: 2025-05-07
+  sha256: 944b6e3f0cb8474de68ea55118244d2e329a856b74aa34b75d2e8fd322b7e1ec
+  source: ir_site
+  verified_by: auto
+  note: added so a FY25 capital question can chain its two half-year walks; dated
+    by the directors' declaration, 7 May 2025 (p.85)
+- doc_id: wbc-1h25-results-document
+  bank_id: WBC
+  period: 1H25
+  doc_type: RESULTS_DOCUMENT
+  url: https://www.westpac.com.au/content/dam/public/wbc/documents/pdf/aw/ic/wbc-1H25-financial-results-announcement-2025.pdf
+  publish_date: 2025-05-05
+  sha256: 039b766a43b0d43addd8912adb139ab188aa202885b0938cfd419c29c2468198
+  source: ir_site
+  verified_by: auto
+  note: added so a FY25 capital question can chain its two half-year walks; signed
+    Sunday 4 May 2025 (p.77), released to the ASX the next morning
+- doc_id: jdo-fy26-annual-report
+  bank_id: JDO
+  period: FY26
+  doc_type: ANNUAL_REPORT
+  url: https://announcements.asx.com.au/asxpdf/20260818/pdf/072vq3nlytzs2k.pdf
+  publish_date: 2026-08-18
+  sha256: 266a598a137b79cfcaf2f352999a291e462ce686759e8df5bdc931fe7ba6dcd2
+  source: asx
+  verified_by: auto
+  note: Judo's first full year led by profit before tax (p.8), found by a cold-path
+    run; dated by the directors' declaration, 18 August 2026 (p.60)

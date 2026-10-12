@@ -1,0 +1,155 @@
+# The metric registry. A headline figure is the one in the key-metrics summary of the bank's
+# results release, read at ingestion; `bank_labels` are only search hints.
+schema_version: "1.0"
+
+# Units and tolerances. All reported values are Decimal, never float.
+tolerances:
+  ratio:
+    # Half the last reported digit; 0.5 bp for a ratio given to 2 dp.
+    value_match_bps: "0.5"
+    # Larger of 1 bp or 0.5 bp per walk step.
+    walk_floor_bps: "1"
+    walk_per_step_bps: "0.5"
+  aud:
+    # Half the rounding unit; AUD 0.5m for whole millions.
+    value_match_aud_m: "0.5"
+    walk_floor_aud_m: "2"
+    walk_per_step_aud_m: "0.5"
+
+# Suppress the percentage change when it would mislead.
+percentage_change:
+  suppress_on_sign_change: true
+  # Suppress when |prior| < 10% of |current|.
+  suppress_when_prior_share_below: "0.10"
+
+metrics:
+  nim:
+    display_name: Net interest margin
+    unit: pct
+    change_unit: bps
+    higher_is_favourable: true
+    headline_basis: "Group NIM as headlined; variants are alternatives"
+    primary_path: A                 # management walk
+    alternative_label_patterns:
+      - "core NIM"
+      - "NIM ex Markets and Treasury"
+      - "NIM excluding Markets and Treasury"
+      - "NIM ex notable items"
+    bank_labels:
+      CBA: [{label: "Net interest margin"}]
+      WBC: [{label: "Net interest margin"}]
+      NAB: [{label: "Net interest margin"}]
+      ANZ: [{label: "Net interest margin"}]
+    verification: {bank_labels: unverified}
+
+  headline_earnings:
+    display_name: Cash earnings
+    unit: aud_m
+    change_unit: aud_m
+    show_pct: true
+    higher_is_favourable: true
+    headline_basis: "The bank's headline earnings measure"
+    primary_path: B                 # accounting identity
+    bank_labels:
+      NAB: [{label: "Cash earnings"}]
+      CBA: [{label: "Cash NPAT"}]
+      ANZ: [{label: "Cash profit"}]
+      WBC:
+        - {label: "Cash earnings", valid_to: "FY22"}
+        - label: "Net profit"
+          valid_from: "1H23"
+          extra_driver: "earn.notable_items"
+          caveat: "Westpac no longer reports cash earnings; net profit is its headline measure."
+      JDO:
+        - {label: "Statutory net profit after tax", valid_to: "FY25"}
+        # Judo has led with profit before tax since its 2026 half year ("$168.1m Profit
+        # before tax (PBT)", 2026 annual report p.8). Both periods are then compared before
+        # tax and the bridge stops there; return on equity still rests on the after-tax
+        # profit Judo reports beside it (DESIGN.md ADR-062).
+        - label: "Profit before tax"
+          valid_from: "1H26"
+          pre_tax: true
+          caveat: >-
+            Judo has led with profit before tax since its 2026 half year, so both periods
+            are compared before tax and the bridge stops there. Its profit after tax, which
+            return on equity rests on, is reported beside it.
+      MYS: [{label: "Underlying net profit after tax"}]
+    verification:
+      WBC: verified
+      WBC_source: "https://www.westpac.com.au/content/dam/public/wbc/documents/pdf/aw/ic/1H23_reporting_changes.pdf"
+      ANZ: verified
+      ANZ_source: "https://www.anz.com.au/newsroom/media/2026/may/2026-half-year-result---proposed-final-dividend/"
+      CBA: unverified
+      NAB: unverified
+
+  roe:
+    display_name: Return on equity
+    unit: pct
+    change_unit: bps
+    show_pp: true
+    higher_is_favourable: true
+    headline_basis: "ROE on the headline earnings basis"
+    primary_path: B
+    # ANZ leads with cash RoTE. If the financial report still discloses
+    # cash ROE, use it; otherwise compute from headline earnings and average
+    # ordinary equity, capped at Medium, and show RoTE as an alternative.
+    related_metric_fallback:
+      ANZ:
+        prefer_disclosed: "Cash return on equity"
+        else_compute_from: [headline_earnings, average_ordinary_equity]
+        confidence_cap: "0.75"
+        show_as_alternative: "Cash return on tangible equity"
+    alternative_label_patterns: ["RoTE", "Return on tangible equity", "Statutory ROE"]
+    bank_labels:
+      CBA: [{label: "Return on equity"}]
+      WBC: [{label: "Return on equity"}]
+      NAB: [{label: "Return on equity"}]
+      ANZ: [{label: "Return on equity"}]
+    verification: {bank_labels: unverified}
+
+  cet1_ratio:
+    display_name: CET1 ratio
+    unit: pct
+    change_unit: bps
+    higher_is_favourable: true
+    headline_basis: "Reported Level 2 at period end; not pro forma, not Level 1"
+    primary_path: A_else_B          # walk if a pcp or chained walk exists, else B
+    point_in_time: true             # a stock at the balance date, not a flow
+    alternative_label_patterns: ["Level 1", "pro forma", "internationally comparable"]
+    bank_labels:
+      CBA: [{label: "CET1 ratio"}]
+      WBC: [{label: "CET1 capital ratio"}]
+      NAB: [{label: "CET1 ratio"}]
+      ANZ: [{label: "CET1 ratio"}]
+    verification: {bank_labels: unverified}
+
+  credit_impairment_charge:
+    display_name: Credit impairment charge
+    unit: aud_m
+    change_unit: aud_m
+    higher_is_favourable: false
+    headline_basis: "Total P&L charge on the headline basis"
+    primary_path: B
+    context_measures: ["bps of gross loans"]
+    bank_labels:
+      CBA: [{label: "Loan impairment expense"}]
+      WBC: [{label: "Impairment charges"}]
+      NAB: [{label: "Credit impairment charge"}]
+      ANZ: [{label: "Credit impairment charge"}]
+    verification: {bank_labels: unverified}
+
+  cost_to_income:
+    display_name: Cost-to-income ratio
+    unit: pct
+    change_unit: bps
+    show_pp: true
+    higher_is_favourable: false
+    headline_basis: "As headlined; ex notable items is an alternative"
+    primary_path: B
+    alternative_label_patterns: ["ex notable items", "excluding notable items"]
+    bank_labels:
+      CBA: [{label: "Cost to income"}]
+      WBC: [{label: "Expense to income ratio"}, {label: "Cost to income ratio"}]
+      NAB: [{label: "Cost to income ratio"}]
+      ANZ: [{label: "Cost to income ratio"}]
+    verification: {bank_labels: unverified}

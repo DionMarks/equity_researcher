@@ -1,0 +1,42 @@
+; The layering the design rests on: nothing the agent runs may import the eval harness, and
+; the arithmetic may never import a model client.
+[importlinter]
+root_package = bankresearch
+include_external_packages = True
+
+[importlinter:contract:agent-never-imports-evals]
+name = Agent code must not import the eval harness
+type = forbidden
+source_modules =
+    bankresearch.agent
+    bankresearch.tools
+    bankresearch.decomposition
+    bankresearch.reconcile
+    bankresearch.confidence
+    bankresearch.memory
+    bankresearch.output
+forbidden_modules =
+    bankresearch.evals
+
+[importlinter:contract:deterministic-cores-never-call-an-llm]
+name = Deterministic cores must not import the LLM layer
+type = forbidden
+source_modules =
+    bankresearch.domain
+    bankresearch.decomposition
+    bankresearch.reconcile
+    bankresearch.confidence
+forbidden_modules =
+    bankresearch.llm
+    anthropic
+
+[importlinter:contract:layering]
+name = Layered architecture
+type = layers
+layers =
+    bankresearch.cli
+    bankresearch.agent
+    bankresearch.tools
+    bankresearch.decomposition | bankresearch.reconcile | bankresearch.confidence
+    bankresearch.domain
+containers =

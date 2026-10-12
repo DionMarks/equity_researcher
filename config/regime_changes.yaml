@@ -1,0 +1,44 @@
+# Each entry names the change, its effective date, the metrics it affects and
+# the caveat text. A definition change between the two periods adds a caveat and caps
+# confidence at 0.80.
+schema_version: "1.0"
+
+regime_changes:
+  - id: apra_capital_framework_2023
+    name: APRA revised capital framework
+    effective_date: 2023-01-01
+    banks: [CBA, WBC, NAB, ANZ, BEN, BOQ]
+    metrics: [cet1_ratio]
+    kind: definition_break
+    caveat: >-
+      APRA's revised capital framework took effect on 1 January 2023. CET1 ratios
+      either side of that date are not like-for-like. Where the bank discloses a
+      pro forma comparative it is shown in alternative_bases with the
+      like-for-like change.
+    verification: unverified
+
+  - id: wbc_1h23_reporting_changes
+    name: Westpac 1H23 reporting changes
+    effective_date: 2023-03-24
+    banks: [WBC]
+    metrics: [headline_earnings, roe, cost_to_income]
+    kind: measure_discontinued
+    caveat: >-
+      From 1H23 Westpac reports net profit as its single performance measure and
+      no longer reports cash earnings. Prior halves were restated. Notable items
+      are shown as an explicit driver line.
+    verification: verified
+    source: "https://www.westpac.com.au/content/dam/public/wbc/documents/pdf/aw/ic/1H23_reporting_changes.pdf"
+
+  - id: anz_suncorp_bank
+    name: ANZ acquisition and integration of Suncorp Bank
+    effective_date: null              # verify during build
+    banks: [ANZ]
+    metrics: [headline_earnings, nim, cost_to_income, cet1_ratio, credit_impairment_charge]
+    kind: perimeter_change
+    caveat: >-
+      ANZ's acquisition and integration of Suncorp Bank affects balances,
+      earnings and costs across the comparison. Integration was still under way
+      as at the 1H26 release.
+    verification: unverified
+    note: "Completion date MUST be verified against ANZ's own filing before use."

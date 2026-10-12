@@ -1,0 +1,19 @@
+# Credit impairment: charge table, individually vs collectively assessed split,
+# provision movement, scenario weightings.
+metric: credit_impairment_charge
+required:
+  - {component: cic.headline.current,  doc_types: [RESULTS_RELEASE, RESULTS_DOCUMENT]}
+  - {component: cic.headline.pcp,      doc_types: [RESULTS_DOCUMENT]}
+  - {component: cic.ia_ca_split,       doc_types: [RESULTS_DOCUMENT]}
+optional:
+  - {component: cic.provision_movement, doc_types: [RESULTS_DOCUMENT, PILLAR3]}
+  - {component: cic.scenario_weights,   doc_types: [RESULTS_DOCUMENT]}
+  - {component: cic.gross_loans,        doc_types: [RESULTS_DOCUMENT, PILLAR3]}
+  - {component: cic.commentary,         doc_types: [RESULTS_RELEASE, INVESTOR_PRESENTATION]}
+search_terms: ["credit impairment charge", "loan impairment expense",
+               "individually assessed", "collectively assessed",
+               "expected credit loss", "provision for credit impairment",
+               "management overlay", "economic scenarios", "scenario weightings",
+               "gross loans and advances"]
+table_captions: ["Credit impairment charge", "Provision for credit impairment",
+                 "Impairment charges", "Credit quality", "Provision movement"]

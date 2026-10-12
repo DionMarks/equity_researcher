@@ -1,0 +1,54 @@
+# The smoke split for CI: the end-to-end path with no model, run on the synthetic XMPL filing
+# (DESIGN.md ADR-012), so it needs no network, no API key and no real corpus.
+cases:
+  - case_id: smoke_nim_management_walk
+    bank: XMPL
+    period: 1H26
+    metric: nim
+    as_of: 2026-05-31
+    categories: [smoke, path_a]
+    expected_status: [OK]
+    notes: "The issuer published a margin walk, so Path A should carry the attribution."
+
+  - case_id: smoke_cet1_identity
+    bank: XMPL
+    period: 1H26
+    metric: cet1_ratio
+    as_of: 2026-05-31
+    categories: [smoke, path_b]
+    expected_status: [OK]
+    notes: "No capital walk, so the accounting identity should carry it."
+
+  - case_id: smoke_headline_earnings_bridge
+    bank: XMPL
+    period: 1H26
+    metric: headline_earnings
+    as_of: 2026-05-31
+    categories: [smoke, path_b]
+    expected_status: [OK]
+
+  - case_id: smoke_cost_to_income
+    bank: XMPL
+    period: 1H26
+    metric: cost_to_income
+    as_of: 2026-05-31
+    categories: [smoke, path_b]
+    expected_status: [OK]
+
+  - case_id: smoke_not_yet_reported
+    bank: XMPL
+    period: FY26
+    metric: nim
+    as_of: 2026-06-30
+    categories: [smoke, abstention]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: PERIOD_NOT_YET_REPORTED
+
+  - case_id: smoke_ambiguous_input
+    bank: XMPL
+    period: "H1 2025"
+    metric: nim
+    as_of: 2026-05-31
+    categories: [smoke, abstention]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: AMBIGUOUS_INPUT

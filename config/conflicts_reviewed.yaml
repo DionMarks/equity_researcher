@@ -1,0 +1,12 @@
+# UNEXPLAINED conflicts a person has looked at, and what they found. `bankresearch
+# conflicts` fails on any unexplained conflict no entry here covers.
+#
+#   - bank: WBC
+#     component: headline_earnings
+#     documents: [wbc-1h26-results-document, wbc-1h26-investor-presentation]
+#     reviewed_by: "Name"
+#     reviewed_on: 2026-10-11
+#     finding: >-
+#       what the two figures are, and why the one kept is right
+schema_version: "1.0"
+reviewed: []

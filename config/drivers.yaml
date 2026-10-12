@@ -1,0 +1,258 @@
+# The canonical driver taxonomy: every driver the agent outputs has an id from this list,
+# which is what makes scoring automatic and lets two half-year walks be added up.
+schema_version: "1.0"
+
+drivers:
+  nim:
+    nim.lending_pricing:
+      label: Asset pricing and competition
+      # Westpac's margin walk labels its bars "Loans" and "Deposits" (wbc-1h26-results-
+      # document p.13); ANZ writes "Assets pricing" (anz-1h26-investor-presentation p.25).
+      # Westpac's written walk says "Loan interest spread" (wbc-1h26-results-document p.13).
+      synonyms: ["lending margin", "asset pricing", "loan pricing", "front book",
+                 "mortgage pricing", "lending competition", "asset margin", "loans",
+                 "loan spreads", "lending spreads", "asset spreads", "loan margins",
+                 "loan interest spread"]
+    nim.deposit_pricing:
+      label: Deposit margins and competition
+      synonyms: ["deposit pricing", "deposit margin", "deposit competition",
+                 "savings pricing", "term deposit pricing", "deposits", "deposit spreads",
+                 "deposit interest spread"]
+    nim.deposit_mix:
+      label: Mix shift between at-call, savings and term deposits
+      synonyms: ["deposit mix", "funding mix", "at-call", "term deposit mix"]
+    nim.funding_costs:
+      label: Wholesale and term funding costs
+      # "WSF" is Westpac's abbreviation, spelled out in the walk's own footnote.
+      synonyms: ["wholesale funding", "term funding", "funding costs",
+                 "TFF", "term funding facility", "WSF", "wholesale funding costs"]
+    nim.hedging:
+      label: Replicating portfolio, capital and deposit hedges
+      # Westpac's "Capital & other" and CBA's "Capital, Replicating and Other" are this
+      # bar: earnings on capital and the hedges that set them.
+      synonyms: ["replicating portfolio", "capital hedge", "deposit hedge",
+                 "earnings on capital", "hedging", "replicating", "capital and other",
+                 "capital replicating and other", "capital and replicating portfolio"]
+    nim.liquids:
+      label: Liquid asset volumes and yields
+      synonyms: ["liquid assets", "liquids", "HQLA", "liquidity"]
+    nim.markets_treasury:
+      label: Markets and Treasury contribution
+      synonyms: ["markets", "treasury", "markets and treasury",
+                 "trading", "Markets balance sheet", "T&M",
+                 "treasury and markets contribution", "markets activities"]
+    nim.asset_mix:
+      label: Mix of lending portfolios
+      synonyms: ["asset mix", "lending mix", "portfolio mix", "business mix"]
+    nim.notable_items:
+      label: Notable or significant items in NII
+      synonyms: ["notable items", "significant items"]
+    # Aggregate nodes (DESIGN.md ADR-005), for the same reason as cet1.capital and cet1.rwa:
+    # when the issuer doesn't disclose a split, the identity's two halves are reported in
+    # aggregate rather than invented or withheld.
+    #
+    # No synonyms. These are never read off a page: a chart that labels a bar "net interest
+    # income" is describing an earnings walk, not a margin one, and mapping it here would
+    # let an income walk pass for a margin breakdown.
+    nim.income:
+      label: Net interest income
+      synonyms: []
+    nim.balance_growth:
+      label: Average interest-earning assets
+      synonyms: []
+
+  headline_earnings:
+    # Aggregate node (DESIGN.md ADR-005). Emitted when net interest income
+    # cannot be split, and the parent of the three NII lines when it can: the
+    # split decomposes a different identity, so it is detail beneath the bridge
+    # line rather than a replacement for it.
+    earn.nii:
+      label: Net interest income
+      synonyms: ["net interest income", "NII"]
+    earn.nii_volume:
+      parent: earn.nii
+      label: Change in average interest-earning assets at prior margin
+      synonyms: ["volume", "volumes", "balance growth", "lending growth",
+                 "average interest-earning assets"]
+    earn.nii_margin:
+      parent: earn.nii
+      label: Change in margin on current balances
+      synonyms: ["margin", "NIM", "net interest margin"]
+    earn.nii_day_count:
+      parent: earn.nii
+      label: Different number of days in the period
+      synonyms: ["day count", "days", "number of days"]
+    earn.other_income:
+      label: Fees, markets, wealth and other operating income
+      synonyms: ["other income", "non-interest income", "fees", "fee income",
+                 "other operating income"]
+    earn.operating_expenses:
+      label: Operating expenses (higher costs = negative)
+      synonyms: ["operating expenses", "expenses", "costs", "opex"]
+    earn.credit_impairment:
+      label: Credit impairment charge (higher charge = negative)
+      synonyms: ["credit impairment", "impairment charge", "loan impairment expense",
+                 "credit impairment charge"]
+    earn.tax:
+      label: Income tax, including effective rate changes
+      synonyms: ["tax", "income tax expense", "effective tax rate"]
+    earn.minority_interests:
+      label: Non-controlling interests
+      synonyms: ["non-controlling interests", "minority interests", "NCI"]
+    earn.notable_items:
+      label: Notable or significant items in the headline measure
+      synonyms: ["notable items", "significant items"]
+    earn.discontinued_ops:
+      label: Discontinued operations
+      synonyms: ["discontinued operations", "discontinued ops"]
+
+  roe:
+    roe.earnings:
+      label: Change in earnings, split by earnings line
+      synonyms: ["earnings", "profit"]
+      children_from: headline_earnings     # splits into the earn.* lines
+    roe.equity:
+      label: Change in average equity (buybacks, retained earnings, other)
+      synonyms: ["average equity", "equity", "shareholders' equity"]
+
+  cet1_ratio:
+    # Aggregate nodes (DESIGN.md ADR-005), emitted only when the issuer does not
+    # disclose the split. The specific lines below are siblings, not children, so
+    # that when they are disclosed they are the drivers.
+    # Synonyms stay specific: a bare "capital" or "risk weighted assets" appears
+    # inside almost every capital label and would make the phrase tier refuse
+    # every one of them as ambiguous.
+    cet1.capital:
+      label: CET1 capital
+      synonyms: ["CET1 capital", "common equity tier 1 capital"]
+    cet1.rwa:
+      label: Risk-weighted assets
+      # Westpac's capital walk draws one bar for all of it, "RWA movement"
+      # (wbc-fy25-results-document p.29).
+      synonyms: ["total risk weighted assets", "total RWA", "RWA movement"]
+    cet1.organic_capital:
+      label: Capital generated by earnings
+      # Westpac's capital walk labels this bar "Net profit"
+      # (wbc-1h26-investor-presentation p.78).
+      synonyms: ["organic capital generation", "cash earnings", "capital generation",
+                 "organic capital", "net profit", "cash profit", "statutory net profit"]
+    cet1.dividends:
+      label: Dividends net of DRP issuance
+      synonyms: ["dividend", "dividends", "dividend net of DRP", "DRP"]
+    cet1.buyback:
+      label: Share buybacks
+      synonyms: ["buyback", "buy-back", "share buyback", "on-market buyback"]
+    cet1.rwa_credit:
+      label: Credit RWA, volume and quality
+      # ANZ: "Underlying RWA (excluding IRRBB) growth" (anz-1h26-results-document p.40).
+      synonyms: ["credit RWA", "credit risk weighted assets", "lending RWA",
+                 "RWA growth", "credit risk RWA", "underlying RWA"]
+    cet1.rwa_irrbb:
+      label: Interest rate risk in the banking book RWA
+      # Longer than "RWA growth", so ANZ's "IRRBB RWA growth" isn't taken for credit RWA.
+      synonyms: ["IRRBB", "interest rate risk in the banking book", "IRRBB RWA",
+                 "IRRBB RWA growth"]
+    cet1.rwa_market:
+      label: Market risk RWA
+      synonyms: ["market risk RWA", "traded market risk"]
+    cet1.rwa_operational:
+      label: Operational risk RWA
+      synonyms: ["operational risk RWA", "operational risk"]
+    cet1.regulatory:
+      label: Regulatory or methodology changes
+      # The floor that holds modelled RWA at 72.5% of the standardised figure.
+      synonyms: ["regulatory change", "methodology", "APRA", "model change",
+                 "capital framework", "capital floor"]
+    cet1.deductions_other:
+      label: Intangibles, software, FX and other deductions
+      synonyms: ["deductions", "intangibles", "software", "capitalised software",
+                 "FX", "other deductions"]
+    cet1.m_and_a:
+      label: Acquisitions and divestments
+      synonyms: ["acquisition", "divestment", "disposal", "M&A", "Suncorp"]
+
+  credit_impairment_charge:
+    # Aggregate node (DESIGN.md ADR-005), used when the collective charge is not
+    # split into volume, quality, outlook and overlays.
+    cic.collective:
+      label: Collectively assessed charge
+      synonyms: ["collectively assessed", "collective provision", "CP charge"]
+    cic.individual:
+      label: Individually assessed charge net of write-backs and recoveries
+      synonyms: ["individually assessed", "individual provision", "IP charge",
+                 "write-backs", "recoveries", "specific provision"]
+    cic.collective_volume:
+      label: Collective provision, portfolio growth
+      synonyms: ["collective provision volume", "portfolio growth", "volume growth"]
+    cic.collective_quality:
+      label: Collective provision, risk migration and arrears
+      synonyms: ["risk migration", "arrears", "credit quality", "delinquencies",
+                 "90+ days past due"]
+    cic.collective_outlook:
+      label: Collective provision, economic scenarios and weights
+      synonyms: ["economic scenarios", "scenario weights", "forward looking",
+                 "economic outlook", "base case"]
+    cic.overlays:
+      label: Management overlays and model changes
+      synonyms: ["overlay", "overlays", "management overlay", "model change",
+                 "post-model adjustment"]
+    # Aggregate nodes by division (DESIGN.md ADR-038), used only where the issuer doesn't
+    # disclose its charge as individually and collectively assessed. They say where the
+    # charge rose, not why. Each bank's divisions are mapped onto these in
+    # config/banks.yaml (impairment_divisions).
+    cic.div_retail:
+      label: Retail and consumer banking
+      synonyms: []
+    cic.div_business:
+      label: Business and commercial banking
+      synonyms: []
+    cic.div_institutional:
+      label: Institutional banking and markets
+      synonyms: []
+    cic.div_new_zealand:
+      label: New Zealand
+      synonyms: []
+    cic.div_other:
+      label: Corporate centre and other divisions
+      synonyms: []
+
+  cost_to_income:
+    cti.expense_growth:
+      label: Effect of the change in operating expenses
+      synonyms: ["expense growth", "cost growth", "expenses"]
+    cti.income_growth:
+      label: Effect of the change in operating income
+      synonyms: ["income growth", "revenue growth", "operating income"]
+    cti.exp_wages_inflation:
+      label: Wage and inflation costs
+      parent: cti.expense_growth
+      synonyms: ["wages", "salaries", "inflation", "FTE", "personnel costs",
+                 "enterprise agreement"]
+    cti.exp_investment:
+      label: Investment, technology and amortisation
+      parent: cti.expense_growth
+      synonyms: ["investment spend", "technology", "amortisation", "depreciation",
+                 "software amortisation"]
+    cti.exp_productivity:
+      label: Productivity savings (negative)
+      parent: cti.expense_growth
+      synonyms: ["productivity", "savings", "simplification", "cost savings"]
+    cti.exp_notable_items:
+      label: Remediation, restructuring and other notable items
+      parent: cti.expense_growth
+      synonyms: ["remediation", "restructuring", "notable items", "significant items"]
+    cti.inc_nii:
+      label: Net interest income
+      parent: cti.income_growth
+      synonyms: ["net interest income", "NII"]
+    cti.inc_other_income:
+      label: Other operating income
+      parent: cti.income_growth
+      synonyms: ["other income", "non-interest income", "fees"]
+
+# Available for every metric. `<metric>` is replaced at runtime.
+any_metric:
+  "{metric}.other":
+    label: Disclosed driver with no canonical match
+  "{metric}.residual":
+    label: Unexplained gap between drivers and the headline change

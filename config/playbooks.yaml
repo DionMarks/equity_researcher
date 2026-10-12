@@ -1,0 +1,74 @@
+# Per-metric retrieval checklists. `avoid` does most of the work, because a divisional page
+# matches every positive signal a group page does.
+schema_version: "1.0"
+
+playbooks:
+  nim:
+    queries:
+      - "{bank} {period} net interest margin key performance indicators"
+      - "{bank} {period} group net interest margin average interest earning assets"
+      - "{bank} {period} net interest margin movement basis points"
+    confirm_labels: ["net interest margin", "group nim", "average interest earning assets"]
+    identity_components: [nii, aiea]
+    walk_hints: ["margin walk", "nim movement", "net interest margin drivers", "bps"]
+    avoid:
+      - "core net interest margin"
+      - "excluding markets and treasury"
+      - "divisional"
+      - "retail banking services"
+      - "business banking"
+      - "new zealand"
+      - "consumer"
+
+  cet1_ratio:
+    queries:
+      - "{bank} {period} common equity tier 1 capital ratio APRA level 2"
+      - "{bank} {period} capital and dividends risk weighted assets"
+      - "{bank} {period} CET1 capital ratio movement"
+    confirm_labels:
+      - "common equity tier 1 capital ratio"
+      - "cet1 capital ratio"
+      - "risk weighted assets"
+    identity_components: [cet1_capital, rwa]
+    walk_hints: ["capital walk", "cet1 movement", "capital generation"]
+    avoid: ["level 1", "internationally comparable", "pro forma", "before regulatory adjustments"]
+
+  roe:
+    queries:
+      - "{bank} {period} return on equity shareholder returns"
+      - "{bank} {period} return on average ordinary equity"
+      - "{bank} {period} average equity attributable to owners"
+    confirm_labels: ["return on equity", "return on average ordinary equity", "average equity"]
+    identity_components: [headline_earnings, average_equity]
+    walk_hints: ["roe movement", "return on equity drivers"]
+    avoid: ["rote", "return on average tangible equity", "divisional"]
+
+  cost_to_income:
+    queries:
+      - "{bank} {period} cost to income ratio key performance indicators"
+      - "{bank} {period} operating expenses to total operating income"
+      - "{bank} {period} expense to income ratio"
+    confirm_labels: ["cost to income ratio", "expense to income ratio", "operating expenses"]
+    identity_components: [operating_expenses, operating_income]
+    walk_hints: ["jaws", "cost to income movement", "expense growth"]
+    avoid: ["divisional", "excluding notable items", "ex notable"]
+
+  headline_earnings:
+    queries:
+      - "{bank} {period} group performance summary cash net profit after tax"
+      - "{bank} {period} statutory net profit attributable to owners"
+      - "{bank} {period} income statement net interest income operating expenses"
+    confirm_labels: ["cash net profit after tax", "net profit attributable to owners", "cash earnings"]
+    identity_components: [nii, other_income, operating_expenses, credit_impairment, tax]
+    walk_hints: ["profit walk", "earnings bridge", "cash earnings movement"]
+    avoid: ["divisional", "before income tax", "excluding notable items", "pro forma"]
+
+  credit_impairment_charge:
+    queries:
+      - "{bank} {period} credit impairment charge collectively individually assessed"
+      - "{bank} {period} loan impairment expense asset quality"
+      - "{bank} {period} credit impairment charge to gross loans"
+    confirm_labels: ["credit impairment charge", "loan impairment expense", "impairment charges"]
+    identity_components: [impairment_individual, impairment_collective]
+    walk_hints: ["impairment movement", "provision movement"]
+    avoid: ["provisions for impairment", "allowance for ecl", "to credit rwa", "divisional"]

@@ -1,0 +1,16 @@
+# Cost-to-income: expenses table, cost walk, income table.
+metric: cost_to_income
+required:
+  - {component: cti.headline.current, doc_types: [RESULTS_RELEASE, RESULTS_DOCUMENT]}
+  - {component: cti.headline.pcp,     doc_types: [RESULTS_DOCUMENT]}
+  - {component: cti.expenses,         doc_types: [RESULTS_DOCUMENT]}
+  - {component: cti.income,           doc_types: [RESULTS_DOCUMENT]}
+optional:
+  - {component: cti.cost_walk,        doc_types: [INVESTOR_PRESENTATION]}
+  - {component: cti.expense_detail,   doc_types: [RESULTS_DOCUMENT]}
+  - {component: cti.commentary,       doc_types: [RESULTS_RELEASE, INVESTOR_PRESENTATION]}
+search_terms: ["cost to income", "expense to income", "operating expenses",
+               "operating income", "productivity", "investment spend",
+               "personnel expenses", "technology expenses", "amortisation"]
+table_captions: ["Operating expenses", "Cost to income", "Operating income",
+                 "Expense analysis", "Productivity"]

@@ -1,0 +1,233 @@
+# The locked test split. FROZEN ON 2026-10-08: labelled before then, first run that day, and
+# never tuned against, with five accuracy cases (CBA's half to December 2025) and ten that
+# assert behaviour.
+cases:
+  # --- accuracy: CBA 1H26 vs 1H25, held out from dev --------------------
+  - case_id: t_cba_1h26_nim
+    bank: CBA
+    period: 1H26
+    metric: nim
+    as_of: 2026-02-28
+    categories: [standard, real_filing, held_out]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    notes: >-
+      CBA publishes no margin walk for the half, so the identity is the only path and no
+      economic driver may be claimed.
+    gold:
+      current: {value: "2.04", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-1h26-results-document, page: 18}}
+      prior: {value: "2.08", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-1h26-results-document, page: 18}}
+      change: {value: "-4.00", unit: bps, tolerance: "0.5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  - case_id: t_cba_1h26_cet1
+    bank: CBA
+    period: 1H26
+    metric: cet1_ratio
+    as_of: 2026-02-28
+    categories: [standard, real_filing, held_out]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Both ratios are printed to one decimal place, so their difference rounds to 10bp
+      while the capital and risk-weighted assets behind them move 4.95bp. The residual is
+      that rounding and must be reported as rounding, not as a missing driver.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "12.3", unit: pct, tolerance: "0.05",
+                source: {doc_id: cba-1h26-results-document, page: 19}}
+      prior: {value: "12.2", unit: pct, tolerance: "0.05",
+                source: {doc_id: cba-1h26-results-document, page: 19}}
+      change: {value: "10.0", unit: bps, tolerance: "5"}
+      drivers:
+        - {driver_id: cet1.capital, contribution: "61.8", tolerance: "1",
+           source: {doc_id: cba-1h26-results-document, page: 158}}
+        - {driver_id: cet1.rwa, contribution: "-56.8", tolerance: "1",
+           source: {doc_id: cba-1h26-results-document, page: 19}}
+      materiality: "2"
+
+  - case_id: t_cba_1h26_roe
+    bank: CBA
+    period: 1H26
+    metric: roe
+    as_of: 2026-02-28
+    categories: [standard, real_filing, held_out, related_metric]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      The cash basis, not the statutory one. Both read 13.8 for Dec 25; they part at Dec
+      24, where cash is 13.7 and statutory 13.8, so taking the statutory row gives a
+      movement of nil against a published 10bp.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "13.8", unit: pct, tolerance: "0.05",
+                source: {doc_id: cba-1h26-results-document, page: 19}}
+      prior: {value: "13.7", unit: pct, tolerance: "0.05",
+                source: {doc_id: cba-1h26-results-document, page: 19}}
+      change: {value: "10.0", unit: bps, tolerance: "5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  - case_id: t_cba_1h26_cost_to_income
+    bank: CBA
+    period: 1H26
+    metric: cost_to_income
+    as_of: 2026-02-28
+    categories: [standard, real_filing, held_out]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "45.9", unit: pct, tolerance: "0.05",
+                source: {doc_id: cba-1h26-results-document, page: 18}}
+      prior: {value: "45.2", unit: pct, tolerance: "0.05",
+                source: {doc_id: cba-1h26-results-document, page: 18}}
+      change: {value: "70.0", unit: bps, tolerance: "5"}
+      drivers:
+        - {driver_id: cti.expense_growth, contribution: "356.2", tolerance: "2",
+           source: {doc_id: cba-1h26-results-document, page: 16}}
+        - {driver_id: cti.income_growth, contribution: "-289.4", tolerance: "2",
+           source: {doc_id: cba-1h26-results-document, page: 16}}
+      materiality: "2"
+
+  - case_id: t_cba_1h26_credit_impairment
+    bank: CBA
+    period: 1H26
+    metric: credit_impairment_charge
+    as_of: 2026-02-28
+    categories: [standard, real_filing, held_out]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      A $1m movement on a $320m charge. The half is flat, and a run that invents a driver
+      to explain $1m is worse than one that reports the movement and stops.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "319", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: cba-1h26-results-document, page: 27}}
+      prior: {value: "320", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: cba-1h26-results-document, page: 27}}
+      change: {value: "-1", unit: aud_m, tolerance: "0.5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  # --- behaviour: point-in-time integrity ------------------------------
+  - case_id: t_cba_1h26_before_its_release
+    bank: CBA
+    period: 1H26
+    metric: nim
+    as_of: 2026-02-10
+    categories: [abstention, point_in_time, held_out]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: PERIOD_NOT_YET_REPORTED
+    notes: >-
+      The strong form of the look-ahead test, and not reachable from the dev split. Every
+      document for this half is ingested and every figure is in the store; only the date
+      is wrong. A run that answers here is reading a filing before it was published.
+
+  - case_id: t_cba_2h26_half_not_in_the_corpus
+    bank: CBA
+    period: 2H26
+    metric: nim
+    as_of: 2026-08-31
+    categories: [abstention, held_out]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: DOCS_UNAVAILABLE
+    notes: >-
+      The June 2026 half can be derived (the full-year pack gives it against December
+      2025), but no document labels a column for it, and the prior June half is in a
+      different pack. Deriving a half by subtraction and presenting it as a published
+      figure is exactly the fabrication the abstention exists to prevent.
+
+  - case_id: t_anz_2h25_prior_half_missing
+    bank: ANZ
+    period: 2H25
+    metric: nim
+    as_of: 2026-05-31
+    categories: [abstention, held_out]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: DOCS_UNAVAILABLE
+    notes: "The comparison period is 2H24, which no ingested pack reports."
+
+  - case_id: t_nab_2h25_prior_half_missing
+    bank: NAB
+    period: 2H25
+    metric: headline_earnings
+    as_of: 2026-05-31
+    categories: [abstention, held_out]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: DOCS_UNAVAILABLE
+
+  - case_id: t_wbc_2h25_prior_half_missing
+    bank: WBC
+    period: 2H25
+    metric: roe
+    as_of: 2026-05-31
+    categories: [abstention, held_out]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: DOCS_UNAVAILABLE
+
+  # --- behaviour: the cold path ----------------------------------------
+  - case_id: t_ben_no_documents
+    bank: BEN
+    period: FY26
+    metric: nim
+    as_of: 2026-08-31
+    categories: [abstention, unseen_issuer, held_out]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: DOCS_UNAVAILABLE
+    notes: >-
+      A configured issuer with no ingested documents. Knowing the bank exists must not
+      become an answer about it.
+
+  - case_id: t_boq_no_documents
+    bank: BOQ
+    period: FY26
+    metric: headline_earnings
+    as_of: 2026-10-31
+    categories: [abstention, unseen_issuer, held_out]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: DOCS_UNAVAILABLE
+
+  # --- behaviour: the request itself -----------------------------------
+  - case_id: t_cba_calendar_year_refused
+    bank: CBA
+    period: CY25
+    metric: nim
+    as_of: 2026-02-28
+    categories: [abstention, held_out]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: AMBIGUOUS_INPUT
+    notes: >-
+      CBA's year ends in June, so a calendar year is not one of its reporting periods and
+      guessing which half was meant would answer a question nobody asked.
+
+  - case_id: t_nab_metric_out_of_scope
+    bank: NAB
+    period: 1H26
+    metric: branch_count
+    as_of: 2026-05-31
+    categories: [abstention, held_out]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: METRIC_OUT_OF_SCOPE
+
+  - case_id: t_unknown_issuer
+    bank: Barclays
+    period: 1H26
+    metric: nim
+    as_of: 2026-05-31
+    categories: [abstention, held_out]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: BANK_UNKNOWN

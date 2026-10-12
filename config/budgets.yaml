@@ -1,0 +1,58 @@
+# Going over a budget
+# triggers a fallback, never a crash.
+schema_version: "1.0"
+
+paths:
+  warm:
+    latency_p50_seconds: 120
+    latency_p95_seconds: 240
+    max_llm_calls: 25
+    max_input_tokens: 300000
+    max_output_tokens: 60000          # thinking included
+    cost_guardrail_usd_p95: "1.50"
+    on_breach: stop_exploring_lower_confidence
+  # A run that has to find what it reads: a period not held, or a bank not read before.
+  # The warm guardrail would stop it partway, after the searches and before the memo is
+  # written, so it gets this one, which is also the most `bankresearch run` asks to spend.
+  cold:
+    latency_seconds: 600
+    max_llm_calls: 30
+    cost_guardrail_usd_per_new_period: "5.00"
+    on_breach: abstain_docs_unavailable
+  seed_ingestion:
+    latency_seconds: null
+    max_llm_calls: null
+    on_breach: not_applicable
+
+# Per-step call caps.
+step_caps:
+  locate: {tool_calls: 12}
+  explain: {calls: 1, repairs: 1}
+  verify: {calls: 1, rechecks: 1}
+  # One for the year-on-year walk, and two for a balance walked over each half and chained.
+  text_walk: {calls: 3}
+  discover: {rounds_per_doc_type: 3, web_search_max_uses: 5}
+  identify_bank: {calls: 1}
+  # One for the results document and one for a slide pack fetched after it: Macquarie's
+  # return on equity is only on its deck, and a cap of one left it unmatched.
+  map_rows: {calls: 2}
+
+# Token caps per call. Output caps include thinking tokens, and each one is sent
+# as the request's `max_tokens`. They used to be read and never sent, so every call went out
+# with the client's default of 4,096: Opus 5's narrative calls were already using 3,521 of
+# them, and a model that thinks for longer would have been cut off before it wrote a word.
+# Every routed step has one, because a step with no cap here is refused rather than sent
+# with a guess.
+token_caps:
+  locate:  {input: 10000, output: 4000}
+  explain: {input: 20000, output: 16000}
+  verify:  {input: 15000, output: 8000}
+  text_walk:         {input: 12000, output: 12000}
+  chart_read:        {input: 6000,  output: 12000}
+  discover_classify: {input: 30000, output: 8000}
+  taxonomy_classify: {input: 4000,  output: 4000}
+  identify_bank:     {input: 20000, output: 4000}
+  map_rows:          {input: 16000, output: 4000}
+
+# Each tool result is capped, with a cursor for the rest.
+tool_result_token_cap: 6000

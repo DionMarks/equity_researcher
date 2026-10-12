@@ -1,0 +1,4 @@
+case_id,bank,period,metric,categories,expected_status,status,status_correct,expected_reason,abstain_reason,reason_correct,drivers,reconciles,residual,tolerance,cited_numbers,cited_found,citation_faithfulness,confidence_level,confidence,latency_ms,llm_calls,cost_aud,headline_exact,gold_verified,passed,notes
+anz_1h26_roe,ANZ,1H26,roe,standard|real_filing|related_metric,OK|PARTIAL,OK,True,,,,2,True,-8.24214409723645496973657876,11.00,18,18,1.000,Medium,0.820,53415,2,0.5160,True,True,True,
+cba_fy25_cet1,CBA,FY25,cet1_ratio,standard|real_filing|full_year|flat_movement|fy25,OK|PARTIAL,PARTIAL,True,,,,5,False,5.0,4.5,2,2,1.000,Medium,0.679,34852,2,0.3409,True,True,True,cet1.rwa sized -68 against gold -73.1 (tolerance 1)
+jdo_fy26_headline_earnings,JDO,FY26,headline_earnings,standard|real_filing|full_year|pre_tax_headline|smaller_bank,OK,OK,True,,,,4,True,0E-26,2.10,14,14,1.000,High,0.920,67183,3,0.6365,True,True,True,

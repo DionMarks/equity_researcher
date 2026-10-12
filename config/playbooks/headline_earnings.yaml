@@ -1,0 +1,17 @@
+# Earnings: key metrics, income statement summary, cash-to-statutory
+# reconciliation, notable items.
+metric: headline_earnings
+required:
+  - {component: earn.headline.current,  doc_types: [RESULTS_RELEASE, RESULTS_DOCUMENT]}
+  - {component: earn.headline.pcp,      doc_types: [RESULTS_DOCUMENT]}
+  - {component: earn.income_statement,  doc_types: [RESULTS_DOCUMENT]}
+optional:
+  - {component: earn.cash_to_statutory, doc_types: [RESULTS_DOCUMENT]}
+  - {component: earn.notable_items,     doc_types: [RESULTS_DOCUMENT, INVESTOR_PRESENTATION]}
+  - {component: earn.walk,              doc_types: [INVESTOR_PRESENTATION]}
+  - {component: earn.commentary,        doc_types: [RESULTS_RELEASE, INVESTOR_PRESENTATION]}
+search_terms: ["cash earnings", "cash profit", "cash NPAT", "net profit",
+               "key metrics", "income statement", "notable items",
+               "significant items", "reconciliation to statutory"]
+table_captions: ["Key metrics", "Income statement", "Group performance",
+                 "Notable items", "Reconciliation of cash earnings to statutory"]

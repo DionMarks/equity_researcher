@@ -1,0 +1,90 @@
+# Model routing and prices, so models can be swapped without code changes. Prices are in US
+# dollars per million tokens at list, as Anthropic bills them, read on 2026-10-09 (2026-10-11
+# for Fable 5.1) from https://platform.claude.com/docs/en/about-claude/pricing
+schema_version: "1.0"
+
+# Every cost the tool shows, and every --grant it accepts, is in Australian dollars, converted
+# at the RBA's rate struck at 4pm on 9 October 2026: A$1 = US$0.6979. The prices below stay
+# in US dollars because that's what the bill is in.
+currency:
+  usd_per_aud: "0.6979"
+  rate_date: "2026-10-09"
+
+pricing:
+  # Twice Opus 5 for input and output. A cache hit costs a quarter of Fable 5's, and a
+  # 5-minute cache write is 1.25 times the input price.
+  claude-fable-5-1:
+    input: "10.00"
+    output: "50.00"
+    cache_read: "0.25"
+    verification: verified
+  # Read off the same pricing page on 2026-10-09. Opus 5 is the older, dearer model, a
+  # quarter dearer than Opus 5.5, and its cache hit is the standard 0.1x rather than the
+  # 0.05x the 5.5 models get.
+  claude-opus-5:
+    input: "5.00"
+    output: "25.00"
+    cache_read: "0.50"
+    verification: verified
+  claude-opus-5-5:
+    input: "4.00"
+    output: "20.00"
+    cache_read: "0.20"
+    verification: verified
+  claude-sonnet-5-5:
+    input: "2.00"
+    output: "10.00"
+    cache_read: "0.10"
+    verification: verified
+
+# Every step runs on Fable 5.1. The one retry after a refusal or an exceeded context window
+# goes to Opus 5.5; nothing runs on Sonnet.
+#
+# Fable 5.1 is the dearer model, at twice Opus 5's prices, chosen because the steps that
+# use a model are the ones where judgement shows: reading a walk out of the issuer's
+# prose, matching causes to drivers, and checking the memo against its evidence. It thinks
+# at `high` effort unless told otherwise, and its thinking is always on.
+#
+# Effort is set per step. Discovery runs at `medium`, not `low`: at `low`, Fable 5.1 answers
+# from memory more often than it searches, and a cold-path search that doesn't search finds
+# nothing. Reading a walk, from text or from a chart, runs at `high`, because one misread
+# bar spoils the attribution even when the checksum catches it.
+#
+# Each step's output limit, thinking included, is `token_caps.<step>.output` in
+# config/budgets.yaml, and every request carries it.
+#
+# Switching models invalidates the response cache, which is keyed on the model, so the next
+# run of a question already answered pays for it again.
+routing:
+  discover_classify:  {model: claude-fable-5-1, effort: medium}
+  locate:             {model: claude-fable-5-1, effort: medium}
+  text_walk:          {model: claude-fable-5-1, effort: high}
+  explain:            {model: claude-fable-5-1, effort: high}
+  verify:             {model: claude-fable-5-1, effort: medium}
+  taxonomy_classify:  {model: claude-fable-5-1, effort: low}
+  chart_read:         {model: claude-fable-5-1, effort: high}
+  # A bank nobody configured: its ASX listing searched for its ticker and year end, and the
+  # names of rows nobody mapped matched to the measures a question needs (ADR-063).
+  identify_bank:      {model: claude-fable-5-1, effort: medium}
+  map_rows:           {model: claude-fable-5-1, effort: medium}
+
+# The one retry goes to Opus 5.5: a refusal or an exceeded context window is what a
+# different model can get past. The API drops Fable's thinking blocks before Opus 5.5 sees
+# the conversation, so the retry starts afresh rather than failing.
+fallback_model: claude-opus-5-5
+
+# API constraints the LLM layer must respect. Enforced in
+# llm/anthropic_client.py and checked by tests.
+api_constraints:
+  send_sampling_parameters: false     # no temperature, top_p or top_k
+  thinking_always_on: true
+  control_depth_with: output_config.effort
+  assistant_prefill: false
+  read_content_blocks_by_type: true
+  tool_loop_turns_append_only: true
+  structured_outputs: true
+  prompt_caching: true
+  # Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 return a 400 for a forced `tool_choice`,
+  # so the loop runs with `auto` and the prompt says when to call submit_reading_list.
+  force_tool_choice: false
+  retry_once_on_fallback_for: [refusal, model_context_window_exceeded]

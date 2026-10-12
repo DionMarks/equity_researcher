@@ -1,0 +1,11 @@
+# Store text with LF line endings and check it out that way on every OS, so the shell
+# script, the Makefile and the Dockerfile still work on a Windows checkout used from WSL
+# or Docker.
+* text=auto eol=lf
+
+*.pdf binary
+*.png binary
+*.sqlite binary
+
+# Eval results are written by Python's csv module, which uses CRLF. Leave them as written.
+*.csv -text

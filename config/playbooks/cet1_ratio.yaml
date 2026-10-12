@@ -1,0 +1,13 @@
+# CET1 ratio: both headline figures, the capital walk, capital and risk-weighted assets.
+metric: cet1_ratio
+required:
+  - {component: cet1.headline.current, doc_types: [RESULTS_RELEASE, RESULTS_DOCUMENT]}
+  - {component: cet1.headline.pcp,     doc_types: [RESULTS_DOCUMENT]}   # comparative column
+  - {component: cet1.walk,             doc_types: [INVESTOR_PRESENTATION, RESULTS_DOCUMENT]}
+  - {component: cet1.capital_and_rwa,  doc_types: [RESULTS_DOCUMENT, PILLAR3]}
+optional:
+  - {component: cet1.rwa_by_type,      doc_types: [PILLAR3, RESULTS_DOCUMENT]}
+  - {component: cet1.commentary,       doc_types: [RESULTS_RELEASE, INVESTOR_PRESENTATION]}
+search_terms: ["Common Equity Tier 1", "CET1", "capital ratio movement",
+               "risk weighted assets", "RWA", "organic capital generation", "Level 2"]
+table_captions: ["Capital", "Risk weighted assets", "CET1 movement"]

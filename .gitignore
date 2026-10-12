@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+htmlcov/
+
+# Raw PDFs aren't committed: they're large, and freely available on the banks' sites.
+data/raw/
+# Derived ingestion artefacts. Rebuilt by make ingest.
+data/processed/
+data/index/
+data/db/
+# The ASX's list of listed companies, fetched when a name isn't in the copy in config/.
+data/asx_listed_companies.csv
+
+# Run records are audit output, never source, and never read by the agent.
+runs/
+
+# Local environment
+.env
+.DS_Store
+
+# Temporary files from make lock.
+.lock-venv/
+constraints.new

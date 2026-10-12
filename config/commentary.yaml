@@ -1,0 +1,77 @@
+# Which sentences of a results pack are the issuer explaining a movement. They decide which
+# of the issuer's sentences the writer is shown, never what they say.
+schema_version: "1.0"
+
+# What each component is called in prose. A sentence is about a component when it names
+# one of these. Kept to phrases an issuer uses for the group figure; a bare "income" or
+# "capital" appears in nearly every sentence of a results pack and would select them all.
+topics:
+  nim: ["net interest margin", "nim", "margin"]
+  nii: ["net interest income", "nii"]
+  aiea: ["average interest earning assets", "average interest-earning assets", "aiea",
+         "average lending", "lending growth", "volume growth", "balance growth"]
+  other_income: ["other operating income", "other income", "non-interest income",
+                 "non interest income", "fee income", "markets income", "trading income"]
+  operating_income: ["operating income", "total income", "revenue"]
+  # Not a bare "costs": "lower short-term wholesale funding costs" is a margin driver.
+  operating_expenses: ["operating expenses", "expenses", "operating costs", "cost base",
+                       "expense growth"]
+  credit_impairment: ["credit impairment", "impairment charge", "impairment expense",
+                      "loan impairment", "impairment"]
+  credit_impairment_charge: ["credit impairment", "impairment charge", "impairment expense",
+                             "loan impairment", "impairment"]
+  # NAB writes "Collective credit impairment charge decreased by $223 million"
+  # (nab-fy25-results-document p.26), which named neither phrase.
+  impairment_individual: ["individually assessed", "individual provision",
+                          "individual credit impairment"]
+  impairment_collective: ["collectively assessed", "collective provision",
+                          "collective credit impairment", "collective impairment"]
+  impairment_recoveries: ["recoveries", "write-backs"]
+  tax: ["income tax", "tax expense", "effective tax rate"]
+  minority_interests: ["non-controlling interests", "minority interests"]
+  headline_earnings: ["cash earnings", "cash profit", "cash net profit", "cash npat",
+                      "net profit", "statutory net profit", "statutory npat"]
+  cet1_ratio: ["cet1", "common equity tier 1"]
+  cet1_capital: ["capital generated", "organic capital", "capital generation",
+                 "cet1 capital", "dividend", "buy-back", "buyback"]
+  rwa: ["risk weighted assets", "risk-weighted assets", "rwa"]
+  roe: ["return on equity", "roe"]
+  average_equity: ["average equity", "average shareholders", "net assets"]
+  cost_to_income: ["cost to income", "cost-to-income", "expense to income",
+                   "expense-to-income", "jaws"]
+
+# Words that say something moved.
+movement: ["increase", "increased", "increases", "increasing", "decrease", "decreased",
+           "decreases", "decreasing", "rose", "risen", "fell", "fallen", "grew", "growth",
+           "declined", "decline", "higher", "lower", "up", "down", "improved",
+           "improvement", "flat", "unchanged", "stable", "reduction", "reduced",
+           "narrower", "wider", "offset", "benefit", "headwind", "tailwind"]
+
+# Words that say why. A sentence with one of these is the issuer giving a cause.
+causal: ["driven by", "due to", "reflecting", "reflects", "reflected", "as a result of",
+         "primarily", "mainly", "largely", "partly offset", "partially offset",
+         "offset by", "attributable to", "following", "led by", "supported by",
+         "because", "resulting from", "from higher", "from lower"]
+
+# Phrases that put a sentence against the same period a year earlier, or against the
+# period just before it. A sentence against the period just before is never shown: it
+# explains a different movement, however well it reads.
+same_period_last_year: ["prior comparative period", "prior corresponding period", "pcp",
+                        "previous corresponding period", "same period last year",
+                        "on the prior year", "against the prior year", "versus prior year",
+                        "versus the prior year", "on prior year",
+                        "compared with the prior year", "compared to the prior year"]
+prior_period: ["prior half", "previous half", "half on half", "hoh", "on the half",
+               "sequential"]
+
+# A page's banner that puts it in the group's own commentary, as well as the group headings
+# in `sections.group` of line_items.yaml. A page with no banner continues the section
+# before it.
+group_commentary: ["review of earnings", "group performance", "group review",
+                   "financial performance and business review"]
+
+# The first lines of a page that mark it as something other than the group's own
+# commentary. Division names come from `sections.divisions` in line_items.yaml.
+not_group_commentary: ["divisional", "segment", "notes to the", "appendi",
+                       "independent auditor", "directors' report", "directors' declaration",
+                       "glossary", "disclaimer"]

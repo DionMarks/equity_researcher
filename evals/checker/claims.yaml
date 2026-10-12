@@ -1,0 +1,1768 @@
+# Every driver cause drafted in the 25 live runs of 2026-10-11, with what became of it
+# (`shown` or `dropped`) and whether the bank's words support it (`supported`, `partial` or
+# `unsupported`). Labelled by an automated pass, and scored by `bankresearch eval --suite
+# checker`.
+schema_version: '1.0'
+claims:
+- id: c00
+  run: a1f50b59e482
+  bank: CBA
+  period: FY26
+  metric: headline_earnings
+  driver: earn.nii
+  driver_label: Net interest income
+  contribution: '+A$1,563m'
+  method: computed
+  claim: The bank says net interest income grew mainly because average interest earning assets
+    rose 8% or $92 billion, partly offset by a 3 basis point fall in net interest margin to 2.05%
+    [ev_066, ev_067].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_066
+    doc: cba-fy26-results-document
+    page: 26
+    text: Net interest income increased 7%, primarily driven by an 8% or $92 billion increase
+      in Average Interest Earning Assets (AIEA).
+  - id: ev_067
+    doc: cba-fy26-results-document
+    page: 28
+    text: The result was driven by a $92 billion or 8% increase in average interest earning assets
+      to $1,246 billion, partly offset by a 3 basis point decrease in net interest margin to 2.05%.
+- id: c01
+  run: a1f50b59e482
+  bank: CBA
+  period: FY26
+  metric: headline_earnings
+  driver: earn.nii_volume
+  driver_label: Change in average interest-earning assets at prior margin
+  contribution: '+A$1,900m'
+  method: computed
+  claim: The bank attributes the growth primarily to an 8% or $92 billion increase in average
+    interest earning assets, reflecting lending volume growth in its core businesses [ev_066,
+    ev_067, ev_063].
+  outcome: dropped
+  label: partial
+  note: The A$92bn growth in average assets is stated, but 'lending volume growth in its core
+    businesses' is said of net profit (p.8), not of the volume effect.
+  passages:
+  - id: ev_066
+    doc: cba-fy26-results-document
+    page: 26
+    text: Net interest income increased 7%, primarily driven by an 8% or $92 billion increase
+      in Average Interest Earning Assets (AIEA).
+  - id: ev_067
+    doc: cba-fy26-results-document
+    page: 28
+    text: The result was driven by a $92 billion or 8% increase in average interest earning assets
+      to $1,246 billion, partly offset by a 3 basis point decrease in net interest margin to 2.05%.
+  - id: ev_063
+    doc: cba-fy26-results-document
+    page: 8
+    text: Net profit after tax (NPAT) was supported by lending volume growth in our core businesses,
+      with underlying net interest margin broadly stable.
+- id: c02
+  run: a1f50b59e482
+  bank: CBA
+  period: FY26
+  metric: headline_earnings
+  driver: earn.nii_margin
+  driver_label: Change in margin on current balances
+  contribution: '-A$360m'
+  method: computed
+  claim: The bank says net interest margin fell 3 basis points to 2.05%, partly offsetting the
+    benefit of asset growth [ev_067].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_067
+    doc: cba-fy26-results-document
+    page: 28
+    text: The result was driven by a $92 billion or 8% increase in average interest earning assets
+      to $1,246 billion, partly offset by a 3 basis point decrease in net interest margin to 2.05%.
+- id: c03
+  run: a1f50b59e482
+  bank: CBA
+  period: FY26
+  metric: headline_earnings
+  driver: earn.operating_expenses
+  driver_label: Operating expenses (higher costs = negative)
+  contribution: '-A$759m'
+  method: computed
+  claim: The bank says expenses rose on inflation and investment in technology, fraud, scams and
+    financial crime, partly offset by productivity initiatives and favourable foreign exchange
+    [ev_071, ev_070].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_071
+    doc: cba-fy26-results-document
+    page: 9
+    text: Operating expenses increased 6% driven by inflation, investment in technology, fraud,
+      scams and financial crime, partly offset by productivity initiatives and favourable foreign
+      exchange.
+  - id: ev_070
+    doc: cba-fy26-results-document
+    page: 8
+    text: This was partly offset by higher operating expenses primarily due to inflation and technology
+      investments, and a higher loan impairment expense due to portfolio growth and increased
+      geopolitical risk and macroeconomic uncertainty.
+- id: c04
+  run: a1f50b59e482
+  bank: CBA
+  period: FY26
+  metric: headline_earnings
+  driver: earn.other_income
+  driver_label: Fees, markets, wealth and other operating income
+  contribution: '+A$196m'
+  method: computed
+  claim: The bank credits higher insurance income, one-off gains and volume-driven equities income,
+    partly offset by lower Structured Asset Finance revenue after the aircraft lease portfolio
+    sale, lower foreign exchange income, deposit fee waivers and higher credit card loyalty costs
+    [ev_069].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_069
+    doc: cba-fy26-results-document
+    page: 26
+    text: Other operating income increased 4% primarily driven by higher insurance income and
+      the benefit of one-off gains 3, higher volume driven equities income, partly offset by lower
+      Structured Asset Finance revenue following the sale of the aircraft lease portfolio, lower
+      foreign exchange income, lower deposit fees due to fee waivers and lower credit card fees
+      from higher loyalty costs.
+- id: c05
+  run: a1f50b59e482
+  bank: CBA
+  period: FY26
+  metric: headline_earnings
+  driver: earn.credit_impairment
+  driver_label: Credit impairment charge (higher charge = negative)
+  contribution: '-A$62m'
+  method: computed
+  claim: The bank says higher collective provisions mainly reflect portfolio growth, cost-of-living
+    pressures and increased geopolitical risk and macroeconomic uncertainty [ev_073, ev_072].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_073
+    doc: cba-fy26-results-document
+    page: 26
+    text: Loan impairment expense (LIE) increased $62 million, with higher collective provisions
+      mainly reflecting portfolio growth, increased geopolitical risk and macroeconomic uncertainty.
+  - id: ev_072
+    doc: cba-fy26-results-document
+    page: 9
+    text: Loan impairment expense increased mainly reflecting portfolio growth, cost-of-living
+      pressures and increased geopolitical risk and macroeconomic uncertainty.
+- id: c06
+  run: 867cab58e176
+  bank: WBC
+  period: 1H26
+  metric: nim
+  driver: nim.liquids
+  driver_label: Liquid assets
+  contribution: '+5.0 bps'
+  method: management_walk
+  claim: The bank says the benefit came from reduced trading assets, average liquid assets growing
+    by less than average lending assets, and narrower spreads on those holdings [ev_078].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_078
+    doc: wbc-1h26-results-document
+    page: 13
+    text: 'Liquid assets: 5 basis point increase as trading assets reduced, average liquid assets
+      rose by less than average lending assets and spreads narrowed; and'
+- id: c07
+  run: 867cab58e176
+  bank: WBC
+  period: 1H26
+  metric: nim
+  driver: nim.hedging
+  driver_label: Capital and other
+  contribution: '-3.0 bps'
+  method: management_walk
+  claim: The bank attributes the decline to a remediation provision booked in the current period
+    and the non-repeat of items that benefited the prior corresponding period [ev_079].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_079
+    doc: wbc-1h26-results-document
+    page: 13
+    text: 'Capital and other: 3 basis point decrease due to a remediation provision in the current
+      period and the non repeat of items in the prior corresponding period.'
+- id: c08
+  run: 867cab58e176
+  bank: WBC
+  period: 1H26
+  metric: nim
+  driver: nim.lending_pricing
+  driver_label: Loan interest spread
+  contribution: '-2.0 bps'
+  method: management_walk
+  claim: Tighter loan spreads in Australia, which the bank puts down to competition, more than
+    offset higher spreads in New Zealand [ev_075].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_075
+    doc: wbc-1h26-results-document
+    page: 13
+    text: 'Loan interest spread: 2 basis point decrease. Higher spreads in New Zealand were more
+      than offset by tighter spreads in Australia due to competition;'
+- id: c09
+  run: 867cab58e176
+  bank: WBC
+  period: 1H26
+  metric: nim
+  driver: nim.deposit_pricing
+  driver_label: Deposit interest spread
+  contribution: '-1.0 bps'
+  method: management_walk
+  claim: More customers qualifying for the savings bonus rate and narrower term deposit spreads
+    outweighed a favourable deposit mix and repricing of the consumer behavioural product's base
+    rate [ev_076].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_076
+    doc: wbc-1h26-results-document
+    page: 13
+    text: 'Deposit interest spread: 1 basis point decrease driven by a higher proportion of customers
+      qualifying for the savings bonus rate and narrower spreads on term deposits. Favourable
+      deposit mix and repricing the base rate of the consumer behavioural product provided a benefit;'
+- id: c10
+  run: 867cab58e176
+  bank: WBC
+  period: 1H26
+  metric: nim
+  driver: nim.markets_treasury
+  driver_label: Treasury and Markets contribution
+  contribution: '-1.0 bps'
+  method: management_walk
+  claim: The bank says the Treasury and Markets contribution declined because of lower Treasury
+    income [ev_080].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_080
+    doc: wbc-1h26-results-document
+    page: 13
+    text: Treasury and Markets contribution of 11 basis points, which was down 1 basis point due
+      to lower Treasury income.
+- id: c11
+  run: 867cab58e176
+  bank: WBC
+  period: 1H26
+  metric: nim
+  driver: nim.other
+  driver_label: Timing difference
+  contribution: '-1.0 bps'
+  method: management_walk
+  claim: The bank attributes this to timing differences in the pass-through of interest rate changes
+    [ev_077].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_077
+    doc: wbc-1h26-results-document
+    page: 13
+    text: 'Timing difference1: 1 basis point decrease due to the timing differences of interest
+      rate changes;'
+- id: c12
+  run: cbaefdba5a2d
+  bank: ANZ
+  period: 1H26
+  metric: nim
+  driver: nim.markets_treasury
+  driver_label: Markets activities
+  contribution: '-5.0 bps'
+  method: management_walk
+  claim: The bank attributes the drag mainly to Markets' average interest earning assets being
+    higher relative to the rest of the Group [ev_055].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_055
+    doc: anz-1h26-results-document
+    page: 18
+    text: 'Markets activities (-5 bps): primarily due to higher average interest earning assets
+      relative to the rest of the Group.'
+- id: c13
+  run: cbaefdba5a2d
+  bank: ANZ
+  period: 1H26
+  metric: nim
+  driver: nim.lending_pricing
+  driver_label: Assets pricing
+  contribution: '-4.0 bps'
+  method: management_walk
+  claim: The bank attributes the asset pricing drag to continued competition across most divisions
+    and the timing of RBA rate changes [ev_049].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_049
+    doc: anz-1h26-results-document
+    page: 18
+    text: 'Assets pricing (-4 bps): driven by ongoing competition across most divisions and timing
+      impact of RBA rate changes.'
+- id: c14
+  run: cbaefdba5a2d
+  bank: ANZ
+  period: 1H26
+  metric: nim
+  driver: nim.hedging
+  driver_label: Capital and replicating portfolio
+  contribution: '+4.0 bps'
+  method: management_walk
+  claim: The bank attributes the benefit from the capital and replicating portfolio to higher
+    volumes and higher average hedge rates [ev_052].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_052
+    doc: anz-1h26-results-document
+    page: 18
+    text: 'Capital and replicating portfolio (+4 bps): driven by higher volumes and average hedge
+      rates.'
+- id: c15
+  run: cbaefdba5a2d
+  bank: ANZ
+  period: 1H26
+  metric: nim
+  driver: nim.deposit_pricing
+  driver_label: Deposits pricing
+  contribution: '-3.0 bps'
+  method: management_walk
+  claim: The bank attributes the deposit pricing drag to lower cash rates in New Zealand and international
+    geographies and to pricing competition [ev_050].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_050
+    doc: anz-1h26-results-document
+    page: 18
+    text: 'Deposits pricing (-3 bps): driven by lower cash rates in New Zealand and international
+      geographies and pricing competition.'
+- id: c16
+  run: cbaefdba5a2d
+  bank: ANZ
+  period: 1H26
+  metric: nim
+  driver: nim.liquids
+  driver_label: Group Centre liquids
+  contribution: '+3.0 bps'
+  method: management_walk
+  claim: The bank attributes the benefit to a lower average liquid asset balance held in the Group
+    Centre division [ev_054].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_054
+    doc: anz-1h26-results-document
+    page: 18
+    text: 'Group Centre liquids (+3 bps): driven by a reduction in the average liquid asset balance
+      in the Group Centre division.'
+- id: c17
+  run: cbaefdba5a2d
+  bank: ANZ
+  period: 1H26
+  metric: nim
+  driver: nim.other
+  driver_label: Assets and funding mix
+  contribution: '+2.0 bps'
+  method: management_walk
+  claim: The bank attributes the mix benefit to a favourable funding mix, mainly stronger growth
+    in at-call deposits and deposit growth outpacing lending growth [ev_053].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_053
+    doc: anz-1h26-results-document
+    page: 18
+    text: 'Assets and funding mix (+2 bps): favourable funding mix primarily from stronger growth
+      in at-call deposits, and overall deposit growth outpacing lending growth.'
+- id: c18
+  run: cbaefdba5a2d
+  bank: ANZ
+  period: 1H26
+  metric: nim
+  driver: nim.funding_costs
+  driver_label: Wholesale funding
+  contribution: '0.0 bps'
+  method: management_walk
+  claim: The bank says wholesale funding was "largely flat", with higher funding volume offset
+    by a lower average spread [ev_051].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_051
+    doc: anz-1h26-results-document
+    page: 18
+    text: 'Wholesale funding (0 bps): largely flat with increased funding volume and lower average
+      spread.'
+- id: c19
+  run: edc9e99c1a4c
+  bank: ANZ
+  period: 1H26
+  metric: cost_to_income
+  driver: cti.expense_growth
+  driver_label: Effect of the change in operating expenses
+  contribution: '-187.4 bps'
+  method: computed
+  claim: The bank says personnel expenses fell on the back of productivity initiatives [ev_049]
+    and premises expenses fell because of a lower depreciation charge [ev_050].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_049
+    doc: anz-1h26-results-document
+    page: 24
+    text: Personnel expenses decreased $43 million (1%) driven by benefits from productivity initiatives.
+  - id: ev_050
+    doc: anz-1h26-results-document
+    page: 24
+    text: Premises expenses decreased $15 million (4%) driven by lower depreciation charge.
+- id: c20
+  run: edc9e99c1a4c
+  bank: ANZ
+  period: 1H26
+  metric: cost_to_income
+  driver: cti.income_growth
+  driver_label: Effect of the change in operating income
+  contribution: '-95.7 bps'
+  method: computed
+  claim: The bank attributes the income rise mainly to other income, citing realised hedge gains
+    and a higher share of associates' profit in Group Centre and liquid asset rebalancing gains
+    at Suncorp Bank [ev_054], along with higher scheme incentives and lower customer remediation
+    lifting fee income in Australia Retail [ev_052].
+  outcome: dropped
+  label: partial
+  note: The passages explain other income and fee income separately; 'mainly to other income'
+    is the writer's weighing, not the bank's words.
+  passages:
+  - id: ev_054
+    doc: anz-1h26-results-document
+    page: 21
+    text: 'Other income increased $155 million (55%) driven by: $137 million increase in the Group
+      Centre division primarily due to higher realised gains on economic hedges against foreign
+      currency denominated revenue streams offsetting unfavourable foreign currency translations
+      elsewhere in the Group, and higher share of associates’ profit. $21 million increase in
+      the Suncorp Bank division due to realised gains from liquid asset portfolio rebalancing
+      activity.'
+  - id: ev_052
+    doc: anz-1h26-results-document
+    page: 21
+    text: 'Net fee and commission income increased $56 million (7%) driven by: $56 million increase
+      in the Australia Retail division due to higher scheme incentives and lower customer remediation.'
+- id: c21
+  run: edc9e99c1a4c
+  bank: ANZ
+  period: 1H26
+  metric: cost_to_income
+  driver: cti.inc_other_income
+  driver_label: Other operating income
+  contribution: '-87.0 bps'
+  method: computed
+  claim: The bank says other income grew chiefly because Group Centre booked higher realised gains
+    on economic hedges against foreign-currency revenue and a larger share of associates' profit,
+    with Suncorp Bank adding gains from rebalancing its liquid asset portfolio [ev_054].
+  outcome: dropped
+  label: partial
+  note: The passage explains other income (A$155m); the driver is other operating income (A$190m),
+    so 'chiefly' overreaches.
+  passages:
+  - id: ev_054
+    doc: anz-1h26-results-document
+    page: 21
+    text: 'Other income increased $155 million (55%) driven by: $137 million increase in the Group
+      Centre division primarily due to higher realised gains on economic hedges against foreign
+      currency denominated revenue streams offsetting unfavourable foreign currency translations
+      elsewhere in the Group, and higher share of associates’ profit. $21 million increase in
+      the Suncorp Bank division due to realised gains from liquid asset portfolio rebalancing
+      activity.'
+- id: c22
+  run: e530b1a3c12f
+  bank: CBA
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.nii
+  driver_label: Net interest income
+  contribution: '+A$761m'
+  method: computed
+  claim: The bank says net interest income grew because average interest earning assets rose 8%
+    to $1,232 billion, partly offset by a 4 basis point decline in net interest margin to 2.04%
+    [ev_054].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_054
+    doc: cba-1h26-results-document
+    page: 28
+    text: The result was driven by a $96 billion or 8% increase in average interest earning assets
+      to $1,232 billion, partly offset by a 4 basis point decrease in net interest margin to 2.04%.
+- id: c23
+  run: e530b1a3c12f
+  bank: CBA
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.nii_volume
+  driver_label: Change in average interest-earning assets at prior margin
+  contribution: '+A$1,002m'
+  method: computed
+  claim: The bank attributes the volume benefit to an 8% increase in average interest earning
+    assets to $1,232 billion [ev_054].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_054
+    doc: cba-1h26-results-document
+    page: 28
+    text: The result was driven by a $96 billion or 8% increase in average interest earning assets
+      to $1,232 billion, partly offset by a 4 basis point decrease in net interest margin to 2.04%.
+- id: c24
+  run: e530b1a3c12f
+  bank: CBA
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.nii_margin
+  driver_label: Change in margin on current balances
+  contribution: '-A$239m'
+  method: computed
+  claim: The bank attributes the margin drag to a 4 basis point decrease in net interest margin
+    to 2.04% [ev_054].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_054
+    doc: cba-1h26-results-document
+    page: 28
+    text: The result was driven by a $96 billion or 8% increase in average interest earning assets
+      to $1,232 billion, partly offset by a 4 basis point decrease in net interest margin to 2.04%.
+- id: c25
+  run: e530b1a3c12f
+  bank: CBA
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.operating_expenses
+  driver_label: Operating expenses (higher costs = negative)
+  contribution: '-A$518m'
+  method: computed
+  claim: The bank says staff expenses rose on wage inflation and greater investment in lenders
+    and technology resources, partly offset by productivity initiatives [ev_057], while other
+    expenses rose mainly on higher marketing spend [ev_058].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_057
+    doc: cba-1h26-results-document
+    page: 31
+    text: Staff expenses increased by $169 million or 4% to $4,139 million, mainly driven by wage
+      inflation, and increased investment in lenders and technology resources, partly offset by
+      productivity initiatives.
+  - id: ev_058
+    doc: cba-1h26-results-document
+    page: 31
+    text: Other expenses increased by $40 million or 5% to $795 million, primarily driven by higher
+      marketing spend.
+- id: c26
+  run: e530b1a3c12f
+  bank: CBA
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.other_income
+  driver_label: Fees, markets, wealth and other operating income
+  contribution: '+A$163m'
+  method: computed
+  claim: The bank attributes the rise to higher Markets trading income including favourable derivative
+    valuation adjustments, growth in equities volumes, higher insurance income including a milestone
+    payment on the CommInsure General Insurance sale, and higher syndication and institutional
+    lending fees, partly offset by lower Structured Asset Finance revenue after the aircraft lease
+    portfolio sale and lower Treasury income from liquid asset sales [ev_055].
+  outcome: dropped
+  label: supported
+  passages:
+  - id: ev_055
+    doc: cba-1h26-results-document
+    page: 26
+    text: Other operating income increased 8% with higher trading income from Markets including
+      favourable derivative valuation adjustments, growth in equities volumes, higher insurance
+      income including a milestone payment recognised in relation to the sale of Commonwealth
+      Insurance Limited (CommInsure General Insurance), and higher syndication and institutional
+      lending fee income, partly offset by lower Structured Asset Finance revenue following the
+      sale of the aircraft lease portfolio, and lower Treasury income from liquid asset sales.
+- id: c27
+  run: e530b1a3c12f
+  bank: CBA
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.credit_impairment
+  driver_label: Credit impairment charge (higher charge = negative)
+  contribution: '+A$1m'
+  method: computed
+  claim: The bank says loan impairment expense fell slightly on improved business credit quality
+    and easing household conditions, partly offset by elevated geopolitical tensions and global
+    macroeconomic uncertainty [ev_059].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_059
+    doc: cba-1h26-results-document
+    page: 26
+    text: Loan impairment expense (LIE) decreased $1 million, primarily driven by improvements
+      in business credit quality and easing conditions for households, partly offset by elevated
+      geopolitical tensions and global macroeconomic uncertainty.
+- id: c28
+  run: bff4b6fbadb5
+  bank: ANZ
+  period: 1H26
+  metric: roe
+  driver: earn.operating_expenses
+  driver_label: earn.operating_expenses
+  contribution: '+208.0 bps'
+  method: computed
+  claim: The bank says personnel expenses fell on benefits from productivity initiatives and premises
+    expenses fell on a lower depreciation charge [ev_073, ev_074].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_073
+    doc: anz-1h26-results-document
+    page: 24
+    text: Personnel expenses decreased $43 million (1%) driven by benefits from productivity initiatives.
+  - id: ev_074
+    doc: anz-1h26-results-document
+    page: 24
+    text: Premises expenses decreased $15 million (4%) driven by lower depreciation charge.
+- id: c29
+  run: bff4b6fbadb5
+  bank: ANZ
+  period: 1H26
+  metric: roe
+  driver: earn.other_income
+  driver_label: earn.other_income
+  contribution: '+190.0 bps'
+  method: computed
+  claim: The bank attributes the rise mainly to Group Centre, through higher realised gains on
+    economic hedges against foreign currency revenue and a higher share of associates' profit,
+    plus Suncorp Bank gains from liquid asset portfolio rebalancing [ev_071].
+  outcome: dropped
+  label: partial
+  note: 'As for the same claim in the cost-to-income run: other income stands in for the whole
+    of other operating income.'
+  passages:
+  - id: ev_071
+    doc: anz-1h26-results-document
+    page: 21
+    text: 'Other income increased $155 million (55%) driven by: $137 million increase in the Group
+      Centre division primarily due to higher realised gains on economic hedges against foreign
+      currency denominated revenue streams offsetting unfavourable foreign currency translations
+      elsewhere in the Group, and higher share of associates’ profit. $21 million increase in
+      the Suncorp Bank division due to realised gains from liquid asset portfolio rebalancing
+      activity.'
+- id: c30
+  run: bff4b6fbadb5
+  bank: ANZ
+  period: 1H26
+  metric: roe
+  driver: earn.credit_impairment
+  driver_label: earn.credit_impairment
+  contribution: '-129.0 bps'
+  method: computed
+  claim: The 1H25 comparison included a collectively assessed release that the bank says came
+    from revised severe-scenario modelling assumptions and a small improvement in base case economic
+    assumptions [ev_075]; the individually assessed charge itself fell on lower impairment flows
+    in Business & Private Bank and the absence of 1H25 commercial property impairments at Suncorp
+    Bank [ev_076].
+  outcome: dropped
+  label: supported
+  passages:
+  - id: ev_075
+    doc: anz-1h26-results-document
+    page: 27
+    text: The collectively assessed impairment release of $14 million for the March 2025 half
+      was driven by a revision to modelling assumptions for the severe scenario and a small improvement
+      in base case economic assumptions.
+  - id: ev_076
+    doc: anz-1h26-results-document
+    page: 27
+    text: The individually assessed credit impairment charge decreased $11 million (7%) driven
+      by the Business & Private Bank division ($15 million) due to lower impairment flows in the
+      SME Banking and Diversified & Specialist Businesses portfolios, and Suncorp Bank division
+      ($7 million) due to new impairments taken in the commercial property portfolio in the March
+      2025 half.
+- id: c31
+  run: 8cd9ffb1abab
+  bank: CBA
+  period: FY26
+  metric: cost_to_income
+  driver: cti.income_growth
+  driver_label: Effect of the change in operating income
+  contribution: '-273.5 bps'
+  method: computed
+  claim: The bank says operating income grew on customer and volume growth alongside a broadly
+    stable underlying net interest margin [ev_064].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_064
+    doc: cba-fy26-results-document
+    page: 8
+    text: Operating income increased 6%, supported by customer and volume growth and a broadly
+      stable underlying net interest margin.
+- id: c32
+  run: 8cd9ffb1abab
+  bank: CBA
+  period: FY26
+  metric: cost_to_income
+  driver: cti.inc_nii
+  driver_label: Net interest income
+  contribution: '-243.0 bps'
+  method: computed
+  claim: The bank attributes the rise in net interest income primarily to growth in average interest
+    earning assets [ev_066], partly offset by a lower net interest margin [ev_067].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_066
+    doc: cba-fy26-results-document
+    page: 26
+    text: Net interest income increased 7%, primarily driven by an 8% or $92 billion increase
+      in Average Interest Earning Assets (AIEA).
+  - id: ev_067
+    doc: cba-fy26-results-document
+    page: 28
+    text: The result was driven by a $92 billion or 8% increase in average interest earning assets
+      to $1,246 billion, partly offset by a 3 basis point decrease in net interest margin to 2.05%.
+- id: c33
+  run: 8cd9ffb1abab
+  bank: CBA
+  period: FY26
+  metric: cost_to_income
+  driver: cti.inc_other_income
+  driver_label: Other operating income
+  contribution: '-30.5 bps'
+  method: computed
+  claim: The bank says other operating income rose mainly on higher insurance income, one-off
+    gains and volume-driven equities income, partly offset by lower Structured Asset Finance revenue
+    after the aircraft lease portfolio sale, lower foreign exchange income, deposit fee waivers
+    and higher credit card loyalty costs [ev_065].
+  outcome: dropped
+  label: supported
+  passages:
+  - id: ev_065
+    doc: cba-fy26-results-document
+    page: 26
+    text: Other operating income increased 4% primarily driven by higher insurance income and
+      the benefit of one-off gains 3, higher volume driven equities income, partly offset by lower
+      Structured Asset Finance revenue following the sale of the aircraft lease portfolio, lower
+      foreign exchange income, lower deposit fees due to fee waivers and lower credit card fees
+      from higher loyalty costs.
+- id: c34
+  run: 8cd9ffb1abab
+  bank: CBA
+  period: FY26
+  metric: cost_to_income
+  driver: cti.expense_growth
+  driver_label: Effect of the change in operating expenses
+  contribution: '+258.9 bps'
+  method: computed
+  claim: The bank says operating expenses rose because of inflation, investment in technology
+    and spending on fraud, scams and financial crime, partly offset by productivity initiatives
+    and favourable foreign exchange [ev_063].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_063
+    doc: cba-fy26-results-document
+    page: 9
+    text: Operating expenses increased 6% driven by inflation, investment in technology, fraud,
+      scams and financial crime, partly offset by productivity initiatives and favourable foreign
+      exchange.
+- id: c35
+  run: 15ef6923288c
+  bank: CBA
+  period: FY26
+  metric: cet1_ratio
+  driver: cet1.rwa
+  driver_label: Risk-weighted assets
+  contribution: '-62.7 bps'
+  method: computed
+  claim: The bank attributes the rise in risk-weighted assets to deploying 72bpts of capital into
+    credit RWA, driven by strong volume growth, especially in commercial lending and domestic
+    residential mortgages [ev_063].
+  outcome: dropped
+  label: partial
+  note: The passage is about capital deployed into credit RWA; the driver is total RWA, which
+    also rose on IRRBB and operational risk.
+  passages:
+  - id: ev_063
+    doc: cba-fy26-results-document
+    page: 9
+    text: Across the year we deployed 72bpts of capital into credit risk weighted assets with
+      strong volume growth particularly in commercial portfolios and domestic residential mortgages.
+- id: c36
+  run: 069db0d22e04
+  bank: NAB
+  period: 1H26
+  metric: credit_impairment_charge
+  driver: cic.collective
+  driver_label: Collectively assessed charge
+  contribution: '+A$207m'
+  method: computed
+  claim: The bank says the higher collective charge mainly reflects additional forward-looking
+    provisions raised for potential stress linked to the Middle East conflict [ev_070], through
+    a larger Economic Adjustment after lifting the Australian downside scenario weighting to 45%
+    and refreshing base case forecasts, plus a net increase in Forward-Looking Adjustments [ev_075].
+  outcome: dropped
+  label: supported
+  passages:
+  - id: ev_070
+    doc: nab-1h26-results-document
+    page: 21
+    text: Credit impairment charge increased by $358 million mainly driven by a higher level of
+      collective credit impairment charge including an increase of $300 million in forward-looking
+      provisions in the March 2026 half year due to the impact of potential stress related to
+      the Middle East conflict.
+  - id: ev_075
+    doc: nab-1h26-results-document
+    page: 21
+    text: This includes an increase in the Economic Adjustment (EA) of $152 million due to a 2.5%
+      increase in the Australian weighting to the downside economic scenario to 45% and refreshed
+      base case economic forecasts, combined with a net increase in Forward-Looking Adjustments
+      (FLAs) of $148 million and a higher level of individually assessed credit impairment charge.
+- id: c37
+  run: 069db0d22e04
+  bank: NAB
+  period: 1H26
+  metric: credit_impairment_charge
+  driver: cic.individual
+  driver_label: Individually assessed charge net of write-backs and recoveries
+  contribution: '+A$151m'
+  method: computed
+  claim: The bank says the individually assessed charge rose mainly because of impairments on
+    a small number of Corporate and Institutional Banking customers and, to a lesser extent, a
+    higher charge in the Business and Private Banking business lending portfolio [ev_071].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_071
+    doc: nab-1h26-results-document
+    page: 35
+    text: Individually assessed credit impairment charge increased by $151 million or 38.7% mainly
+      due to an increased charge in Corporate and Institutional Banking for the impairment of
+      a small number of customers, and to a lesser extent, an increased charge in the Business
+      and Private Banking business lending portfolio.
+- id: c38
+  run: c8878ee22636
+  bank: CBA
+  period: FY26
+  metric: nim
+  driver: nim.lending_pricing
+  driver_label: Asset pricing
+  contribution: '-5.0 bps'
+  method: management_walk
+  claim: The bank attributes the asset pricing drag to greater competition on lending prices [ev_069].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_069
+    doc: cba-fy26-results-document
+    page: 26
+    text: Underlying NIM was supported by higher earnings on replicating portfolio and capital
+      hedges, and favourable portfolio mix, offset by the impact of increased lending price competition
+      and Treasury and Markets.
+- id: c39
+  run: c8878ee22636
+  bank: CBA
+  period: FY26
+  metric: nim
+  driver: nim.hedging
+  driver_label: Capital, Replicating and Other
+  contribution: '+5.0 bps'
+  method: management_walk
+  claim: Higher earnings on the replicating portfolio, from changes in portfolio rate and volume,
+    together with higher earnings on capital hedges, lifted the margin [ev_072].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_072
+    doc: cba-fy26-results-document
+    page: 29
+    text: 'Capital, Replicating and Other: Increased margin by 5 basis points driven by higher
+      earnings on the replicating portfolio due to changes in portfolio rate and volume (up 4
+      basis points) and higher earnings on capital hedges (up 1 basis point).'
+- id: c40
+  run: c8878ee22636
+  bank: CBA
+  period: FY26
+  metric: nim
+  driver: nim.liquids
+  driver_label: Liquids
+  contribution: '-3.0 bps'
+  method: management_walk
+  claim: The bank's walk attributes this drag to liquids, without further explanation in the passages
+    provided [ev_062].
+  outcome: dropped
+  label: unsupported
+  note: Claims the bank gives no explanation; an absence can't be cited.
+  passages:
+  - id: ev_062
+    doc: cba-fy26-results-document
+    page: 28
+    text: The issuer's own chart attributes -3.00bps to Liquids.
+- id: c41
+  run: c8878ee22636
+  bank: CBA
+  period: FY26
+  metric: nim
+  driver: nim.asset_mix
+  driver_label: Portfolio mix
+  contribution: '+2.0 bps'
+  method: management_walk
+  claim: A favourable asset mix from strong business lending growth and a favourable funding mix
+    from strong deposit growth supported the margin [ev_071].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_071
+    doc: cba-fy26-results-document
+    page: 28
+    text: 'Portfolio mix: Increased margin by 2 basis points driven by favourable asset mix from
+      strong growth in business lending and favourable funding mix from strong growth in deposits.'
+- id: c42
+  run: c8878ee22636
+  bank: CBA
+  period: FY26
+  metric: nim
+  driver: nim.markets_treasury
+  driver_label: Treasury & Markets
+  contribution: '-2.0 bps'
+  method: management_walk
+  claim: The bank names Treasury and Markets as an offset to underlying margin, without giving
+    further detail [ev_069].
+  outcome: shown
+  label: unsupported
+  note: Claims the bank gives no further detail; an absence can't be cited.
+  passages:
+  - id: ev_069
+    doc: cba-fy26-results-document
+    page: 26
+    text: Underlying NIM was supported by higher earnings on replicating portfolio and capital
+      hedges, and favourable portfolio mix, offset by the impact of increased lending price competition
+      and Treasury and Markets.
+- id: c43
+  run: c90788a23ab0
+  bank: NAB
+  period: 1H26
+  metric: nim
+  driver: nim.hedging
+  driver_label: Replicating portfolios
+  contribution: '+6.0 bps'
+  method: management_walk
+  claim: The bank attributes this mainly to higher earnings on its deposit and capital replicating
+    portfolios [ev_072].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_072
+    doc: nab-1h26-results-document
+    page: 26
+    text: an increase of 6 basis points primarily driven by higher earnings on deposit and capital
+      replicating portfolios,
+- id: c44
+  run: c90788a23ab0
+  bank: NAB
+  period: 1H26
+  metric: nim
+  driver: nim.markets_treasury
+  driver_label: Markets and Treasury (M&T)
+  contribution: '+4.0 bps'
+  method: management_walk
+  claim: The bank attributes this to Markets and Treasury and gives no further reason in its walk
+    [ev_070].
+  outcome: shown
+  label: unsupported
+  note: Claims the bank gives no further reason; an absence can't be cited.
+  passages:
+  - id: ev_070
+    doc: nab-1h26-results-document
+    page: 26
+    text: 'Excluding an increase of 4 basis points in M&T and 3 basis points from a lower mix
+      of lower yielding HQLA, the margin increased by 4 basis points due to:'
+- id: c45
+  run: c90788a23ab0
+  bank: NAB
+  period: 1H26
+  metric: nim
+  driver: nim.lending_pricing
+  driver_label: Lending margin
+  contribution: '-4.0 bps'
+  method: management_walk
+  claim: The bank attributes this mainly to competitive pressure across both business and housing
+    lending, plus timing differences between interest rate movements and home lending price changes
+    in Australia [ev_075].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_075
+    doc: nab-1h26-results-document
+    page: 26
+    text: These increases were partially offset by a decrease of 4 basis points in lending margin
+      primarily driven by competitive pressures impacting both the business and housing lending
+      portfolios, as well as timing differences between movements in interest rates and pricing
+      changes in home lending in Australia (-1 basis point).
+- id: c46
+  run: c90788a23ab0
+  bank: NAB
+  period: 1H26
+  metric: nim
+  driver: nim.liquids
+  driver_label: Liquid assets (lower mix of lower yielding HQLA)
+  contribution: '+3.0 bps'
+  method: management_walk
+  claim: The bank attributes this to holding a lower mix of lower yielding HQLA [ev_071].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_071
+    doc: nab-1h26-results-document
+    page: 26
+    text: 3 basis points from a lower mix of lower yielding HQLA
+- id: c47
+  run: c90788a23ab0
+  bank: NAB
+  period: 1H26
+  metric: nim
+  driver: nim.funding_costs
+  driver_label: Funding costs
+  contribution: '+1.0 bps'
+  method: management_walk
+  claim: The bank attributes this to lower short-term wholesale funding costs [ev_073].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_073
+    doc: nab-1h26-results-document
+    page: 26
+    text: an increase of 1 basis point driven by lower short-term wholesale funding costs, and
+- id: c48
+  run: c90788a23ab0
+  bank: NAB
+  period: 1H26
+  metric: nim
+  driver: nim.deposit_pricing
+  driver_label: Deposits
+  contribution: '+1.0 bps'
+  method: management_walk
+  claim: The bank attributes this mainly to lower deposit costs and a favourable deposit mix,
+    partly offset by competitive pressure on deposits in New Zealand Banking [ev_074].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_074
+    doc: nab-1h26-results-document
+    page: 26
+    text: an increase of 1 basis point mainly driven by lower deposit costs, combined with deposit
+      mix benefits, partially offset by competitive pressures impacting deposits in New Zealand
+      Banking.
+- id: c49
+  run: 71919a953e56
+  bank: WBC
+  period: 1H26
+  metric: cost_to_income
+  driver: cti.income_growth
+  driver_label: Effect of the change in operating income
+  contribution: '-135.2 bps'
+  method: computed
+  claim: The bank attributes income growth to net interest income rising on balance sheet growth
+    that outweighed a lower margin [ev_080], and to non-interest income rising on Markets revenue
+    and fee income [ev_078].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_080
+    doc: wbc-1h26-results-document
+    page: 10
+    text: Net interest income increased by 2%, driven by growth in average interest earning assets
+      more than offsetting a 3 basis point decline in net interest margin.
+  - id: ev_078
+    doc: wbc-1h26-results-document
+    page: 10
+    text: Non-interest income was up 7% due to a rise in Markets revenue and higher fee income.
+- id: c50
+  run: 71919a953e56
+  bank: WBC
+  period: 1H26
+  metric: cost_to_income
+  driver: cti.inc_nii
+  driver_label: Net interest income
+  contribution: '-90.1 bps'
+  method: computed
+  claim: The bank says net interest income grew because average interest-earning assets rose by
+    more than enough to offset a 3 basis point decline in net interest margin [ev_080].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_080
+    doc: wbc-1h26-results-document
+    page: 10
+    text: Net interest income increased by 2%, driven by growth in average interest earning assets
+      more than offsetting a 3 basis point decline in net interest margin.
+- id: c51
+  run: 71919a953e56
+  bank: WBC
+  period: 1H26
+  metric: cost_to_income
+  driver: cti.inc_other_income
+  driver_label: Other operating income
+  contribution: '-45.1 bps'
+  method: computed
+  claim: The bank says non-interest income rose on higher Markets revenue, driven by fixed income
+    and FX income on stronger client activity, and on higher fee income from credit card fees
+    and lower reward program costs [ev_078] [ev_079] [ev_082] [ev_083].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_078
+    doc: wbc-1h26-results-document
+    page: 10
+    text: Non-interest income was up 7% due to a rise in Markets revenue and higher fee income.
+  - id: ev_079
+    doc: wbc-1h26-results-document
+    page: 17
+    text: Markets sales and risk management income increased by 10% driven by fixed income and
+      FX revenue underpinned by higher client activity and effective risk management in volatile
+      markets.
+  - id: ev_082
+    doc: wbc-1h26-results-document
+    page: 17
+    text: Net fee income increased 2%, reflecting higher credit card fees and lower reward program
+      costs.
+  - id: ev_083
+    doc: wbc-1h26-results-document
+    page: 17
+    text: Trading and other income increased 19%, reflecting higher Markets rates and FX income.
+- id: c52
+  run: 71919a953e56
+  bank: WBC
+  period: 1H26
+  metric: cost_to_income
+  driver: cti.expense_growth
+  driver_label: Effect of the change in operating expenses
+  contribution: '+118.5 bps'
+  method: computed
+  claim: The bank says operating expenses rose because of higher staff costs and increased investment
+    spend on the UNITE programme [ev_076] [ev_077].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_076
+    doc: wbc-1h26-results-document
+    page: 10
+    text: Operating expenses were 2% higher due to higher staff costs and the step up in UNITE
+      investment spend.
+  - id: ev_077
+    doc: wbc-1h26-results-document
+    page: 18
+    text: Total operating expenses increased by 2% reflecting higher staff costs and the step
+      up in UNITE investment spend.
+- id: c53
+  run: 693c5c72041f
+  bank: WBC
+  period: 1H26
+  metric: credit_impairment_charge
+  driver: cic.collective
+  driver_label: Collectively assessed charge
+  contribution: '+A$185m'
+  method: computed
+  claim: The bank attributes the higher impairment charge mainly to a larger collectively assessed
+    provision charge [ev_075].
+  outcome: shown
+  label: partial
+  note: Restates the driver ('a higher collective charge') without saying why the collective charge
+    rose.
+  passages:
+  - id: ev_075
+    doc: wbc-1h26-results-document
+    page: 21
+    text: The higher impairment charge was mainly due to a higher CAP charge.
+- id: c54
+  run: 46acc5e8167a
+  bank: NAB
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.nii
+  driver_label: Net interest income
+  contribution: '+A$718m'
+  method: computed
+  claim: The bank says the net interest income rise includes a $169 million gain from movements
+    in economic hedges, offset in other operating income, and a $67 million reduction from exchange
+    rate movements on translating its New Zealand operations [ev_077].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_077
+    doc: nab-1h26-results-document
+    page: 21
+    text: This includes an increase of $169 million due to movements in economic hedges, offset
+      in other operating income, and a decrease of $67 million due to the impact of exchange rate
+      movements on translation of the Group's New Zealand operations.
+- id: c55
+  run: 46acc5e8167a
+  bank: NAB
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.credit_impairment
+  driver_label: Credit impairment charge (higher charge = negative)
+  contribution: '-A$358m'
+  method: computed
+  claim: The bank attributes the higher charge mainly to a larger collective credit impairment
+    charge, including $300 million of forward-looking provisions raised in the March 2026 half
+    for potential stress related to the Middle East conflict [ev_080], with the individually assessed
+    charge also up $151 million largely from impairing a small number of Corporate and Institutional
+    Banking customers and, to a lesser extent, Business and Private Banking business loans [ev_081].
+  outcome: dropped
+  label: supported
+  passages:
+  - id: ev_080
+    doc: nab-1h26-results-document
+    page: 21
+    text: Credit impairment charge increased by $358 million mainly driven by a higher level of
+      collective credit impairment charge including an increase of $300 million in forward-looking
+      provisions in the March 2026 half year due to the impact of potential stress related to
+      the Middle East conflict.
+  - id: ev_081
+    doc: nab-1h26-results-document
+    page: 35
+    text: Individually assessed credit impairment charge increased by $151 million or 38.7% mainly
+      due to an increased charge in Corporate and Institutional Banking for the impairment of
+      a small number of customers, and to a lesser extent, an increased charge in the Business
+      and Private Banking business lending portfolio.
+- id: c56
+  run: 46acc5e8167a
+  bank: NAB
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.other_income
+  driver_label: Fees, markets, wealth and other operating income
+  contribution: '-A$116m'
+  method: computed
+  claim: The bank says the fall in other income includes a $169 million decrease from movements
+    in economic hedges, which is offset in net interest income [ev_074].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_074
+    doc: nab-1h26-results-document
+    page: 21
+    text: This includes a decrease of $169 million due to movements in economic hedges, offset
+      in net interest income.
+- id: c57
+  run: c699d34e60b4
+  bank: WBC
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.nii
+  driver_label: Net interest income
+  contribution: '+A$420m'
+  method: computed
+  claim: The bank says net interest income grew because growth in average interest-earning assets
+    more than offset a 3 basis point decline in net interest margin [ev_078].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_078
+    doc: wbc-1h26-results-document
+    page: 10
+    text: Net interest income increased by 2%, driven by growth in average interest earning assets
+      more than offsetting a 3 basis point decline in net interest margin.
+- id: c58
+  run: c699d34e60b4
+  bank: WBC
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.nii_volume
+  driver_label: Change in average interest-earning assets at prior margin
+  contribution: '+A$366m'
+  method: computed
+  claim: The bank attributes higher core net interest income to balance sheet growth outweighing
+    the lower margin [ev_079].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_079
+    doc: wbc-1h26-results-document
+    page: 12
+    text: 'Key drivers included: Higher core net interest income with balance sheet growth more
+      than offsetting lower net interest margin; and Treasury and Markets income down 5% reflecting
+      a slightly larger contribution from Treasury in the prior corresponding period.'
+- id: c59
+  run: c699d34e60b4
+  bank: WBC
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.nii_margin
+  driver_label: Change in margin on current balances
+  contribution: '-A$152m'
+  method: computed
+  claim: The bank reports a 3 basis point decline in net interest margin partly offsetting asset
+    growth [ev_078].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_078
+    doc: wbc-1h26-results-document
+    page: 10
+    text: Net interest income increased by 2%, driven by growth in average interest earning assets
+      more than offsetting a 3 basis point decline in net interest margin.
+- id: c60
+  run: c699d34e60b4
+  bank: WBC
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.operating_expenses
+  driver_label: Operating expenses (higher costs = negative)
+  contribution: '-A$239m'
+  method: computed
+  claim: The bank attributes higher operating expenses to higher staff costs and the step up in
+    UNITE investment spend [ev_082][ev_083].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_082
+    doc: wbc-1h26-results-document
+    page: 10
+    text: Operating expenses were 2% higher due to higher staff costs and the step up in UNITE
+      investment spend.
+  - id: ev_083
+    doc: wbc-1h26-results-document
+    page: 18
+    text: Total operating expenses increased by 2% reflecting higher staff costs and the step
+      up in UNITE investment spend.
+- id: c61
+  run: c699d34e60b4
+  bank: WBC
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.credit_impairment
+  driver_label: Credit impairment charge (higher charge = negative)
+  contribution: '-A$193m'
+  method: computed
+  claim: The bank says the higher impairment charge was mainly due to a higher "CAP charge" [ev_084].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_084
+    doc: wbc-1h26-results-document
+    page: 21
+    text: The higher impairment charge was mainly due to a higher CAP charge.
+- id: c62
+  run: c699d34e60b4
+  bank: WBC
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.other_income
+  driver_label: Fees, markets, wealth and other operating income
+  contribution: '+A$80m'
+  method: computed
+  claim: The bank attributes the rise in non-interest income to higher Markets revenue and higher
+    fee income, the latter reflecting higher credit card fees and lower reward program costs [ev_080][ev_081].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_080
+    doc: wbc-1h26-results-document
+    page: 10
+    text: Non-interest income was up 7% due to a rise in Markets revenue and higher fee income.
+  - id: ev_081
+    doc: wbc-1h26-results-document
+    page: 17
+    text: Net fee income increased 2%, reflecting higher credit card fees and lower reward program
+      costs.
+- id: c63
+  run: 5d64538e6592
+  bank: CBA
+  period: FY26
+  metric: nim
+  driver: nim.balance_growth
+  driver_label: Average interest-earning assets
+  contribution: '-15.9 bps'
+  method: computed
+  claim: The bank says average interest-earning assets rose by $92 billion or 8% to $1,246 billion
+    [ev_067], with lending assets growing on home, business and institutional lending [ev_069].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_067
+    doc: cba-fy26-results-document
+    page: 28
+    text: The result was driven by a $92 billion or 8% increase in average interest earning assets
+      to $1,246 billion, partly offset by a 3 basis point decrease in net interest margin to 2.05%.
+  - id: ev_069
+    doc: cba-fy26-results-document
+    page: 26
+    text: Average lending interest earning assets increased by $60 billion or 7% due to growth
+      in home, business and institutional lending.
+- id: c64
+  run: 5d64538e6592
+  bank: CBA
+  period: FY26
+  metric: nim
+  driver: nim.income
+  driver_label: Net interest income
+  contribution: '+13.0 bps'
+  method: computed
+  claim: The bank attributes the 7% increase in net interest income primarily to the 8% or $92
+    billion rise in average interest-earning assets [ev_066].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_066
+    doc: cba-fy26-results-document
+    page: 26
+    text: Net interest income increased 7%, primarily driven by an 8% or $92 billion increase
+      in Average Interest Earning Assets (AIEA).
+- id: c65
+  run: 05179002a723
+  bank: WBC
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.nii
+  driver_label: Net interest income
+  contribution: '+A$420m'
+  method: computed
+  claim: Net interest income grew because average interest earning assets increased by more than
+    enough to offset a 3 basis point decline in net interest margin [ev_078].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_078
+    doc: wbc-1h26-results-document
+    page: 10
+    text: Net interest income increased by 2%, driven by growth in average interest earning assets
+      more than offsetting a 3 basis point decline in net interest margin.
+- id: c66
+  run: 05179002a723
+  bank: WBC
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.nii_volume
+  driver_label: Change in average interest-earning assets at prior margin
+  contribution: '+A$366m'
+  method: computed
+  claim: The volume contribution reflects balance sheet growth, which the bank says more than
+    offset the lower margin [ev_079].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_079
+    doc: wbc-1h26-results-document
+    page: 12
+    text: 'Key drivers included: Higher core net interest income with balance sheet growth more
+      than offsetting lower net interest margin; and Treasury and Markets income down 5% reflecting
+      a slightly larger contribution from Treasury in the prior corresponding period.'
+- id: c67
+  run: 05179002a723
+  bank: WBC
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.operating_expenses
+  driver_label: Operating expenses (higher costs = negative)
+  contribution: '-A$239m'
+  method: computed
+  claim: Expenses rose on higher staff costs, driven by wage growth, UNITE and investment in new
+    bankers, together with the step up in UNITE investment spend [ev_084][ev_086].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_084
+    doc: wbc-1h26-results-document
+    page: 10
+    text: Operating expenses were 2% higher due to higher staff costs and the step up in UNITE
+      investment spend.
+  - id: ev_086
+    doc: wbc-1h26-results-document
+    page: 18
+    text: Staff expenses increased by 2% mainly driven by wage growth, UNITE and the investment
+      in new bankers.
+- id: c68
+  run: 05179002a723
+  bank: WBC
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.credit_impairment
+  driver_label: Credit impairment charge (higher charge = negative)
+  contribution: '-A$193m'
+  method: computed
+  claim: The higher charge was mainly a larger collective provision charge [ev_087], reflecting
+    a revised economic outlook, new portfolio overlays and an increase in new individually assessed
+    provisions [ev_088].
+  outcome: dropped
+  label: partial
+  note: Attaches the increase in new individually assessed provisions to the collective charge;
+    the passage gives it for the charge overall.
+  passages:
+  - id: ev_087
+    doc: wbc-1h26-results-document
+    page: 21
+    text: The higher impairment charge was mainly due to a higher CAP charge.
+  - id: ev_088
+    doc: wbc-1h26-results-document
+    page: 10
+    text: The increase reflected the revised economic outlook, new portfolio overlays and an increase
+      in new IAPs.
+- id: c69
+  run: 05179002a723
+  bank: WBC
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.other_income
+  driver_label: Fees, markets, wealth and other operating income
+  contribution: '+A$80m'
+  method: computed
+  claim: Non-interest income rose on higher Markets revenue, including rates and FX income, and
+    higher fee income from credit card fees and lower reward program costs [ev_081][ev_082][ev_083].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_081
+    doc: wbc-1h26-results-document
+    page: 10
+    text: Non-interest income was up 7% due to a rise in Markets revenue and higher fee income.
+  - id: ev_082
+    doc: wbc-1h26-results-document
+    page: 17
+    text: Net fee income increased 2%, reflecting higher credit card fees and lower reward program
+      costs.
+  - id: ev_083
+    doc: wbc-1h26-results-document
+    page: 17
+    text: Trading and other income increased 19%, reflecting higher Markets rates and FX income.
+- id: c70
+  run: c05064492348
+  bank: NAB
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.operating_expenses
+  driver_label: Operating expenses (higher costs = negative)
+  contribution: '-A$1,560m'
+  method: computed
+  claim: The bank says the increase was driven primarily by salary expense inflation and continued
+    investment in proprietary lenders, bankers and technology capabilities [ev_082], partly offset
+    by productivity benefits from process improvement and simplification, lower payroll review
+    and remediation costs, lower AUSTRAC enforceable undertaking costs and lower customer-related
+    remediation [ev_081].
+  outcome: dropped
+  label: unsupported
+  note: Puts the whole A$1,560m expense rise down to salary inflation and investment, when A$1,347m
+    of it was large notable items; the passage describes the underlying rise.
+  passages:
+  - id: ev_082
+    doc: nab-1h26-results-document
+    page: 29
+    text: The increase was primarily driven by salary expense inflation and continued investment
+      in proprietary lenders, bankers and technology capabilities.
+  - id: ev_081
+    doc: nab-1h26-results-document
+    page: 21
+    text: These impacts were partially offset by productivity benefits achieved through continued
+      process improvements and simplification of the Group’s operations, lower payroll review
+      and remediation costs, lower costs related to the enforceable undertaking (EU) with Australian
+      Transaction Reports and Analysis Centre (AUSTRAC) and lower customer-related remediation.
+- id: c71
+  run: c05064492348
+  bank: NAB
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.nii
+  driver_label: Net interest income
+  contribution: '+A$718m'
+  method: computed
+  claim: The bank says net interest income includes an A$169m increase from movements in economic
+    hedges, offset in other operating income, and an A$67m decrease from exchange rate movements
+    on translation of its New Zealand operations [ev_078].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_078
+    doc: nab-1h26-results-document
+    page: 21
+    text: This includes an increase of $169 million due to movements in economic hedges, offset
+      in other operating income, and a decrease of $67 million due to the impact of exchange rate
+      movements on translation of the Group's New Zealand operations.
+- id: c72
+  run: c05064492348
+  bank: NAB
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.credit_impairment
+  driver_label: Credit impairment charge (higher charge = negative)
+  contribution: '-A$358m'
+  method: computed
+  claim: The bank attributes the higher charge mainly to a higher collective credit impairment
+    charge, including A$300m of forward-looking provisions raised for potential stress related
+    to the Middle East conflict [ev_083], with the individually assessed charge also up on impairments
+    of a small number of Corporate and Institutional Banking customers and, to a lesser extent,
+    Business and Private Banking business lending [ev_084].
+  outcome: dropped
+  label: supported
+  passages:
+  - id: ev_083
+    doc: nab-1h26-results-document
+    page: 21
+    text: Credit impairment charge increased by $358 million mainly driven by a higher level of
+      collective credit impairment charge including an increase of $300 million in forward-looking
+      provisions in the March 2026 half year due to the impact of potential stress related to
+      the Middle East conflict.
+  - id: ev_084
+    doc: nab-1h26-results-document
+    page: 35
+    text: Individually assessed credit impairment charge increased by $151 million or 38.7% mainly
+      due to an increased charge in Corporate and Institutional Banking for the impairment of
+      a small number of customers, and to a lesser extent, an increased charge in the Business
+      and Private Banking business lending portfolio.
+- id: c73
+  run: c05064492348
+  bank: NAB
+  period: 1H26
+  metric: headline_earnings
+  driver: earn.other_income
+  driver_label: Fees, markets, wealth and other operating income
+  contribution: '-A$116m'
+  method: computed
+  claim: The bank says the decrease includes A$169m from movements in economic hedges, which is
+    offset in net interest income [ev_074].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_074
+    doc: nab-1h26-results-document
+    page: 21
+    text: This includes a decrease of $169 million due to movements in economic hedges, offset
+      in net interest income.
+- id: c74
+  run: f7e0b1d7ce62
+  bank: ANZ
+  period: 1H26
+  metric: roe
+  driver: earn.operating_expenses
+  driver_label: earn.operating_expenses
+  contribution: '+208.0 bps'
+  method: computed
+  claim: Personnel costs fell on productivity initiatives [ev_053], technology costs fell on lower
+    asset impairments, lower amortisation after extending useful lives of some software, and simplification,
+    partly offset by vendor cost inflation [ev_055], and premises costs fell on a lower depreciation
+    charge [ev_054].
+  outcome: dropped
+  label: supported
+  passages:
+  - id: ev_053
+    doc: anz-1h26-results-document
+    page: 24
+    text: Personnel expenses decreased $43 million (1%) driven by benefits from productivity initiatives.
+  - id: ev_055
+    doc: anz-1h26-results-document
+    page: 24
+    text: Technology expenses decreased $35 million (3%) driven by lower impairments on technology
+      assets, lower amortisation from change in useful lives of select strategic software assets,
+      and ongoing technology simplification, partially offset by inflationary impacts on vendor
+      costs.
+  - id: ev_054
+    doc: anz-1h26-results-document
+    page: 24
+    text: Premises expenses decreased $15 million (4%) driven by lower depreciation charge.
+- id: c75
+  run: f7e0b1d7ce62
+  bank: ANZ
+  period: 1H26
+  metric: roe
+  driver: earn.other_income
+  driver_label: earn.other_income
+  contribution: '+190.0 bps'
+  method: computed
+  claim: Other operating income grew 9% [ev_051], led by realised gains on economic hedges of
+    foreign currency revenue and higher associates' profit in Group Centre, plus liquid asset
+    rebalancing gains at Suncorp Bank [ev_050], and higher fee income in Australia Retail from
+    scheme incentives and lower customer remediation [ev_052].
+  outcome: dropped
+  label: supported
+  passages:
+  - id: ev_051
+    doc: anz-1h26-results-document
+    page: 21
+    text: Other operating income increased $190 million (9%).
+  - id: ev_050
+    doc: anz-1h26-results-document
+    page: 21
+    text: 'Other income increased $155 million (55%) driven by: $137 million increase in the Group
+      Centre division primarily due to higher realised gains on economic hedges against foreign
+      currency denominated revenue streams offsetting unfavourable foreign currency translations
+      elsewhere in the Group, and higher share of associates’ profit. $21 million increase in
+      the Suncorp Bank division due to realised gains from liquid asset portfolio rebalancing
+      activity.'
+  - id: ev_052
+    doc: anz-1h26-results-document
+    page: 21
+    text: 'Net fee and commission income increased $56 million (7%) driven by: $56 million increase
+      in the Australia Retail division due to higher scheme incentives and lower customer remediation.'
+- id: c76
+  run: f7e0b1d7ce62
+  bank: ANZ
+  period: 1H26
+  metric: roe
+  driver: earn.credit_impairment
+  driver_label: earn.credit_impairment
+  contribution: '-129.0 bps'
+  method: computed
+  claim: The collective charge in 1H26 reflects downside risk from escalating Middle East conflict
+    and market volatility, portfolio growth and higher management temporary adjustments for the
+    revised cash rate trajectory [ev_058], compared with a collective release in 1H25 from revised
+    severe-scenario modelling assumptions [ev_056]; the individually assessed charge was lower
+    on reduced flows in Business & Private Bank and Suncorp Bank [ev_057].
+  outcome: dropped
+  label: supported
+  passages:
+  - id: ev_058
+    doc: anz-1h26-results-document
+    page: 27
+    text: The collectively assessed impairment charge of $126 million for the March 2026 half
+      was driven by downside risk associated with escalation of conflict in the Middle East increasing
+      volatility in global financial markets, portfolio growth, and a net increase in management
+      temporary adjustments for the revised forecast trajectory for cash rates.
+  - id: ev_056
+    doc: anz-1h26-results-document
+    page: 27
+    text: The collectively assessed impairment release of $14 million for the March 2025 half
+      was driven by a revision to modelling assumptions for the severe scenario and a small improvement
+      in base case economic assumptions.
+  - id: ev_057
+    doc: anz-1h26-results-document
+    page: 27
+    text: The individually assessed credit impairment charge decreased $11 million (7%) driven
+      by the Business & Private Bank division ($15 million) due to lower impairment flows in the
+      SME Banking and Diversified & Specialist Businesses portfolios, and Suncorp Bank division
+      ($7 million) due to new impairments taken in the commercial property portfolio in the March
+      2025 half.
+- id: c77
+  run: f7e0b1d7ce62
+  bank: ANZ
+  period: 1H26
+  metric: roe
+  driver: earn.nii
+  driver_label: earn.nii
+  contribution: '+19.0 bps'
+  method: computed
+  claim: Part of the increase came from Markets, where net interest income rose 68% [ev_049].
+  outcome: shown
+  label: supported
+  passages:
+  - id: ev_049
+    doc: anz-1h26-results-document
+    page: 21
+    text: Markets income Markets income increased $35 million (3%) with a $56 million (68%) increase
+      in Net interest income, partially offset by a $21 million (2%) decrease in Other operating
+      income.

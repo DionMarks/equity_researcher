@@ -1,0 +1,285 @@
+# The bank registry: adding a bank means an entry here plus its documents, not code. A field
+# marked `verification: unverified` fails `bankresearch config-check` until it's checked
+# against the bank's own filing (DESIGN.md ADR-004).
+schema_version: "1.0"
+
+defaults:
+  # A period is reportable only once its results release is published.
+  availability_source: RESULTS_RELEASE
+  asx_domain: announcements.asx.com.au
+
+# `not_reported` lists metrics an issuer does not report, with the reason. Asking for one
+# is answered with METRIC_NOT_REPORTED rather than INSUFFICIENT_EVIDENCE: the two are
+# different findings, and only one of them will still be true after more documents are
+# ingested. Each entry MUST be verified against the issuer's own filing before use.
+
+banks:
+  - bank_id: CBA
+    name: Commonwealth Bank of Australia
+    # Other names a person asks for the bank by.
+    aliases: ["CommBank", "Commonwealth Bank", "CBA Group"]
+    ticker: CBA
+    fy_end_month: 6                     # FY26 = 1 Jul 2025 to 30 Jun 2026
+    in_seed_corpus: true
+    ir_domains: [commbank.com.au, announcements.asx.com.au]
+    cet1_scope: "Level 2"
+    headline_earnings_label: "Cash NPAT"
+    results_release_months: {H1: 2, FY: 8}
+    # CBA reports its loan impairment expense by division and doesn't disclose it as
+    # individually and collectively assessed, so this is the only split of the charge
+    # (DESIGN.md ADR-038). Each division's figure is read from its own first page, in A$:
+    # the New Zealand pages after the first restate it in NZ$.
+    impairment_divisions:
+      "Retail Banking Services": retail
+      "Business Banking": business
+      "Institutional Banking and Markets": institutional
+      "New Zealand": new_zealand
+      "Corporate Centre and Other": other
+    doc_name_hints:
+      RESULTS_DOCUMENT: "Profit Announcement"
+      RESULTS_RELEASE: "Results announcement / Appendix 4D"
+      INVESTOR_PRESENTATION: "Results presentation and investor discussion pack"
+      PILLAR3: "Basel III Pillar 3 Capital Adequacy and Risk Disclosures"
+      ANNUAL_REPORT: "Annual Report"
+    verification:
+      fy_end_month: verified
+      # "Profit Announcement / For the full year ended 30 June 2026", cover page.
+      fy_end_month_source: "cba-fy26-results-document p.1; ASX Appendix 4E p.2 'Report for the year ended 30 June 2026'"
+      headline_earnings_label: verified
+      # CEO highlights run Statutory NPAT beside Cash NPAT; p.26 names the measure
+      # "Cash net profit after tax (cash NPAT or cash profit)".
+      headline_earnings_label_source: "cba-fy26-results-document p.8, p.26"
+      cet1_scope: verified
+      # "Common Equity Tier 1 Capital ratio 12.0% (APRA Level 2)", with footnote 5
+      # defining Level 2 as the consolidated banking group including ASB.
+      cet1_scope_source: "cba-fy26-results-document p.9, footnote 5 on p.11"
+      impairment_divisions: verified
+      # Loan impairment expense, A$M: 378 and 272, 310 and 355, 33 and 49, 66 and 55, and
+      # 1 against a 5 benefit, which add to the group's 788 and 726 on p.27.
+      impairment_divisions_source: "cba-fy26-results-document p.62, p.67, p.71, p.75, p.81"
+
+  - bank_id: WBC
+    name: Westpac Banking Corporation
+    # Other names a person asks for the bank by.
+    aliases: ["Westpac Group", "Westpac Bank"]
+    ticker: WBC
+    fy_end_month: 9                     # FY26 = 1 Oct 2025 to 30 Sep 2026
+    in_seed_corpus: true
+    ir_domains: [westpac.com.au, announcements.asx.com.au]
+    cet1_scope: "Level 2"
+    # Westpac made net profit its single performance measure from 1H23 and removed
+    # its cash earnings sections, while continuing to disclose notable items.
+    headline_earnings_label: "Net profit"
+    results_release_months: {H1: 5, FY: 11}
+    doc_name_hints:
+      RESULTS_DOCUMENT: "Full Year / Interim Financial Results, Appendix 4D/4E"
+      RESULTS_RELEASE: "ASX results announcement"
+      INVESTOR_PRESENTATION: "Investor Discussion Pack"
+      PILLAR3: "Pillar 3 report"
+      ANNUAL_REPORT: "Annual Report"
+    verification:
+      fy_end_month: verified
+      # Interim results "FOR THE SIX MONTHS ENDED 31 MARCH 2026": H1 closes in
+      # March, so the year closes in September.
+      fy_end_month_source: "wbc-1h26-results-document p.1"
+      headline_earnings_label: verified
+      headline_earnings_label_source: "https://www.westpac.com.au/content/dam/public/wbc/documents/pdf/aw/ic/1H23_reporting_changes.pdf"
+      cet1_scope: verified
+      # The capital table stacks two structures: "Level 2 regulatory capital
+      # structure" gives CET1 12.42%, "Level 1" gives 12.75%. The headline is Level 2.
+      cet1_scope_source: "wbc-1h26-results-document p.29"
+
+
+  - bank_id: NAB
+    name: National Australia Bank Limited
+    # Other names a person asks for the bank by.
+    aliases: ["National Australia Bank", "National Bank"]
+    ticker: NAB
+    fy_end_month: 9
+    in_seed_corpus: true
+    ir_domains: [nab.com.au, announcements.asx.com.au]
+    cet1_scope: "Level 2"
+    headline_earnings_label: "Cash earnings"
+    results_release_months: {H1: 5, FY: 11}
+    doc_name_hints:
+      RESULTS_DOCUMENT: "Half Year / Full Year Results, Appendix 4D/4E"
+      RESULTS_RELEASE: "ASX announcement"
+      INVESTOR_PRESENTATION: "Investor presentation"
+      PILLAR3: "Pillar 3 report"
+      ANNUAL_REPORT: "Annual Financial Report"
+    verification:
+      fy_end_month: verified
+      # Appendix 4D "Report for the half year ended 31 March 2026": H1 closes in
+      # March, so the year closes in September.
+      fy_end_month_source: "nab-1h26-results-document p.3"
+      headline_earnings_label: verified
+      # The results summary leads with Cash earnings beside Statutory net profit.
+      headline_earnings_label_source: "nab-1h26-results-document p.6"
+      cet1_scope: verified
+      # "(ii) CET1 capital ratio on a Level 2 basis"; p.22 heads the block
+      # "Level 2 Group capital".
+      cet1_scope_source: "nab-1h26-results-document p.6, p.22"
+
+  - bank_id: ANZ
+    name: ANZ Group Holdings Limited
+    # Other names a person asks for the bank by.
+    aliases: ["ANZ Bank", "ANZ Banking Group", "Australia and New Zealand Banking Group", "Australia and New Zealand Banking Group Limited"]
+    ticker: ANZ
+    fy_end_month: 9
+    in_seed_corpus: true
+    ir_domains: [anz.com.au, anz.com, announcements.asx.com.au]
+    # Headline CET1 is the Level 2 ratio of ANZBGL Group, the bank beneath the
+    # listed holding company.
+    cet1_scope: "ANZBGL Group, Level 2"
+    headline_earnings_label: "Cash profit"
+    results_release_months: {H1: 5, FY: 11}
+    doc_name_hints:
+      RESULTS_DOCUMENT: "Consolidated Financial Report, Dividend Announcement and Appendix 4D/4E"
+      RESULTS_RELEASE: "Half Year / Full Year Result and Proposed Dividend"
+      INVESTOR_PRESENTATION: "Investor Discussion Pack"
+      PILLAR3: "APS 330 Pillar 3 disclosure"
+      ANNUAL_REPORT: "Annual Report"
+    verification:
+      fy_end_month: verified
+      # "Half Year 31 March 2026" on the Consolidated Financial Report cover: H1
+      # closes in March, so the year closes in September.
+      fy_end_month_source: "anz-1h26-results-document p.1"
+      headline_earnings_label: verified
+      headline_earnings_label_source: "https://www.anz.com.au/newsroom/media/2026/may/2026-half-year-result---proposed-final-dividend/"
+      cet1_scope: verified
+      cet1_scope_source: "https://www.anz.com.au/newsroom/media/2026/may/2026-half-year-result---proposed-final-dividend/"
+
+  # A fictional issuer, present only so the end-to-end path can be demonstrated and
+  # integration-tested against tests/fixtures/. Its figures are invented, and
+  # giving them their own ticker keeps them from ever being read as a real bank's.
+  # See DESIGN.md ADR-012.
+  - bank_id: XMPL
+    name: Example Bank Limited (synthetic fixture issuer)
+    ticker: XMPL
+    fy_end_month: 9
+    in_seed_corpus: false
+    synthetic: true
+    ir_domains: []
+    cet1_scope: "Level 2"
+    headline_earnings_label: "Cash profit"
+    results_release_months: {H1: 5, FY: 11}
+    doc_name_hints:
+      RESULTS_DOCUMENT: "Results document"
+    verification:
+      fy_end_month: not_applicable
+      headline_earnings_label: not_applicable
+
+  # Cold-path banks. Config entry only: no seed documents, so
+  # these exercise discovery and the unseen-case path.
+  - bank_id: BEN
+    name: Bendigo and Adelaide Bank Limited
+    aliases: ["Bendigo Bank", "Bendigo and Adelaide Bank"]
+    ticker: BEN
+    fy_end_month: 6
+    in_seed_corpus: false
+    ir_domains: [bendigoadelaide.com.au, announcements.asx.com.au]
+    cet1_scope: "Level 2"
+    headline_earnings_label: "Cash earnings"
+    results_release_months: {H1: 2, FY: 8}
+    not_reported: {}
+    doc_name_hints:
+      # Named for the kind of period: the half-year filing is the Appendix 4D, and the
+      # full-year one the Appendix 4E with the annual financial report.
+      RESULTS_DOCUMENT:
+        H: "Appendix 4D and half year financial report"
+        FY: "Appendix 4E and annual financial report"
+      RESULTS_RELEASE: "ASX announcement"
+      INVESTOR_PRESENTATION: "Results presentation"
+      PILLAR3: "Pillar 3 report"
+    verification:
+      # No seed documents for the cold-path banks, so these are verified against
+      # the issuer's own published filing rather than an ingested page.
+      fy_end_month: verified
+      fy_end_month_source: "https://www.bendigoadelaide.com.au/globalassets/documents/bendigoadelaide/investorcentre/results-and-reporting/financial-results/2025-appendix-4e-full-year-results.pdf"
+      headline_earnings_label: verified
+      # Appendix 4E reports cash earnings after tax as the headline measure.
+      headline_earnings_label_source: "https://www.bendigoadelaide.com.au/globalassets/documents/bendigoadelaide/investorcentre/results-and-reporting/financial-results/2025-appendix-4e-full-year-results.pdf"
+
+  - bank_id: BOQ
+    name: Bank of Queensland Limited
+    aliases: ["Bank of Queensland"]
+    ticker: BOQ
+    fy_end_month: 8                     # FY26 = 1 Sep 2025 to 31 Aug 2026
+    in_seed_corpus: false
+    ir_domains: [boq.com.au, announcements.asx.com.au]
+    cet1_scope: "Level 2"
+    headline_earnings_label: "Cash earnings"
+    results_release_months: {H1: 4, FY: 10}
+    doc_name_hints:
+      # Bank of Queensland's full-year filing is its annual report with the Appendix 4E,
+      # and asking for an "Appendix 4D" for a full year found nothing.
+      RESULTS_DOCUMENT:
+        H: "Appendix 4D and half year financial report"
+        FY: "Appendix 4E and annual report"
+      RESULTS_RELEASE: "ASX announcement"
+      INVESTOR_PRESENTATION: "Results presentation"
+      PILLAR3: "Pillar 3 report"
+    verification:
+      fy_end_month: verified
+      # "Full year ended 31 August 2025" on the investor materials cover.
+      fy_end_month_source: "https://www.boq.com.au/content/dam/boq/files/shareholder-centre/2025/25-investor-presentation.pdf"
+      headline_earnings_label: verified
+      headline_earnings_label_source: "https://www.boq.com.au/content/dam/boq/files/shareholder-centre/2025/25-investor-presentation.pdf"
+
+  - bank_id: JDO
+    name: Judo Capital Holdings Limited
+    aliases: ["Judo Bank", "Judo Capital"]
+    ticker: JDO
+    fy_end_month: 6
+    in_seed_corpus: false
+    ir_domains: [judo.bank, announcements.asx.com.au]
+    cet1_scope: "Level 2"
+    headline_earnings_label: "Statutory net profit after tax"
+    results_release_months: {H1: 2, FY: 8}
+    doc_name_hints:
+      RESULTS_DOCUMENT:
+        H: "Appendix 4D and half year financial report"
+        FY: "Appendix 4E and annual report"
+      RESULTS_RELEASE: "ASX announcement"
+      INVESTOR_PRESENTATION: "Results presentation"
+      PILLAR3: "Pillar 3 report"
+    verification:
+      fy_end_month: verified
+      # "the full year ended 30 June 2025", in the first line of the release.
+      fy_end_month_source: "https://announcements.asx.com.au/asxpdf/20250819/pdf/06n0h70z4x77yw.pdf"
+      headline_earnings_label: verified
+      # "Statutory net profit after tax (NPAT) of $86.4m, up 24%" is the first highlight,
+      # and the release is titled "Judo delivers NPAT increase of 24%". From its 2026 half
+      # year Judo has led with profit before tax instead ("Judo delivers 53% PBT growth",
+      # 17 February 2026); see the label rule in metrics.yaml.
+      headline_earnings_label_source: "https://announcements.asx.com.au/asxpdf/20250819/pdf/06n0h70z4x77yw.pdf"
+      results_release_months: verified
+      results_release_months_source: "FY25 released 19 August 2025; 1H26 released 17 February 2026 (https://announcements.asx.com.au/asxpdf/20260217/pdf/06wcvpyhykv9fw.pdf)"
+
+  - bank_id: MYS
+    name: MyState Limited
+    aliases: ["MyState Bank"]
+    ticker: MYS
+    fy_end_month: 6
+    in_seed_corpus: false
+    ir_domains: [mystate.com.au, announcements.asx.com.au]
+    cet1_scope: "Level 2"
+    headline_earnings_label: "Underlying net profit after tax"
+    results_release_months: {H1: 2, FY: 8}
+    doc_name_hints:
+      RESULTS_DOCUMENT:
+        H: "Appendix 4D and half year financial report"
+        FY: "Appendix 4E and annual report"
+      RESULTS_RELEASE: "ASX announcement"
+      INVESTOR_PRESENTATION: "Results presentation"
+      PILLAR3: "Pillar 3 report"
+    verification:
+      fy_end_month: verified
+      # "At 30 June 2025, MyState's total capital ratio was 17.5%", in the FY25 release.
+      fy_end_month_source: "https://announcements.asx.com.au/asxpdf/20250819/pdf/06n0r5gvd9f9br.pdf"
+      headline_earnings_label: verified
+      # "Underlying profit after tax: up 17.0% to $41.3 million, statutory net profit of
+      # $35.6 million" leads the release; underlying excludes the Auswide merger costs.
+      headline_earnings_label_source: "https://announcements.asx.com.au/asxpdf/20250819/pdf/06n0r5gvd9f9br.pdf"
+      results_release_months: verified
+      results_release_months_source: "FY25 released 19 August 2025; 1H26 lodged 20 February 2026 (https://announcements.asx.com.au/asxpdf/20260220/pdf/06wjgl6zry6390.pdf)"

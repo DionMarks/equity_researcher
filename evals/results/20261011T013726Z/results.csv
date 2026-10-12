@@ -1,0 +1,3 @@
+case_id,bank,period,metric,categories,expected_status,status,status_correct,expected_reason,abstain_reason,reason_correct,drivers,reconciles,residual,tolerance,cited_numbers,cited_found,citation_faithfulness,confidence_level,confidence,latency_ms,llm_calls,cost_aud,headline_exact,gold_verified,passed,notes
+cba_fy26_headline_earnings,CBA,FY26,headline_earnings,standard|real_filing|full_year,OK|PARTIAL,OK,True,,,,5,True,0E-25,3.5,22,22,1.000,High,0.920,57541,2,0.5848,True,True,True,
+wbc_1h26_nim,WBC,1H26,nim,standard|real_filing|excluding_notable_items,OK|PARTIAL,OK,True,,,,6,True,0.00,3.0,8,8,1.000,High,0.900,84524,6,0.7900,True,True,True,

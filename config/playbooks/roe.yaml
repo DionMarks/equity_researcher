@@ -1,0 +1,16 @@
+# ROE: key metrics, average equity, equity movements.
+metric: roe
+required:
+  - {component: roe.headline.current, doc_types: [RESULTS_RELEASE, RESULTS_DOCUMENT]}
+  - {component: roe.headline.pcp,     doc_types: [RESULTS_DOCUMENT]}
+  - {component: roe.average_equity,   doc_types: [RESULTS_DOCUMENT]}
+  - {component: earn.headline.current, doc_types: [RESULTS_RELEASE, RESULTS_DOCUMENT]}
+optional:
+  - {component: roe.equity_movements, doc_types: [RESULTS_DOCUMENT]}
+  - {component: roe.rote,             doc_types: [RESULTS_RELEASE, RESULTS_DOCUMENT]}
+  - {component: roe.commentary,       doc_types: [RESULTS_RELEASE, INVESTOR_PRESENTATION]}
+search_terms: ["return on equity", "ROE", "return on tangible equity", "RoTE",
+               "average ordinary equity", "average shareholders equity",
+               "key metrics", "buyback", "dividend reinvestment plan"]
+table_captions: ["Key metrics", "Shareholders equity", "Average balance sheet",
+                 "Changes in equity"]

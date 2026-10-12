@@ -1,0 +1,58 @@
+# Conflicts are classified before they're resolved. Precedence only applies to
+# the UNEXPLAINED class.
+schema_version: "1.0"
+
+# Checked in this order, and the first match wins. The order matters: a rounding difference
+# must never fall through to UNEXPLAINED.
+classification_order:
+  - UNIT
+  - ROUNDING
+  - BASIS
+  - SCOPE
+  - PRO_FORMA
+  - RESTATEMENT
+  - TIMING
+  - UNEXPLAINED
+
+confidence_effects:
+  UNIT: {}
+  ROUNDING: {}
+  BASIS: {}
+  SCOPE: {}
+  PRO_FORMA: {}
+  RESTATEMENT:
+    # None if footnoted; -0.05 if not.
+    penalty_if_unfootnoted: "-0.05"
+  TIMING: {}
+  UNEXPLAINED:
+    cap: "0.75"
+    cap_if_sign_flipped: "0.45"
+
+# Highest first. Only consulted for UNEXPLAINED.
+unexplained_precedence:
+  - doc_types: [RESULTS_DOCUMENT, RESTATEMENT_NOTICE]
+    scope: current_period
+    note: "RESTATEMENT_NOTICE outranks only for the items it restates."
+  - doc_types: [RESULTS_RELEASE, INVESTOR_PRESENTATION]
+    scope: current_period
+    prefer: more_precise
+  - doc_types: [RESULTS_DOCUMENT, RESULTS_RELEASE, INVESTOR_PRESENTATION]
+    scope: prior_period
+    note: "Original vintage."
+  - doc_types: [PILLAR3]
+    scope: any
+
+forbidden:
+  - average_conflicting_values
+  - silently_pick_one
+  - use_a_figure_published_after_as_of
+third_party_data_is_evidence: false
+
+# Document precedence for ingestion and reconciliation.
+doc_type_precedence:
+  RESULTS_DOCUMENT: 1
+  RESTATEMENT_NOTICE: 1
+  RESULTS_RELEASE: 2
+  INVESTOR_PRESENTATION: 2
+  PILLAR3: 3
+  ANNUAL_REPORT: 3

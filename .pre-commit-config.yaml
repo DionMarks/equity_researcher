@@ -1,0 +1,62 @@
+# The fast gates of `make check`, run before a commit rather than after. `make check` stays
+# the authority, because CI runs it and a hook can be skipped.
+repos:
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff (lint)
+        entry: .venv/bin/python -m ruff check --fix
+        language: system
+        types: [python]
+
+      - id: ruff-format
+        name: ruff (format)
+        entry: .venv/bin/python -m ruff format
+        language: system
+        types: [python]
+
+      # Typed on every commit, not only the changed files: a signature change breaks a
+      # caller the hook was not given.
+      - id: mypy
+        name: mypy --strict on the deterministic cores
+        entry: .venv/bin/python -m mypy
+        language: system
+        pass_filenames: false
+        types: [python]
+
+      # The firewall between the agent, the harness and the LLM layer. Cheap, and the one
+      # invariant a reviewer cannot see by reading a diff.
+      - id: import-contracts
+        name: import contracts
+        entry: .venv/bin/lint-imports
+        language: system
+        pass_filenames: false
+        types: [python]
+
+      # A key committed once is leaked permanently, so this runs before the slow gates
+      # and on every file, not only Python ones: a pasted key lands in a README or a
+      # config as readily as in a module.
+      - id: no-credentials
+        name: no credentials in the tree
+        entry: .venv/bin/python scripts/scan_secrets.py
+        language: system
+        pass_filenames: true
+
+      - id: tests
+        name: tests
+        entry: .venv/bin/python -m pytest tests/unit -q
+        language: system
+        pass_filenames: false
+        types: [python]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: [--maxkb=2048]
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      # PEM blocks only; `no-credentials` above covers API keys and tokens.
+      - id: detect-private-key

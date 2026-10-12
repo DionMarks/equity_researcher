@@ -1,0 +1,36 @@
+# What docker build never sends to the daemon, so the image stays small and nothing secret
+# can leak into a layer.
+
+# Secrets first, because they're the one thing that must never end up in a layer.
+.env
+.env.*
+*.key
+
+# Local environments and caches.
+.venv/
+**/__pycache__/
+**/*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# Data is mounted as a volume, never baked into the image: filings are large, and a
+# corpus in a layer would go stale the moment a bank published again.
+data/raw/
+data/db/
+data/processed/
+data/index/
+runs/
+evals/results/
+
+# Repository and editor furniture.
+.git/
+.github/
+.DS_Store
+.vscode/
+.idea/

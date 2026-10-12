@@ -1,0 +1,1670 @@
+# Behavioural cases: the four majors' six metrics for 2026 and for their 2025 full years,
+# Judo's six, and the abstention and robustness rows. 55 carry gold read off the page each
+# figure cites, marked `labeller_kind: automated` until a person checks it, so for now they
+# are a regression baseline rather than an independent holdout.
+cases:
+  # --- standard: ANZ 1H26 vs 1H25 ----------------------------------------
+  - case_id: anz_1h26_nim
+    bank: ANZ
+    period: 1H26
+    metric: nim
+    as_of: 2026-05-31
+    categories: [standard, real_filing, walk_or_identity]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      ANZ publishes its margin walk as a chart rather than a table. Without a model to
+      read it the identity is the only path, and the identity alone is arithmetic, so
+      the expected behaviour is a reconciled movement with no economic driver claimed.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "1.53", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-1h26-results-document, page: 10}}
+      prior: {value: "1.56", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-1h26-results-document, page: 10}}
+      change: {value: "-3.00", unit: bps, tolerance: "0.5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  - case_id: anz_1h26_cet1
+    bank: ANZ
+    period: 1H26
+    metric: cet1_ratio
+    as_of: 2026-05-31
+    categories: [standard, real_filing]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "12.4", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-1h26-results-document, page: 11}}
+      prior: {value: "11.8", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-1h26-results-document, page: 11}}
+      change: {value: "60.0", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cet1.capital, contribution: "48.1", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 118}}
+        - {driver_id: cet1.rwa, contribution: "12.9", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 11}}
+      # ANZ's own walk, chained: September 2025 against March 2025 on
+      # anz-fy25-results-document p.43 (+71 cash profit, -19 significant items, -45
+      # dividend, +14 underlying RWA, -18 operational risk and IRRBB, +22 capital floor),
+      # then March 2026 against September 2025 on p.40 here (+81 cash profit, +22 NOHC
+      # reinvestment, -33 dividend, -19 underlying RWA, +7 deductions, -24 IRRBB, +2 capital
+      # floor). Three lines have no single driver id and are summed as other: -19, -18, +22.
+      walk_drivers:
+        - {driver_id: cet1.organic_capital, contribution: "152", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 40}}
+        - {driver_id: cet1.dividends, contribution: "-78", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 40}}
+        - {driver_id: cet1.regulatory, contribution: "24", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 40}}
+        - {driver_id: cet1.rwa_irrbb, contribution: "-24", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 40}}
+        - {driver_id: cet1.other, contribution: "-15", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 43}}
+        - {driver_id: cet1.deductions_other, contribution: "7", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 40}}
+        - {driver_id: cet1.rwa_credit, contribution: "-5", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 40}}
+      materiality: "2"
+
+  - case_id: anz_1h26_roe
+    bank: ANZ
+    period: 1H26
+    metric: roe
+    as_of: 2026-05-31
+    categories: [standard, real_filing, related_metric]
+    expected_status: [OK, PARTIAL]
+    notes: "ANZ leads with return on tangible equity, so the ROE label must not drift to it."
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "10.6", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-1h26-results-document, page: 10}}
+      prior: {value: "10.2", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-1h26-results-document, page: 10}}
+      change: {value: "40.0", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: roe.earnings, contribution: "60.0", tolerance: "1",
+           source: {doc_id: anz-1h26-investor-presentation, page: 23}}
+        - {driver_id: roe.equity, contribution: "-11.7", tolerance: "1",
+           source: {doc_id: anz-1h26-investor-presentation, page: 23}}
+      materiality: "2"
+
+  - case_id: anz_1h26_cost_to_income
+    bank: ANZ
+    period: 1H26
+    metric: cost_to_income
+    as_of: 2026-05-31
+    categories: [standard, real_filing]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "49.4", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-1h26-investor-presentation, page: 23}}
+      prior: {value: "52.2", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-1h26-investor-presentation, page: 23}}
+      change: {value: "-280.0", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cti.expense_growth, contribution: "-187.4", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 10}}
+        - {driver_id: cti.income_growth, contribution: "-95.7", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 10}}
+      materiality: "2"
+
+  - case_id: anz_1h26_headline_earnings
+    bank: ANZ
+    period: 1H26
+    metric: headline_earnings
+    as_of: 2026-05-31
+    categories: [standard, real_filing]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "3780", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: anz-1h26-investor-presentation, page: 23}}
+      prior: {value: "3568", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: anz-1h26-investor-presentation, page: 23}}
+      change: {value: "212", unit: aud_m, tolerance: "0.5"}
+      drivers:
+        - {driver_id: earn.nii, contribution: "19.0", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 10}}
+        - {driver_id: earn.other_income, contribution: "190.0", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 10}}
+        - {driver_id: earn.operating_expenses, contribution: "208.0", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 10}}
+        - {driver_id: earn.credit_impairment, contribution: "-129.0", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 10}}
+        - {driver_id: earn.tax, contribution: "-77.0", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 10}}
+        - {driver_id: earn.minority_interests, contribution: "1.0", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 10}}
+      materiality: "2"
+
+  - case_id: anz_1h26_credit_impairment
+    bank: ANZ
+    period: 1H26
+    metric: credit_impairment_charge
+    as_of: 2026-05-31
+    categories: [standard, real_filing]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "274", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: anz-1h26-results-document, page: 10}}
+      prior: {value: "145", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: anz-1h26-results-document, page: 10}}
+      change: {value: "129", unit: aud_m, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cic.individual, contribution: "-11.0", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 10}}
+        - {driver_id: cic.collective, contribution: "140.0", tolerance: "1",
+           source: {doc_id: anz-1h26-results-document, page: 10}}
+      materiality: "2"
+  # --- standard: NAB 1H26 vs 1H25 ----------------------------------------
+  - case_id: nab_1h26_nim
+    bank: NAB
+    period: 1H26
+    metric: nim
+    as_of: 2026-05-31
+    categories: [standard, real_filing]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "1.81", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-1h26-results-document, page: 22}}
+      prior: {value: "1.70", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-1h26-results-document, page: 22}}
+      change: {value: "11.00", unit: bps, tolerance: "0.5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  - case_id: nab_1h26_cet1
+    bank: NAB
+    period: 1H26
+    metric: cet1_ratio
+    as_of: 2026-05-31
+    categories: [standard, real_filing]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      NAB states risk-weighted assets as "$426.4bn", known to $50m. Measured after
+      conversion to millions that precision reads as $0.05m and the ratio fails its own
+      identity by a fraction of a basis point.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "11.65", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-1h26-results-document, page: 22}}
+      prior: {value: "12.01", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-1h26-results-document, page: 22}}
+      change: {value: "-36.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cet1.capital, contribution: "26.4", tolerance: "1",
+           source: {doc_id: nab-1h26-results-document, page: 98}}
+        - {driver_id: cet1.rwa, contribution: "-63.2", tolerance: "1",
+           source: {doc_id: nab-1h26-results-document, page: 22}}
+      materiality: "2"
+
+  - case_id: nab_1h26_roe
+    bank: NAB
+    period: 1H26
+    metric: roe
+    as_of: 2026-05-31
+    categories: [standard, real_filing, heavy_notable_items]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Cash return on equity fell from 11.7% to 8.5%, and excluding $949m of large notable
+      items it was 11.6%, essentially flat. A memo that reports the fall without the
+      second reading is accurate but useless, so this case checks the variant is carried.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "8.5", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-1h26-results-document, page: 12}}
+      prior: {value: "11.7", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-1h26-results-document, page: 12}}
+      change: {value: "-320.0", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: roe.earnings, contribution: "-306.5", tolerance: "1",
+           source: {doc_id: nab-1h26-results-document, page: 11}}
+        - {driver_id: roe.equity, contribution: "-14.9", tolerance: "1",
+           source: {doc_id: nab-1h26-results-document, page: 11}}
+      materiality: "2"
+
+  - case_id: nab_1h26_cost_to_income
+    bank: NAB
+    period: 1H26
+    metric: cost_to_income
+    as_of: 2026-05-31
+    categories: [standard, real_filing, heavy_notable_items]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      NAB prints this ratio three times in one table (statutory 59.1%, cash 58.6%, and
+      cash excluding large notable items 46.2%), under heading rows that are the only
+      thing telling them apart. The cash reading is the issuer's headline.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "58.6", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-1h26-results-document, page: 22}}
+      prior: {value: "46.8", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-1h26-results-document, page: 22}}
+      change: {value: "1180.0", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cti.expense_growth, contribution: "1477.2", tolerance: "1",
+           source: {doc_id: nab-1h26-results-document, page: 11}}
+        - {driver_id: cti.income_growth, contribution: "-301.2", tolerance: "1",
+           source: {doc_id: nab-1h26-results-document, page: 11}}
+      materiality: "2"
+
+  - case_id: nab_1h26_headline_earnings
+    bank: NAB
+    period: 1H26
+    metric: headline_earnings
+    as_of: 2026-05-31
+    categories: [standard, real_filing, heavy_notable_items]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "2639", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: nab-1h26-results-document, page: 11}}
+      prior: {value: "3583", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: nab-1h26-results-document, page: 11}}
+      change: {value: "-944", unit: aud_m, tolerance: "0.5"}
+      drivers:
+        - {driver_id: earn.nii, contribution: "718", tolerance: "1",
+           source: {doc_id: nab-1h26-results-document, page: 11}}
+        - {driver_id: earn.other_income, contribution: "-116", tolerance: "1",
+           source: {doc_id: nab-1h26-results-document, page: 11}}
+        - {driver_id: earn.operating_expenses, contribution: "-1560", tolerance: "1",
+           source: {doc_id: nab-1h26-results-document, page: 11}}
+        - {driver_id: earn.credit_impairment, contribution: "-358", tolerance: "1",
+           source: {doc_id: nab-1h26-results-document, page: 11}}
+        - {driver_id: earn.tax, contribution: "371", tolerance: "1",
+           source: {doc_id: nab-1h26-results-document, page: 11}}
+        - {driver_id: earn.minority_interests, contribution: "1", tolerance: "1",
+           source: {doc_id: nab-1h26-results-document, page: 11}}
+      materiality: "2"
+
+  - case_id: nab_1h26_credit_impairment
+    bank: NAB
+    period: 1H26
+    metric: credit_impairment_charge
+    as_of: 2026-05-31
+    categories: [standard, real_filing]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      The charge is stated on the group page and repeated on every divisional page, where
+      the Business and Private Banking row prints its movement in the same table. Reading
+      the movement column once gave a prior-period charge of -13.1.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "706", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: nab-1h26-results-document, page: 11}}
+      prior: {value: "348", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: nab-1h26-results-document, page: 11}}
+      change: {value: "358", unit: aud_m, tolerance: "0.5"}
+      # Page 35: individually assessed 541 against 390 ("increased by $151 million"),
+      # collective 165 against a 42 write-back ("increased by $207 million").
+      drivers:
+        - {driver_id: cic.individual, contribution: "151", tolerance: "1",
+           source: {doc_id: nab-1h26-results-document, page: 35}}
+        - {driver_id: cic.collective, contribution: "207", tolerance: "1",
+           source: {doc_id: nab-1h26-results-document, page: 35}}
+      must_mention: []
+      materiality: "2"
+
+  # --- standard: WBC 1H26 vs 1H25 ----------------------------------------
+  - case_id: wbc_1h26_nim
+    bank: WBC
+    period: 1H26
+    metric: nim
+    as_of: 2026-05-31
+    categories: [standard, real_filing, excluding_notable_items]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Westpac leads with its margin excluding Notable Items (1.89% against 1.92%) and
+      prints Core NIM of 1.78% two rows below it, with its Consumer division's 1.74% a
+      hundred pages later. The answer must be the headline margin, and its basis must be
+      stated rather than quietly adopted.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "1.89", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-1h26-results-document, page: 11}}
+      prior: {value: "1.92", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-1h26-results-document, page: 11}}
+      change: {value: "-3.00", unit: bps, tolerance: "0.5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  - case_id: wbc_1h26_cet1
+    bank: WBC
+    period: 1H26
+    metric: cet1_ratio
+    as_of: 2026-05-31
+    categories: [standard, real_filing, regulatory_level]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Level 2 capital of $56,936m and Level 1 capital of $53,722m sit under one header,
+      each introduced by a bare heading row. Level 1 capital over Level 2 risk-weighted
+      assets gives a ratio 70bp below the published one, from two figures both read right.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "12.42", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-1h26-results-document, page: 29}}
+      prior: {value: "12.24", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-1h26-results-document, page: 29}}
+      change: {value: "18.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cet1.capital, contribution: "42.5", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 29}}
+        - {driver_id: cet1.rwa, contribution: "-24.0", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 29}}
+      # Westpac's own walk, chained from its two charts: Second Half 2025 against First Half
+      # 2025 on wbc-fy25-results-document p.29 (80, (58), (7), 16, (2) capital return), then
+      # First Half 2026 against Second Half 2025 on p.30 here (74, (57), (31), 3).
+      walk_drivers:
+        - {driver_id: cet1.organic_capital, contribution: "154", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 30}}
+        - {driver_id: cet1.dividends, contribution: "-115", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 30}}
+        - {driver_id: cet1.rwa, contribution: "-38", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 30}}
+        - {driver_id: cet1.deductions_other, contribution: "19", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 30}}
+        - {driver_id: cet1.buyback, contribution: "-2", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 29}}
+      materiality: "2"
+
+  - case_id: wbc_1h26_roe
+    bank: WBC
+    period: 1H26
+    metric: roe
+    as_of: 2026-05-31
+    categories: [standard, real_filing]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "9.58", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-1h26-results-document, page: 11}}
+      prior: {value: "9.42", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-1h26-results-document, page: 11}}
+      change: {value: "16.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: roe.earnings, contribution: "27.4", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 9}}
+        - {driver_id: roe.equity, contribution: "-11.3", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 9}}
+      materiality: "2"
+
+  - case_id: wbc_1h26_cost_to_income
+    bank: WBC
+    period: 1H26
+    metric: cost_to_income
+    as_of: 2026-05-31
+    categories: [standard, real_filing, excluding_notable_items]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      The published expense-to-income ratio excludes Notable Items, so it's rebuilt from
+      the expenses and income on that basis (page 10: $5,830m over $11,284m against
+      $5,698m over $10,993m), never from the reported lines on page 9, which would be a
+      90bp error in two figures that are both exactly as printed.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "51.67", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-1h26-results-document, page: 11}}
+      prior: {value: "51.83", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-1h26-results-document, page: 11}}
+      change: {value: "-16.00", unit: bps, tolerance: "0.5"}
+      # Shapley over expenses / income on page 10: the expense effect is half of 132 over
+      # each period's income, the income effect the average expense times the change in
+      # 1 / income.
+      drivers:
+        - {driver_id: cti.expense_growth, contribution: "118.5", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 10}}
+        - {driver_id: cti.income_growth, contribution: "-135.2", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 10}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: wbc_1h26_headline_earnings
+    bank: WBC
+    period: 1H26
+    metric: headline_earnings
+    as_of: 2026-05-31
+    categories: [standard, real_filing, metric_discontinued]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Westpac reports net profit as its single performance measure from 1H23, so its
+      headline basis is statutory where the other three are cash.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "3414", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: wbc-1h26-results-document, page: 9}}
+      prior: {value: "3317", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: wbc-1h26-results-document, page: 9}}
+      change: {value: "97", unit: aud_m, tolerance: "0.5"}
+      drivers:
+        - {driver_id: earn.nii, contribution: "420.0", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 9}}
+        - {driver_id: earn.other_income, contribution: "80.0", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 9}}
+        - {driver_id: earn.operating_expenses, contribution: "-239.0", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 9}}
+        - {driver_id: earn.credit_impairment, contribution: "-193.0", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 9}}
+        - {driver_id: earn.tax, contribution: "29.0", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 9}}
+        - {driver_id: earn.minority_interests, contribution: "0.0", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 9}}
+      materiality: "2"
+
+  - case_id: wbc_1h26_credit_impairment
+    bank: WBC
+    period: 1H26
+    metric: credit_impairment_charge
+    as_of: 2026-05-31
+    categories: [standard, real_filing]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Both halves are charges. Page 21 prints them in brackets under "Total impairment
+      (charges)/benefits" in a table with no expense or tax line to show the convention,
+      and this case used to be labelled as two write-backs because the brackets were
+      taken at face value. The total is net IAP plus net CAP less recoveries, which are
+      printed on their own line: 173 + 388 - 118 = 443 and 162 + 203 - 115 = 250.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "443", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: wbc-1h26-results-document, page: 21}}
+      prior: {value: "250", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: wbc-1h26-results-document, page: 21}}
+      change: {value: "193", unit: aud_m, tolerance: "0.5"}
+      # Individually assessed net of recoveries, as the taxonomy defines it:
+      # (173 - 118) - (162 - 115) = 8. Collectively assessed: 388 - 203 = 185.
+      drivers:
+        - {driver_id: cic.individual, contribution: "8", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 21}}
+        - {driver_id: cic.collective, contribution: "185", tolerance: "1",
+           source: {doc_id: wbc-1h26-results-document, page: 21}}
+      must_mention: []
+      materiality: "2"
+
+  # --- standard: CBA FY26 vs FY25 ----------------------------------------
+  - case_id: cba_fy26_nim
+    bank: CBA
+    period: FY26
+    metric: nim
+    as_of: 2026-08-31
+    categories: [standard, real_filing, full_year, divisional_repeat]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      CBA prints its group margin of 2.05% on the Key Performance Indicators page and a
+      Retail Banking margin of 2.50% four pages later, under a heading row rather than a
+      section title. The case guards the group reading: a divisional repeat 45bp away is
+      the most expensive mistake available on this document.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "2.05", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy26-results-document, page: 18}}
+      prior: {value: "2.08", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy26-results-document, page: 18}}
+      change: {value: "-3.00", unit: bps, tolerance: "0.5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  - case_id: cba_fy26_cet1
+    bank: CBA
+    period: FY26
+    metric: cet1_ratio
+    as_of: 2026-08-31
+    categories: [standard, real_filing, full_year]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "12.0", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy26-investor-presentation, page: 106}}
+      prior: {value: "12.3", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy26-investor-presentation, page: 106}}
+      change: {value: "-30.0", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cet1.capital, contribution: "35.3", tolerance: "1",
+           source: {doc_id: cba-fy26-results-document, page: 121}}
+        - {driver_id: cet1.rwa, contribution: "-62.7", tolerance: "1",
+           source: {doc_id: cba-fy26-results-document, page: 122}}
+      materiality: "2"
+
+  - case_id: cba_fy26_roe
+    bank: CBA
+    period: FY26
+    metric: roe
+    as_of: 2026-08-31
+    categories: [standard, real_filing, full_year, split_label]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      CBA sets "Return on equity (ROE) (%)" as a heading and labels the rows that carry
+      the figures only "Statutory basis" and "Cash basis". The name is on one row and the
+      number on another.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "14.0", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy26-results-document, page: 19}}
+      prior: {value: "13.5", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy26-results-document, page: 19}}
+      change: {value: "50.0", unit: bps, tolerance: "0.5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  - case_id: cba_fy26_cost_to_income
+    bank: CBA
+    period: FY26
+    metric: cost_to_income
+    as_of: 2026-08-31
+    categories: [standard, real_filing, full_year, divisional_repeat]
+    expected_status: [OK, PARTIAL]
+    notes: "The group ratio is 45.5%; Retail Banking's is 39.3% under a heading row."
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "45.5", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy26-results-document, page: 18}}
+      prior: {value: "45.7", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy26-results-document, page: 18}}
+      change: {value: "-20.0", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cti.expense_growth, contribution: "258.9", tolerance: "1",
+           source: {doc_id: cba-fy26-annual-report, page: 23}}
+        - {driver_id: cti.income_growth, contribution: "-273.5", tolerance: "1",
+           source: {doc_id: cba-fy26-annual-report, page: 23}}
+      materiality: "2"
+
+  - case_id: cba_fy26_headline_earnings
+    bank: CBA
+    period: FY26
+    metric: headline_earnings
+    as_of: 2026-08-31
+    categories: [standard, real_filing, full_year]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      The full-year summary sets three blocks side by side (statutory full year, cash
+      full year, cash half year), each with its own comparison column. The bridge must be
+      read from one of them, not a line from each.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "10982", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: cba-fy26-investor-presentation, page: 24}}
+      prior: {value: "10252", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: cba-fy26-results-document, page: 16}}
+      change: {value: "730", unit: aud_m, tolerance: "0.5"}
+      drivers:
+        - {driver_id: earn.nii, contribution: "1563", tolerance: "1",
+           source: {doc_id: cba-fy26-results-document, page: 16}}
+        - {driver_id: earn.other_income, contribution: "196", tolerance: "1",
+           source: {doc_id: cba-fy26-results-document, page: 16}}
+        - {driver_id: earn.operating_expenses, contribution: "-759", tolerance: "1",
+           source: {doc_id: cba-fy26-results-document, page: 16}}
+        - {driver_id: earn.credit_impairment, contribution: "-62", tolerance: "1",
+           source: {doc_id: cba-fy26-results-document, page: 16}}
+        - {driver_id: earn.tax, contribution: "-208", tolerance: "1",
+           source: {doc_id: cba-fy26-results-document, page: 16}}
+      materiality: "2"
+
+  - case_id: cba_fy26_credit_impairment
+    bank: CBA
+    period: FY26
+    metric: credit_impairment_charge
+    as_of: 2026-08-31
+    categories: [standard, real_filing, full_year]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "788", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: cba-fy26-annual-report, page: 165}}
+      prior: {value: "726", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: cba-fy26-annual-report, page: 165}}
+      change: {value: "62", unit: aud_m, tolerance: "0.5"}
+      # CBA's loan impairment expense note splits the charge (p.118): net collective
+      # provision funding 606 against 456, and net new and increased individual
+      # provisioning 422 less write-backs 240 against 439 less 169. Its group commentary
+      # leads with the same split ("higher collective provisions", p.26). An earlier
+      # version of this case said CBA printed no such split and used the charge by
+      # division instead (378 against 272, 310 against 355, 33 against 49, 66 against 55,
+      # and 1 against a 5 benefit); that was wrong, and was corrected.
+      drivers:
+        - {driver_id: cic.collective, contribution: "150", tolerance: "1",
+           source: {doc_id: cba-fy26-results-document, page: 118}}
+        - {driver_id: cic.individual, contribution: "-88", tolerance: "1",
+           source: {doc_id: cba-fy26-results-document, page: 118}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: cba_1h26_headline_earnings
+    bank: CBA
+    period: 1H26
+    metric: headline_earnings
+    as_of: 2026-02-28
+    categories: [standard, real_filing]
+    expected_status: [OK, PARTIAL]
+    notes: "The interim pack, read with an as-of before the full-year release."
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "5445", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: cba-1h26-results-document, page: 16}}
+      prior: {value: "5132", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: cba-1h26-results-document, page: 16}}
+      change: {value: "313", unit: aud_m, tolerance: "0.5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  # --- standard: FY25 vs FY24, the four majors' full years ---------------
+  # Read off each bank's 2025 full-year document by an automated pass that checks
+  # every printed figure is on the page it cites, then works the movement and the
+  # drivers out itself (differences for sums, a two-factor Shapley split for
+  # ratios). Like the rest, they wait on a person to check them (bankresearch gold-check).
+  - case_id: anz_fy25_nim
+    bank: ANZ
+    period: FY25
+    metric: nim
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      ANZ's full-year pack sets its half-year and full-year blocks side by side, both headed
+      "Sep 25". The full year is the right-hand block.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "1.55", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-fy25-results-document, page: 12}}
+      prior:   {value: "1.57", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-fy25-results-document, page: 12}}
+      change: {value: "-2.00", unit: bps, tolerance: "0.5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  - case_id: anz_fy25_cet1
+    bank: ANZ
+    period: FY25
+    metric: cet1_ratio
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      ANZ writes its own walk on page 42 (cash profit +149bps, dividends -103bps, RWA -32bps
+      and four smaller steps to -17bps); the gold drivers are the identity split.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "12.0", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-fy25-results-document, page: 42}}
+      prior:   {value: "12.2", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-fy25-results-document, page: 42}}
+      change: {value: "-20.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cet1.capital, contribution: "15.8", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 96}}
+        - {driver_id: cet1.rwa, contribution: "-31.9", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 42}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: anz_fy25_roe
+    bank: ANZ
+    period: FY25
+    metric: roe
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Cash return on equity from the cash profit page; the statutory 8.2% and 9.4% on page
+      11 are the other basis.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "8.1", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-fy25-results-document, page: 12}}
+      prior:   {value: "9.7", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-fy25-results-document, page: 12}}
+      change: {value: "-160.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: roe.earnings, contribution: "-133.0", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 12}}
+        - {driver_id: roe.equity, contribution: "-23.9", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 13}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: anz_fy25_cost_to_income
+    bank: ANZ
+    period: FY25
+    metric: cost_to_income
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "58.8", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-fy25-results-document, page: 12}}
+      prior:   {value: "51.6", unit: pct, tolerance: "0.005",
+                source: {doc_id: anz-fy25-results-document, page: 12}}
+      change: {value: "720.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cti.expense_growth, contribution: "1002.3", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 12}}
+        - {driver_id: cti.income_growth, contribution: "-282.5", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 12}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: anz_fy25_headline_earnings
+    bank: ANZ
+    period: FY25
+    metric: headline_earnings
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "5787", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: anz-fy25-results-document, page: 12}}
+      prior:   {value: "6725", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: anz-fy25-results-document, page: 12}}
+      change: {value: "-938", unit: aud_m, tolerance: "0.5"}
+      drivers:
+        - {driver_id: earn.nii, contribution: "1892.0", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 12}}
+        - {driver_id: earn.other_income, contribution: "-802.0", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 12}}
+        - {driver_id: earn.operating_expenses, contribution: "-2139.0", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 12}}
+        - {driver_id: earn.credit_impairment, contribution: "-35.0", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 12}}
+        - {driver_id: earn.tax, contribution: "152.0", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 12}}
+        - {driver_id: earn.minority_interests, contribution: "-6.0", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 12}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: anz_fy25_credit_impairment
+    bank: ANZ
+    period: FY25
+    metric: credit_impairment_charge
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      The 2024 collective charge includes $244m for the Suncorp Bank acquisition.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "441", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: anz-fy25-results-document, page: 12}}
+      prior:   {value: "406", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: anz-fy25-results-document, page: 12}}
+      change: {value: "35", unit: aud_m, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cic.individual, contribution: "183.0", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 12}}
+        - {driver_id: cic.collective, contribution: "-148.0", tolerance: "1",
+           source: {doc_id: anz-fy25-results-document, page: 12}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: nab_fy25_nim
+    bank: NAB
+    period: FY25
+    metric: nim
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "1.74", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-fy25-results-document, page: 15}}
+      prior:   {value: "1.71", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-fy25-results-document, page: 15}}
+      change: {value: "3.00", unit: bps, tolerance: "0.5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  - case_id: nab_fy25_cet1
+    bank: NAB
+    period: FY25
+    metric: cet1_ratio
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "11.70", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-fy25-results-document, page: 15}}
+      prior:   {value: "12.35", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-fy25-results-document, page: 15}}
+      change: {value: "-65.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cet1.capital, contribution: "9.1", tolerance: "1",
+           source: {doc_id: nab-fy25-results-document, page: 67}}
+        - {driver_id: cet1.rwa, contribution: "-75.2", tolerance: "1",
+           source: {doc_id: nab-fy25-results-document, page: 15}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: nab_fy25_roe
+    bank: NAB
+    period: FY25
+    metric: roe
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Cash return on equity; NAB prints a statutory 10.8% against 11.4% beside it.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "11.4", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-fy25-results-document, page: 10}}
+      prior:   {value: "11.6", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-fy25-results-document, page: 10}}
+      change: {value: "-20.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: roe.earnings, contribution: "-1.8", tolerance: "1",
+           source: {doc_id: nab-fy25-results-document, page: 9}}
+        - {driver_id: roe.equity, contribution: "-24.5", tolerance: "1",
+           source: {doc_id: nab-fy25-results-document, page: 71}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: nab_fy25_cost_to_income
+    bank: NAB
+    period: FY25
+    metric: cost_to_income
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      The cash cost-to-income ratio; the statutory 49.6% against 48.5% is two rows above.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "47.3", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-fy25-results-document, page: 15}}
+      prior:   {value: "46.5", unit: pct, tolerance: "0.005",
+                source: {doc_id: nab-fy25-results-document, page: 15}}
+      change: {value: "80.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cti.expense_growth, contribution: "212.0", tolerance: "1",
+           source: {doc_id: nab-fy25-results-document, page: 9}}
+        - {driver_id: cti.income_growth, contribution: "-131.9", tolerance: "1",
+           source: {doc_id: nab-fy25-results-document, page: 9}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: nab_fy25_headline_earnings
+    bank: NAB
+    period: FY25
+    metric: headline_earnings
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Page 9 sets the full year and the half year side by side, each with a movement column
+      headed "Sep 25 v".
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "7091", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: nab-fy25-results-document, page: 9}}
+      prior:   {value: "7102", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: nab-fy25-results-document, page: 9}}
+      change: {value: "-11", unit: aud_m, tolerance: "0.5"}
+      drivers:
+        - {driver_id: earn.nii, contribution: "644.0", tolerance: "1",
+           source: {doc_id: nab-fy25-results-document, page: 9}}
+        - {driver_id: earn.other_income, contribution: "-67.0", tolerance: "1",
+           source: {doc_id: nab-fy25-results-document, page: 9}}
+        - {driver_id: earn.operating_expenses, contribution: "-435.0", tolerance: "1",
+           source: {doc_id: nab-fy25-results-document, page: 9}}
+        - {driver_id: earn.credit_impairment, contribution: "-105.0", tolerance: "1",
+           source: {doc_id: nab-fy25-results-document, page: 9}}
+        - {driver_id: earn.tax, contribution: "-27.0", tolerance: "1",
+           source: {doc_id: nab-fy25-results-document, page: 9}}
+        - {driver_id: earn.minority_interests, contribution: "-21.0", tolerance: "1",
+           source: {doc_id: nab-fy25-results-document, page: 9}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: nab_fy25_credit_impairment
+    bank: NAB
+    period: FY25
+    metric: credit_impairment_charge
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      A collective write-back of $131m against a $92m charge, so the two drivers move in
+      opposite directions.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "833", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: nab-fy25-results-document, page: 9}}
+      prior:   {value: "728", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: nab-fy25-results-document, page: 9}}
+      change: {value: "105", unit: aud_m, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cic.individual, contribution: "328.0", tolerance: "1",
+           source: {doc_id: nab-fy25-results-document, page: 26}}
+        - {driver_id: cic.collective, contribution: "-223.0", tolerance: "1",
+           source: {doc_id: nab-fy25-results-document, page: 26}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: wbc_fy25_nim
+    bank: WBC
+    period: FY25
+    metric: nim
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, excluding_notable_items, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Westpac's group margin excluding Notable Items; Core NIM of 1.81% is the row below.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "1.94", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-fy25-results-document, page: 10}}
+      prior:   {value: "1.95", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-fy25-results-document, page: 10}}
+      change: {value: "-1.00", unit: bps, tolerance: "0.5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  - case_id: wbc_fy25_cet1
+    bank: WBC
+    period: FY25
+    metric: cet1_ratio
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "12.53", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-fy25-results-document, page: 10}}
+      prior:   {value: "12.49", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-fy25-results-document, page: 10}}
+      change: {value: "4.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cet1.capital, contribution: "39.0", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 28}}
+        - {driver_id: cet1.rwa, contribution: "-35.6", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 28}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: wbc_fy25_roe
+    bank: WBC
+    period: FY25
+    metric: roe
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "9.66", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-fy25-results-document, page: 10}}
+      prior:   {value: "9.77", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-fy25-results-document, page: 10}}
+      change: {value: "-11.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: roe.earnings, contribution: "-10.3", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 8}}
+        - {driver_id: roe.equity, contribution: "-0.7", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 10}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: wbc_fy25_cost_to_income
+    bank: WBC
+    period: FY25
+    metric: cost_to_income
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, excluding_notable_items, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      The expense-to-income ratio excludes Notable Items, so it is rebuilt from the income
+      on that basis (page 58), not the reported income on page 8.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "53.04", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-fy25-results-document, page: 10}}
+      prior:   {value: "50.29", unit: pct, tolerance: "0.005",
+                source: {doc_id: wbc-fy25-results-document, page: 10}}
+      change: {value: "275.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cti.expense_growth, contribution: "439.7", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 58}}
+        - {driver_id: cti.income_growth, contribution: "-163.9", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 58}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: wbc_fy25_headline_earnings
+    bank: WBC
+    period: FY25
+    metric: headline_earnings
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, metric_discontinued, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Net profit, Westpac's headline since 1H23. Non-controlling interests were nil in 2024
+      and are printed as a dash.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "6916", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: wbc-fy25-results-document, page: 8}}
+      prior:   {value: "6990", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: wbc-fy25-results-document, page: 8}}
+      change: {value: "-74", unit: aud_m, tolerance: "0.5"}
+      drivers:
+        - {driver_id: earn.nii, contribution: "627.0", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 8}}
+        - {driver_id: earn.other_income, contribution: "169.0", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 8}}
+        - {driver_id: earn.operating_expenses, contribution: "-972.0", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 8}}
+        - {driver_id: earn.credit_impairment, contribution: "113.0", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 8}}
+        - {driver_id: earn.tax, contribution: "6.0", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 8}}
+        - {driver_id: earn.minority_interests, contribution: "-17.0", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 8}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: wbc_fy25_credit_impairment
+    bank: WBC
+    period: FY25
+    metric: credit_impairment_charge
+    as_of: 2025-11-30
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Page 21 prints charges in brackets and totals recoveries into "Total IAPs, write-backs
+      and recoveries": a $34m net benefit against a $140m charge. Counting the recoveries
+      line again would take $247m off the charge.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "424", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: wbc-fy25-results-document, page: 8}}
+      prior:   {value: "537", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: wbc-fy25-results-document, page: 8}}
+      change: {value: "-113", unit: aud_m, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cic.individual, contribution: "-174.0", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 21}}
+        - {driver_id: cic.collective, contribution: "61.0", tolerance: "1",
+           source: {doc_id: wbc-fy25-results-document, page: 21}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: cba_fy25_nim
+    bank: CBA
+    period: FY25
+    metric: nim
+    as_of: 2025-08-31
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "2.08", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy25-results-document, page: 18}}
+      prior:   {value: "1.99", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy25-results-document, page: 18}}
+      change: {value: "9.00", unit: bps, tolerance: "0.5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  - case_id: cba_fy25_cet1
+    bank: CBA
+    period: FY25
+    metric: cet1_ratio
+    as_of: 2025-08-31
+    categories: [standard, real_filing, full_year, flat_movement, fy25, chained_walk]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Flat as printed to one decimal place, with capital and risk-weighted assets pulling
+      about 70bps each way. The drivers net to about -5bps, inside the rounding of two
+      figures printed to 10bps.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "12.3", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy25-results-document, page: 120}}
+      prior:   {value: "12.3", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy25-results-document, page: 120}}
+      change: {value: "0.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cet1.capital, contribution: "68.0", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 121}}
+        - {driver_id: cet1.rwa, contribution: "-73.1", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 122}}
+      # CBA's own walk, chained: June to December 2024 on
+      # cba-1h25-results-document p.48 (-88 dividend, +110 cash NPAT, -37 RWA, +1 other),
+      # then on to June 2025 on p.48 here (-78 dividend, +103 cash NPAT, -31 RWA, +20
+      # divestment, -5 other). The bars sum to -5bps against 12.3% at both ends, which CBA's
+      # footnote puts down to rounding.
+      walk_drivers:
+        - {driver_id: cet1.organic_capital, contribution: "213", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 48}}
+        - {driver_id: cet1.dividends, contribution: "-166", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 48}}
+        - {driver_id: cet1.rwa, contribution: "-68", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 48}}
+        - {driver_id: cet1.m_and_a, contribution: "20", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 48}}
+        - {driver_id: cet1.other, contribution: "-4", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 48}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: cba_fy25_roe
+    bank: CBA
+    period: FY25
+    metric: roe
+    as_of: 2025-08-31
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Cash return on equity; the statutory basis is the line above.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "13.5", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy25-results-document, page: 19}}
+      prior:   {value: "13.6", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy25-results-document, page: 19}}
+      change: {value: "-10.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: roe.earnings, contribution: "56.2", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 16}}
+        - {driver_id: roe.equity, contribution: "-58.4", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 145}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: cba_fy25_cost_to_income
+    bank: CBA
+    period: FY25
+    metric: cost_to_income
+    as_of: 2025-08-31
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "45.7", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy25-results-document, page: 18}}
+      prior:   {value: "45.0", unit: pct, tolerance: "0.005",
+                source: {doc_id: cba-fy25-results-document, page: 18}}
+      change: {value: "70.00", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cti.expense_growth, contribution: "279.8", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 16}}
+        - {driver_id: cti.income_growth, contribution: "-210.4", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 16}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: cba_fy25_headline_earnings
+    bank: CBA
+    period: FY25
+    metric: headline_earnings
+    as_of: 2025-08-31
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Cash net profit after tax from continuing operations.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "10252", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: cba-fy25-results-document, page: 16}}
+      prior:   {value: "9836", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: cba-fy25-results-document, page: 16}}
+      change: {value: "416", unit: aud_m, tolerance: "0.5"}
+      drivers:
+        - {driver_id: earn.nii, contribution: "1199.0", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 16}}
+        - {driver_id: earn.other_income, contribution: "92.0", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 16}}
+        - {driver_id: earn.operating_expenses, contribution: "-778.0", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 16}}
+        - {driver_id: earn.credit_impairment, contribution: "76.0", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 16}}
+        - {driver_id: earn.tax, contribution: "-173.0", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 16}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: cba_fy25_credit_impairment
+    bank: CBA
+    period: FY25
+    metric: credit_impairment_charge
+    as_of: 2025-08-31
+    categories: [standard, real_filing, full_year, fy25]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      Page 118 prints the provision movement and the loan impairment expense under the same
+      row names; only the expense table's 2024 column (559 and 397, not 576 and 410) adds to
+      the $802m charge.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "726", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: cba-fy25-results-document, page: 16}}
+      prior:   {value: "802", unit: aud_m, tolerance: "0.5",
+                source: {doc_id: cba-fy25-results-document, page: 16}}
+      change: {value: "-76", unit: aud_m, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cic.individual, contribution: "27.0", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 118}}
+        - {driver_id: cic.collective, contribution: "-103.0", tolerance: "1",
+           source: {doc_id: cba-fy25-results-document, page: 118}}
+      must_mention: []
+      materiality: "2"
+
+  # --- Judo FY26 vs FY25: a business bank, and a headline before tax ------
+  # Judo's 2026 annual report, from the ASX. Its analyst pack (pp.33-35) prints each year
+  # to one decimal; the drivers are worked out from those figures, since Judo walks its
+  # margin and capital only half on half (p.33, p.42), and the margin is left without
+  # invented contributions.
+  - case_id: jdo_fy26_headline_earnings
+    bank: JDO
+    period: FY26
+    metric: headline_earnings
+    as_of: 2026-09-30
+    categories: [standard, real_filing, full_year, pre_tax_headline, smaller_bank]
+    expected_status: [OK]
+    notes: >-
+      Judo has led with profit before tax since its 2026 half year ("$168.1m Profit before
+      tax (PBT)", p.8), so both years are compared before tax and the bridge stops there
+      (DESIGN.md ADR-062). Its profit after tax, $111.1m against $86.4m, is not the figure.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "168.1", unit: aud_m, tolerance: "0.05",
+                source: {doc_id: jdo-fy26-annual-report, page: 33}}
+      prior:   {value: "125.6", unit: aud_m, tolerance: "0.05",
+                source: {doc_id: jdo-fy26-annual-report, page: 33}}
+      change: {value: "42.5", unit: aud_m, tolerance: "0.05"}
+      # Each line's movement on page 33: 500.6 - 407.3, 21.8 - 15.6, and the costs and the
+      # charge with their signs turned, 236.6 - 221.8 and 117.7 - 75.5.
+      drivers:
+        - {driver_id: earn.nii, contribution: "93.3", tolerance: "1",
+           source: {doc_id: jdo-fy26-annual-report, page: 33}}
+        - {driver_id: earn.other_income, contribution: "6.2", tolerance: "1",
+           source: {doc_id: jdo-fy26-annual-report, page: 33}}
+        - {driver_id: earn.operating_expenses, contribution: "-14.8", tolerance: "1",
+           source: {doc_id: jdo-fy26-annual-report, page: 33}}
+        - {driver_id: earn.credit_impairment, contribution: "-42.2", tolerance: "1",
+           source: {doc_id: jdo-fy26-annual-report, page: 33}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: jdo_fy26_nim
+    bank: JDO
+    period: FY26
+    metric: nim
+    as_of: 2026-09-30
+    categories: [standard, real_filing, full_year, smaller_bank]
+    expected_status: [OK]
+    notes: >-
+      Judo explains its 2H26 margin against 1H26 (p.35), not the year against the last, so
+      there is no walk for this comparison and no contributions are labelled.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "3.13", unit: pct, tolerance: "0.005",
+                source: {doc_id: jdo-fy26-annual-report, page: 34}}
+      prior:   {value: "2.93", unit: pct, tolerance: "0.005",
+                source: {doc_id: jdo-fy26-annual-report, page: 34}}
+      change: {value: "20.00", unit: bps, tolerance: "0.5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  - case_id: jdo_fy26_cost_to_income
+    bank: JDO
+    period: FY26
+    metric: cost_to_income
+    as_of: 2026-09-30
+    categories: [standard, real_filing, full_year, smaller_bank]
+    expected_status: [OK]
+    notes: >-
+      Rebuilt from operating expenses over net banking income on page 33 (236.6 over 522.4
+      against 221.8 over 422.9), which give 45.29% and 52.45% against the 45.3% and 52.4%
+      printed on page 34.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "45.3", unit: pct, tolerance: "0.005",
+                source: {doc_id: jdo-fy26-annual-report, page: 34}}
+      prior:   {value: "52.4", unit: pct, tolerance: "0.005",
+                source: {doc_id: jdo-fy26-annual-report, page: 34}}
+      change: {value: "-710.0", unit: bps, tolerance: "0.5"}
+      # Shapley over expenses / income: half of 14.8 over each year's income, and the
+      # average expense times the change in 1 / income.
+      drivers:
+        - {driver_id: cti.expense_growth, contribution: "316.6", tolerance: "1",
+           source: {doc_id: jdo-fy26-annual-report, page: 33}}
+        - {driver_id: cti.income_growth, contribution: "-1032.3", tolerance: "1",
+           source: {doc_id: jdo-fy26-annual-report, page: 33}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: jdo_fy26_cet1
+    bank: JDO
+    period: FY26
+    metric: cet1_ratio
+    as_of: 2026-09-30
+    categories: [standard, real_filing, full_year, smaller_bank]
+    expected_status: [OK, PARTIAL]
+    notes: >-
+      CET1 capital of $1,669m and $1,517m (p.39) over risk-weighted assets of $13,434m and
+      $11,548m (p.34). Judo's own walk (p.42) covers only December 2025 to June 2026, and its
+      first half is in a document not held, so the year can't be chained.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "12.4", unit: pct, tolerance: "0.005",
+                source: {doc_id: jdo-fy26-annual-report, page: 34}}
+      prior:   {value: "13.1", unit: pct, tolerance: "0.005",
+                source: {doc_id: jdo-fy26-annual-report, page: 34}}
+      change: {value: "-70.0", unit: bps, tolerance: "0.5"}
+      drivers:
+        - {driver_id: cet1.capital, contribution: "122.4", tolerance: "1",
+           source: {doc_id: jdo-fy26-annual-report, page: 39}}
+        - {driver_id: cet1.rwa, contribution: "-193.7", tolerance: "1",
+           source: {doc_id: jdo-fy26-annual-report, page: 34}}
+      must_mention: []
+      materiality: "2"
+
+  - case_id: jdo_fy26_roe
+    bank: JDO
+    period: FY26
+    metric: roe
+    as_of: 2026-09-30
+    categories: [standard, real_filing, full_year, smaller_bank]
+    expected_status: [PARTIAL]
+    with_model:
+      expected_status: [OK, PARTIAL]
+    notes: >-
+      Judo prints no average equity, so the return can't be split, and it rests on profit
+      after tax even though the earnings headline is now before tax.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "6.4", unit: pct, tolerance: "0.005",
+                source: {doc_id: jdo-fy26-annual-report, page: 34}}
+      prior:   {value: "5.3", unit: pct, tolerance: "0.005",
+                source: {doc_id: jdo-fy26-annual-report, page: 34}}
+      change: {value: "110.0", unit: bps, tolerance: "0.5"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  - case_id: jdo_fy26_credit_impairment
+    bank: JDO
+    period: FY26
+    metric: credit_impairment_charge
+    as_of: 2026-09-30
+    categories: [standard, real_filing, full_year, smaller_bank]
+    expected_status: [PARTIAL]
+    with_model:
+      expected_status: [OK, PARTIAL]
+    notes: >-
+      Judo gives its impairment expense as one line (p.33) and explains it in words (p.32),
+      with no split into individually and collectively assessed charges to decompose.
+    gold_verified: true
+    labeller: "automated"
+    labeller_kind: automated
+    gold:
+      current: {value: "117.7", unit: aud_m, tolerance: "0.05",
+                source: {doc_id: jdo-fy26-annual-report, page: 33}}
+      prior:   {value: "75.5", unit: aud_m, tolerance: "0.05",
+                source: {doc_id: jdo-fy26-annual-report, page: 33}}
+      change: {value: "42.2", unit: aud_m, tolerance: "0.05"}
+      drivers: []
+      must_mention: []
+      materiality: "2"
+
+  # --- real filings, not answerable from what was ingested ---------------
+  - case_id: anz_1h25_period_document_not_ingested
+    bank: ANZ
+    period: 1H25
+    metric: nim
+    as_of: 2026-05-31
+    categories: [real_filing, period_document_not_ingested]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: DOCS_UNAVAILABLE
+    # With a model the cold path finds ANZ's own 1H25 results document and answers from it,
+    # which is the right outcome; only without one must the run abstain.
+    with_model:
+      expected_status: [OK, PARTIAL]
+    notes: >-
+      1H25 appears in the corpus only as the comparative column of the 1H26 pack; ANZ's own
+      1H25 results document was never ingested. Having the figure is not the same as having
+      the disclosure, and the abstention must name the period whose document is missing
+      rather than answer from a comparative column. Distinct from the cold-path cases,
+      where the issuer has no ingested documents at all.
+
+  # --- abstentions by design ---------------------------------------------
+  - case_id: anz_fy26_not_yet_reported
+    bank: ANZ
+    period: FY26
+    metric: nim
+    as_of: 2026-10-06
+    categories: [abstention, not_yet_reported]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: PERIOD_NOT_YET_REPORTED
+    notes: "ANZ's FY26 closes 30 September 2026 and is released in November."
+
+  - case_id: wbc_fy26_not_yet_reported
+    bank: WBC
+    period: FY26
+    metric: cost_to_income
+    as_of: 2026-10-06
+    categories: [abstention, not_yet_reported]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: PERIOD_NOT_YET_REPORTED
+    notes: "Westpac's FY26 closes 30 September 2026. A second issuer, to check the rule is not ANZ-shaped."
+
+  - case_id: cba_calendar_half_is_ambiguous
+    bank: CBA
+    period: "H1 2025"
+    metric: nim
+    as_of: 2026-08-31
+    categories: [abstention, ambiguous_input]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: AMBIGUOUS_INPUT
+    notes: "Which fiscal half 'H1 2025' means depends on the issuer's year end."
+
+  - case_id: unknown_bank
+    bank: Barclays
+    period: 1H26
+    metric: nim
+    as_of: 2026-05-31
+    categories: [abstention, robustness]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: BANK_UNKNOWN
+
+  - case_id: metric_out_of_scope
+    bank: ANZ
+    period: 1H26
+    metric: dividend yield
+    as_of: 2026-05-31
+    categories: [abstention, robustness]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: METRIC_OUT_OF_SCOPE
+
+  - case_id: metric_not_a_metric
+    bank: NAB
+    period: 1H26
+    metric: branch count
+    as_of: 2026-05-31
+    categories: [abstention, robustness]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: METRIC_OUT_OF_SCOPE
+    notes: "A plausible-sounding request for something the system does not decompose."
+
+  - case_id: ben_cold_path_not_ingested
+    bank: BEN
+    period: 1H26
+    metric: nim
+    as_of: 2026-05-31
+    categories: [abstention, cold_path]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: DOCS_UNAVAILABLE
+    # With a model the cold path runs: the filing is found on Bendigo's own site, checked,
+    # dated from its sign-off and ingested, and the question is answered from it.
+    with_model:
+      expected_status: [OK, PARTIAL]
+    notes: >-
+      Bendigo is a config-only issuer with no ingested documents. Cold-path discovery needs
+      a model, so without one the agent must abstain naming what is missing rather than
+      guess.
+
+  - case_id: boq_cold_path_not_ingested
+    bank: BOQ
+    period: FY25
+    metric: cost_to_income
+    as_of: 2025-11-30
+    categories: [abstention, cold_path]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: DOCS_UNAVAILABLE
+    # With a model, discovery should find Bank of Queensland's FY25 filing on its own site.
+    with_model:
+      expected_status: [OK, PARTIAL]
+    notes: "The second cold-path issuer in the case matrix."
+
+  - case_id: jdo_cold_path_not_ingested
+    bank: JDO
+    period: FY25
+    metric: nim
+    as_of: 2025-11-30
+    categories: [abstention, cold_path, unseen_bank]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: DOCS_UNAVAILABLE
+    with_model:
+      expected_status: [OK, PARTIAL]
+    notes: >-
+      Judo is a business bank configured from its own filings, with nothing ingested. Without
+      a model it abstains, naming what is missing.
+
+  - case_id: mys_cold_path_not_ingested
+    bank: MYS
+    period: FY25
+    metric: headline_earnings
+    as_of: 2025-11-30
+    categories: [abstention, cold_path, unseen_bank]
+    expected_status: [ABSTAIN]
+    expected_abstain_reason: DOCS_UNAVAILABLE
+    with_model:
+      expected_status: [OK, PARTIAL]
+    notes: >-
+      MyState leads with underlying net profit after tax, which leaves out its Auswide merger
+      costs, so its headline basis is neither cash nor statutory.
+
